@@ -40,13 +40,25 @@ const userSchema=new mongoose.Schema({
     }
 },{timestamps:true});
 
+//Pre save middleware/HOOK to hash the password
+//.pre('save', ...): registers a pre-save middleware (hook) 
+// — code that runs right before Mongoose saves a document
 //Before saving a user hash the password
-userSchema.pre('save',async function(next){
-    try{
-    //if the password hasnt changed ,skip hashing
-    //Only hash if password is modified or new
-    if(!this.isModified('password')) return next();
-    const salt=await bcrypt.genSalt(10);
-    this.password=await bcrypt.hash(this.password,salt)
-    }
-})
+userSchema.pre('save',async function(next){ 
+    // Only hash if the password is new or changed
+        if(!this.isModified('password')) return next();
+        try {
+            const salt=await bcrypt.genSalt(10);//Make salt
+            this.password=await bcrypt.hash(this.password,salt)//hash the passowrd
+            next();
+            }catch(error){
+                next(error)
+            };
+});;
+
+//Compare password for login
+userSchema.methods.comparePassword=async function(password){
+    return await bcrypt.compare(password,this.password);
+};
+module.exports=mongoosee.model("User",userSchema);
+
