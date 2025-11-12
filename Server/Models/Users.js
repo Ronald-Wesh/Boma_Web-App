@@ -27,7 +27,13 @@ const userSchema=new mongoose.Schema({
     role:{
         type:String,
         enum:['tenant','landlord','admin'],
-        default:tenant
+        default:tenant,
+        required:true,
+    },
+    building:{//Foreign Key
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Building",
+        required:true
     },
     isVerified:{
         type:Boolean,
