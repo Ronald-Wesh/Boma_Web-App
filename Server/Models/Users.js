@@ -22,7 +22,7 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:[true,'Enter a vaid email address'],
         minLength:[6,"Password must be atleast 6 characters Long"],
-        select:false
+        select:false//Not visible 
     },
     role:{
         type:String,
