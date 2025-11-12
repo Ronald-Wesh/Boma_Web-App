@@ -1,15 +1,14 @@
 const mongoose=require("mongoose")
-const building=require("./Building")
+
 
 const ListingSchema=new mongoose.Schema({
     title:{
         type:String,
         required:true,
-        trim:true
     },
     price:{
         type:Number,
-        required:[true,"Priec is required"],
+        required:[true,"Price is required"],
         min:[0,"Price must be a positive Number"]
     },
     description:{
@@ -35,7 +34,20 @@ const ListingSchema=new mongoose.Schema({
     isVerified:{
         type:Boolean,
         default:false
+    },
+    location:{
+        type:{
+            type:String,
+            enum:["Point"],
+            default:"Point",
+            required:true
+        },
+        coordinates:{
+            type:[Number],
+            required:true
+        }
     }
 },{timestamps:true});
 
+ListingSchema.index({location:"2dsphere"})
 module.exports=mongoose.model("Listing",ListingSchema)
