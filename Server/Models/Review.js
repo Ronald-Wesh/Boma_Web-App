@@ -13,8 +13,8 @@ const ReviewSchema=new mongoose.Schema({
     },
     ratings:{
         security:{type:[Number,"Rate From scale of 1 to 5 "],min:1,max:5},
-        water:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
-        landlord:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5}
+        water_availabilty:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
+        landlord_reliabilty:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5}
     },
     isAnonymous:{tpe:Boolean,
         default:true

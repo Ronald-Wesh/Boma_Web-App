@@ -15,9 +15,14 @@ const ListingSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    //type
     address:{
         type:String,
         required:true,
+    },
+    postedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     },
     building:{
         type:mongoose.Schema.Types.ObjectId,
