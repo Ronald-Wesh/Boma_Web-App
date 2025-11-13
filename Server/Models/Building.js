@@ -10,6 +10,16 @@ const BuildingSchema=new mongoose.Schema({
         required:[true,"Building address is required"]
     },
     location:{
+        type:{
+            type:String,
+            enum:["Point"],
+            default:"Point",
+            required:true
+        },
+        coordinates:{
+            type:[Number],
+            required:true
+        }
 
     },
     average_rating:{
@@ -21,5 +31,7 @@ const BuildingSchema=new mongoose.Schema({
         default:0
     }
 
-},{timestamps:true})
+},{timestamps:true});
+
+BuildingSchema.index({location:"2dsphere"})
 module.exports=mongoose.model("Building",BuildingSchema)
