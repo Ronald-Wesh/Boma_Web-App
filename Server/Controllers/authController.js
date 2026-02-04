@@ -4,7 +4,7 @@ const jwt=require("jsonwebtoken")
 
 exports.register=async(req,res)=>{
     try{
-        //Vlaidate fields=None are empty
+        //Validate fields=None are empty
         const {username,email,password,role}=req.body;
         if(!username||!email||!password||!role){
             return res.status(400).json({message:'All fields are required'})
@@ -84,3 +84,25 @@ exports.login=async(req,res)=>{
         res.status(500).json({message:err.message})
     }
 };
+exports.getUserProfile=async(req,res)=>{
+    try{
+        //req.user is set in authMiddleware after token verification
+        const user=await User.findById(req.user.id).select('-password');//Exclude password
+        if(!user){
+            return res.status(404).json({message:"User not found"})
+        }
+        //else send user data-exclude password
+        res.json({user})
+    }
+    catch(err){
+        res.status(500).json({message:err.message})
+    }
+}
+exports.getMe=async(req,res)=>{
+    try{
+        const user=await User.findById(req.user._id).select('-password');
+        res.json({user});
+    }catch(err){
+        res.status(500).json({message:err.message});
+    }
+}
