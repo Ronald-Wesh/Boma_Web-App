@@ -1,16 +1,17 @@
+//Import Mongoose to translate with mongodb
 const mongoose=require("mongoose");
 
+//Connect to mongoDb via mongoose
 const connectDb=async()=>{
     try{
         await mongoose.connect(process.env.MONGO_URI,{
-            useNewUrlParser:true,
-            useUnifiedTopology:true
+            useNewUrlParseer:true,
+            useUnifiedToplogy:true,
         });
-        console.log(`MongoDb Connection Succesful ${mongoose.connection.host}`)
+        console.log("MongoDb Connected Suceesfully");
+    }catch(err){
+        console.error("MongoDb Connection Failed",err.message);
+        process.exit(1);//Exit process with failure
     }
-    catch(error){
-        console.error("MongoDb Connection Failed",error.message);
-        process.exit(1);
-    }
-};
+}
 module.exports=connectDb;
