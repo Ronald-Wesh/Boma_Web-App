@@ -17,9 +17,10 @@ exports.createPost = async (req,res) => {
 
 //Get All forums of a specific building
 exports.getAllForums=async(req,res)=>{
-  try{
-
-  }catch(err){
-    
+  try {
+    const posts = await ForumPost.find().populate('user', 'username').populate('building');
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 }
