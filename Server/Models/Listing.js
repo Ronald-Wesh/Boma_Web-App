@@ -36,10 +36,15 @@ const ListingSchema=new mongoose.Schema({
     amenities:{type:String,
         required:true
     },
-    isVerified:{
-        type:Boolean,
-        default:false
-    },
+    // isVerified:{
+    //     type:Boolean,
+    //     default:false
+    // },
+    owner: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'User',
+  required: true
+},
     location:{
         type:{
             type:String,
