@@ -35,3 +35,26 @@ exports.createListing=async(req,res)=>{
 //   <span className="badge">✔ Verified</span>
 // )}
 
+//Get all Listings
+exports.getAllListings=async(req,res)=>{
+    try{
+        const listings=await Listing.find().populate('user','username isVerified');
+        res.status(200).json(listings);
+    }catch(err){
+        res.status(400).json({message:err.message});
+    }
+};
+
+//Get a single listing by ID
+exports.getListingById=async(req,res)=>{
+    try{
+        const listing=await Listing.findById(req.params.id).populate('user','username isVerified');
+        if(!listing) return res.status(404).json({message:"Listing Not Found"});
+        res.status(200).json(listing);
+    }catch(err){
+        res.status(400).json({message:err.message});
+    }
+};
+
+//Update a listing
+exports.
