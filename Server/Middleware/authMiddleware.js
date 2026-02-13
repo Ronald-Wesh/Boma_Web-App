@@ -1,20 +1,20 @@
 const jwt=require('jsonwebtoken');
 const User=require('../Models/User');
 
-//Must be Lpogged in to access this route
+//Must be Logged in to access this route
 exports.protect=async(req,res,next)=>{
     let token;
     if(req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')){
             try{
                 //Get token from header
-                token.headers.auhtorization.split('')[1];
+                token=req.headers.authorization.split(' ')[1];
                 //verify token
                 const decoded=jwt.verify(token,process.env.JWT_SECRET);
                 //Get user from token
                 req.user=await User.findById(decoded.id).select('-password');
                 if(!req.user){
-                    return res.status(402).json({message:"Not Authorized,User not found"});
+                    return res.status(401).json({message:"Not Authorized,User not found"});
                 }
                 next();
             }catch(err){
