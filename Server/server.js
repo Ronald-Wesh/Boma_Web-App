@@ -7,8 +7,25 @@ require("dotenv").config();
 connectDb();
 
 const app=express();
-app.use(express.json())
 const PORT=process.env.PORT||5000;
+
+//Middleware
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
+
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(express.urlencoded({extended:true}));
+
+//Import Routes
+const authRoutes=require("./Routes/authRoutes");
+//const adminRoutes=require("./Routes/adminRoutes");
+
+//Use Routes
+app.use("/api/auth",authRoutes);
+app.use("/api/admin",adminRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server is running on PORT ${PORT}`)
