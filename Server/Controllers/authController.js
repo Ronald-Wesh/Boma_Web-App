@@ -5,7 +5,7 @@ const jwt=require("jsonwebtoken")
 exports.register=async(req,res)=>{
     try{
         //Validate fields=None are empty
-        const {username,email,password,role}=req.body;
+        const {username,email,password,role,phone_Number}=req.body;
         if(!username||!email||!password||!role){
             return res.status(400).json({message:'All fields are required'})
         }
@@ -24,9 +24,14 @@ exports.register=async(req,res)=>{
         if(existingUsername){
             return res.status(400).json({message:"Username already in use"})
         }
+        //Check for phone Number
+        const existingNumber=await User.findOne({phone_Number})
+        if(existingNumber){
+            return res.status(400).json({message:"Phone-Number already in Use"})
+        }
 
         //Creating a new user baseed on the inputs=Login data
-        const user=new User({username,email,password,role})
+        const user=new User({username,email,password,role,phone_Number})
 
         await user.save();//Runs the Pre.save middleware to hash the password
 
@@ -39,6 +44,7 @@ exports.register=async(req,res)=>{
             username:user.username,
             email:user.email,
             role:user.role,
+            phone_Number:user.phone_Number
         }})
     }
     catch(err){
@@ -62,7 +68,7 @@ exports.login=async(req,res)=>{
             return res.status(400).json({message:"Invalid Credentials"})
         }
 
-        //Chekc passwor using th eUSer models comparePassword Method
+        //Chekc password using th eUSer models comparePassword Method
         const isMatch=await user.comparePassword(password);
         if(!isMatch){
             return res.status(400).json({message:"Ivalid Credentials"})

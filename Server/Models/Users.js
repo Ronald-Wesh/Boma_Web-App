@@ -25,20 +25,20 @@ const userSchema=new mongoose.Schema({
         select:false//Not visible 
     },
     phone_Number:{
-        type:Number,
+        type:String,
         required:true
     },
     role:{
         type:String,
         enum:['tenant','landlord','admin'],
-        default:tenant,
+        default:'tenant',
         required:true,
     },
-    building:{//Foreign Key
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Building",
-        required:true
-    },
+    // building:{//Foreign Key
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"Building",
+    //     required:true
+    // },
     isVerified:{
         type:Boolean,
         default:false

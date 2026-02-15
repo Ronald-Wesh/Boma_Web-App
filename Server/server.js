@@ -25,7 +25,7 @@ const authRoutes=require("./Routes/authRoutes");
 
 //Use Routes
 app.use("/api/auth",authRoutes);
-app.use("/api/admin",adminRoutes);
+//app.use("/api/admin",adminRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server is running on PORT ${PORT}`)

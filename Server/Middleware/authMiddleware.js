@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-const User=require('../Models/User');
+const User=require('../Models/Users');
 
 //Must be Logged in to access this route
 exports.protect=async(req,res,next)=>{
