@@ -6,45 +6,46 @@ const ListingSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    price:{
+    description:{
+        type:String,
+        required:true,
+    },
+        price:{
         type:Number,
         required:[true,"Price is required"],
         min:[0,"Price must be a positive Number"]
     },
-    description:{
-        type:String,
+        building:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Building",
         required:true,
     },
     //type
     address:{
         type:String,
-        required:true,
+        // required:true,
     },
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
-    building:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Building",
-        required:true,
-    },
     features:{
         type:String,
-        required:true
+        // required:true
     },
     amenities:{type:String,
-        required:true
+        // required:true
     },
     // isVerified:{
     //     type:Boolean,
     //     default:false
     // },
-    owner: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'User',
-  required: true
-},
+    
+//     owner: {
+//   type: mongoose.Schema.Types.ObjectId,
+//   ref: 'User',
+//   required: true
+// },
     location:{
         type:{
             type:String,

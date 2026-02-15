@@ -11,15 +11,18 @@ exports.createListing=async(req,res)=>{
         }   
 
         //const userId=req.user._id;
-        const buildingId=req.params.buildingId;
-        const {title,description,price,address}=req.body;
+        const {title,description,price,building,address,features,amenities,location}=req.body;
         const listing=await Listing.create({
             title,
             description,
             price,
             address,
+            features,
             createdBy:user._id, //From authenticated user
-            building:buildingId //From Params
+            building,
+            amenities,
+            location
+
         });
         res.status(201).json(listing);     
     }catch(err){
@@ -27,7 +30,7 @@ exports.createListing=async(req,res)=>{
     }
 }
 
-// const listings = await Listing.find().populate('owner', 'username isVerified');
+// const listings = await Listing.find().populate('createdBy', 'username isVerified');
 // {listing.owner.isVerified && (
 //   <span className="badge">✔ Verified</span>
 // )}
@@ -35,7 +38,7 @@ exports.createListing=async(req,res)=>{
 //Get all Listings
 exports.getAllListings=async(req,res)=>{
     try{
-        const listings=await Listing.find().populate('user','username isVerified');
+        const listings=await Listing.find().populate('createdBy', 'username isVerified');
         res.status(200).json(listings);
     }catch(err){
         res.status(400).json({message:err.message});
@@ -45,7 +48,7 @@ exports.getAllListings=async(req,res)=>{
 //Get a single listing by ID
 exports.getListingById=async(req,res)=>{
     try{
-        const listing=await Listing.findById(req.params.id).populate('user','username isVerified');
+        const listing=await Listing.findById(req.params.id).populate('createdBy','username isVerified');
         if(!listing) return res.status(404).json({message:"Listing Not Found"});
         res.status(200).json(listing);
     }catch(err){
@@ -63,4 +66,17 @@ exports.updateListing=async(req,res)=>{
   }catch(err){
     res.status(400).json({message:err.message});
   }
+};
+
+//Delete a listing
+exports.deleteListing=async(req,res)=>{
+    try{
+        if(!req.user) return res.status(401).json({message:"Unauthorized"});
+
+        await Listing.findByIdAndDelete(req.params.id);
+        res.status(200).json({message:"Listing Deleted Successfully"});
+
+    }catch(err){
+        res.status(400).json({message:err.message});
+    }
 }

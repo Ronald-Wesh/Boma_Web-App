@@ -22,9 +22,11 @@ app.use(express.urlencoded({extended:true}));
 //Import Routes
 const authRoutes=require("./Routes/authRoutes");
 //const adminRoutes=require("./Routes/adminRoutes");
+const listingRoutes=require("./Routes/listingRoutes");
 
 //Use Routes
 app.use("/api/auth",authRoutes);
+app.use("/api/listings",listingRoutes)
 //app.use("/api/admin",adminRoutes);
 
 app.listen(PORT,()=>{
