@@ -1,5 +1,6 @@
 const Building = require("../Models/Building");
 const Review=require("../Models/Review")
+const mongoose=require("mongoose")
 
 //Create a new review
 exports.createReview=async(req,res)=>{
@@ -27,20 +28,8 @@ exports.createReview=async(req,res)=>{
             categories,
             reviewer:user._id
         });
-        //Update building's average rating and total reviews
-        const reviews=await Review.find({building:buildingId});
-        const totalReviews=reviews.length;
-        const averageRating={
-            cleanliness:reviews.reduce((acc,review)=>acc+review.categories.cleanliness,0)/totalReviews,
-            maintenance:reviews.reduce((acc,review)=>acc+review.categories.maintenance,0)/totalReviews,
-            amenities:reviews.reduce((acc,review)=>acc+review.categories.amenities,0)/totalReviews,
-            security:reviews.reduce((acc,review)=>acc+review.categories.security,0)/totalReviews,
-            water_availabilty:reviews.reduce((acc,review)=>acc+review.categories.water_availabilty,0)/totalReviews,
-            landlord_reliabilty:reviews.reduce((acc,review)=>acc+review.categories.landlord_reliabilty,0)/totalReviews
-        };
-        building.averageRating=averageRating;
-        building.total_reviews=totalReviews;
-        await building.save();
+        await updateBuildingRating(buildingId);
+
         res.status(201).json(review);
     }catch(err){
         res.status(400).json({message:err.message});
@@ -104,6 +93,9 @@ exports.updateReview=async(req,res)=>{
         const updatedReview=await Review.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!updatedReview) return res.status(404).json({message:"Review not found"});
         res.status(200).json(updatedReview);
+        
+        await updateBuildingRating(updatedReview.building);
+
     }catch(err){
         res.status(400).json({message:err.message});
     }
@@ -127,21 +119,8 @@ exports.deleteReview=async(req,res)=>{
         res.status(200).json({message:"Review deleted successfully"});
 
         //Recalculate building's average rating and total reviews
-        const buildingId=deletedReview.building;
-        const building=await Building.findById(buildingId);
-        const reviews=await Review.find({building:buildingId});
-        const totalReviews=reviews.length;
-        const averageRating={
-            cleanliness:reviews.reduce((acc,review)=>acc+review.categories.cleanliness,0)/totalReviews,
-            maintenance:reviews.reduce((acc,review)=>acc+review.categories.maintenance,0)/totalReviews,
-            amenities:reviews.reduce((acc,review)=>acc+review.categories.amenities,0)/totalReviews,
-            security:reviews.reduce((acc,review)=>acc+review.categories.security,0)/totalReviews,
-            water_availabilty:reviews.reduce((acc,review)=>acc+review.categories.water_availabilty,0)/totalReviews,
-            landlord_reliabilty:reviews.reduce((acc,review)=>acc+review.categories.landlord_reliabilty,0)/totalReviews
-        };
-        building.averageRating=averageRating;
-        building.total_reviews=totalReviews;
-        await building.save();  
+   await updateBuildingRating(deletedReview.building);
+   
     }catch(err){
         res.status(400).json({message:err.message});
     }
@@ -173,25 +152,44 @@ exports.markHelpful = async (req, res) => {
 // Helper function to update building rating
 async function updateBuildingRating(buildingId) {
     const stats = await Review.aggregate([
-        { $match: { building: mongoose.Types.ObjectId(buildingId) } },
+        { $match: { building: new mongoose.Types.ObjectId(buildingId) } },
         {
             $group: {
-                _id: null,
-                avgRating: { $avg: '$rating' },
-                totalReviews: { $sum: 1 }
+                _id: "$building",
+                totalReviews: { $sum: 1 },
+                avgCleanliness: { $avg: "$categories.cleanliness" },
+                avgMaintenance: { $avg: "$categories.maintenance" },
+                avgAmenities: { $avg: "$categories.amenities" },
+                avgSecurity: { $avg: "$categories.security" },
+                avgWater: { $avg: "$categories.water_availability" },
+                avgLandlord: { $avg: "$categories.landlord_reliability" }
             }
         }
     ]);
-    
+
     if (stats.length > 0) {
         await Building.findByIdAndUpdate(buildingId, {
-            average_rating: stats[0].avgRating.toFixed(1),
-            total_reviews: stats[0].totalReviews
+            total_reviews: stats[0].totalReviews,
+            averageRating: {
+                cleanliness: stats[0].avgCleanliness,
+                maintenance: stats[0].avgMaintenance,
+                amenities: stats[0].avgAmenities,
+                security: stats[0].avgSecurity,
+                water_availability: stats[0].avgWater,
+                landlord_reliability: stats[0].avgLandlord
+            }
         });
     } else {
         await Building.findByIdAndUpdate(buildingId, {
-            average_rating: 0,
-            total_reviews: 0
+            total_reviews: 0,
+            averageRating: {
+                cleanliness: 0,
+                maintenance: 0,
+                amenities: 0,
+                security: 0,
+                water_availability: 0,
+                landlord_reliability: 0
+            }
         });
     }
-};
+}

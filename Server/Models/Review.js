@@ -33,15 +33,15 @@ const ReviewSchema=new mongoose.Schema({
     },// Verification status
     verified: {
         type: Boolean,
-        default: false // true if user actually lived/lives there
+        default: false  // true if user actually lived/lives there
     }
 },{timestamps:true});
 
 //Index for effiecient querying
 ReviewSchema.index({building:1,reviewer:1},{unique:true}) //One review per user per building
-ReviewSchema.index({building:1}) //For fetching reviews of a building
+//ReviewSchema.index({building:1}) //For fetching reviews of a building
 ReviewSchema.index({reviewer:1}) //For fetching reviews by a user
-ReviewSchema.index({categories:1}) //For fetching reviews based on ratings
+//ReviewSchema.index({categories:1}) //For fetching reviews based on ratings
 ReviewSchema.index({ building: 1, createdAt: -1 }) // For fetching recent reviews of a building
 
 
