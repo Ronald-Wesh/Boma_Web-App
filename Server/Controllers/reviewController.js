@@ -28,6 +28,7 @@ exports.createReview=async(req,res)=>{
             categories,
             reviewer:user._id
         });
+        //Update building's average rating and total reviews
         await updateBuildingRating(buildingId);
 
         res.status(201).json(review);
@@ -38,7 +39,8 @@ exports.createReview=async(req,res)=>{
 //Get all reviews
 exports.getAllReviews=async(req,res)=>{
     try{
-        const reviews=await Review.find().populate('reviewer','building','username isVerified');
+        const reviews=await Review.find().populate('reviewer','username isVerified')
+        .populate('building','title location');
         res.status(200).json(reviews);
     }catch(err){
         res.status(400).json({message:err.message});
@@ -46,28 +48,37 @@ exports.getAllReviews=async(req,res)=>{
 };
 
 //Get reviews for a building
-exports.getBuildingReviews=async(req,res)=>{
-    try{
-        const{sort='-createdAt',limit=20,page=1}=req.query;
-        const reviews=(await Review.find({building:req.params.buildingId}))
-        .populate('reviewer','username isVerified')
-        .sort(sort)
-        .skip((page-1)*limit)
-        .limit(parseInt(limit));
+exports.getBuildingReviews = async (req, res) => {
+  try {
+    const { sort = '-createdAt', limit = 20, page = 1 } = req.query;
 
-        const totalReviews=await Review.countDocuments({building:req.params.buildingId});
-       res.status(200).json({
-            reviews,
-            pagination: {
-                total:totalReviews,
-                page: parseInt(page),
-                pages: Math.ceil(totalReviews / parseInt(limit))
-            }
-        });
-    }catch(err){
-        res.status(400).json({message:err.message});
-    }   
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+
+    const filter = { building: req.params.buildingId };
+
+    const reviews = await Review.find(filter)
+      .populate('reviewer', 'username isVerified')
+      .sort(sort)
+      .skip((pageNum - 1) * limitNum)
+      .limit(limitNum);
+
+    const totalReviews = await Review.countDocuments(filter);
+
+    res.status(200).json({
+      reviews,
+      pagination: {
+        total: totalReviews,
+        page: pageNum,
+        pages: Math.ceil(totalReviews / limitNum)
+      }
+    });
+
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
+
 
 //Get Reviews By User
 exports.getReviewsByUser=async(req,res)=>{
@@ -92,9 +103,13 @@ exports.updateReview=async(req,res)=>{
         //const {title,comment,categories,isAnonymous}=req.body;  
         const updatedReview=await Review.findByIdAndUpdate(req.params.id,req.body,{new:true});
         if(!updatedReview) return res.status(404).json({message:"Review not found"});
+
+        //Recalculate building's average rating and total reviews
+        await updateBuildingRating(updatedReview.building);
+
         res.status(200).json(updatedReview);
         
-        await updateBuildingRating(updatedReview.building);
+        
 
     }catch(err){
         res.status(400).json({message:err.message});
@@ -116,10 +131,11 @@ exports.deleteReview=async(req,res)=>{
         //Delete review and update building's average rating and total reviews      
         const deletedReview=await Review.findByIdAndDelete(req.params.id);
         if(!deletedReview) return res.status(404).json({message:"Review not found"});
+        
+        //Recalculate building's average rating and total reviews
+        await updateBuildingRating(deletedReview.building);
         res.status(200).json({message:"Review deleted successfully"});
 
-        //Recalculate building's average rating and total reviews
-   await updateBuildingRating(deletedReview.building);
    
     }catch(err){
         res.status(400).json({message:err.message});
