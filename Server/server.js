@@ -23,10 +23,12 @@ app.use(express.urlencoded({extended:true}));
 const authRoutes=require("./Routes/authRoutes");
 //const adminRoutes=require("./Routes/adminRoutes");
 const listingRoutes=require("./Routes/listingRoutes");
+const reviewRoutes=require("./Routes/reviewRoutes");
 
 //Use Routes
 app.use("/api/auth",authRoutes);
 app.use("/api/listings",listingRoutes)
+app.use("/api",reviewRoutes);
 //app.use("/api/admin",adminRoutes);
 
 app.listen(PORT,()=>{

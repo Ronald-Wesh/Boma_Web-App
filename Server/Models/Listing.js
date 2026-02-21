@@ -27,25 +27,33 @@ const ListingSchema=new mongoose.Schema({
     },
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        required:true
     },
     features:{
         type:String,
-        // required:true
+        default:[]
     },
     amenities:{type:String,
-        // required:true
+        default:[]
+    },
+    bedrooms:{type:Number,
+        min:0
+    },
+    bathrooms:{type:Number,
+        min:0
+    },
+    status:{
+        type:String,
+        enum:['available','unavailable','pending'],
+        default:'available'
     },
     // isVerified:{
     //     type:Boolean,
     //     default:false
     // },
     
-//     owner: {
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: 'User',
-//   required: true
-// },
+
     location:{
         type:{
             type:String,

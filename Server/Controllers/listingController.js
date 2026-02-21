@@ -16,6 +16,8 @@ exports.createListing=async(req,res)=>{
             title,
             description,
             price,
+            bedrooms,
+            bathrooms,
             address,
             features,
             createdBy:user._id, //From authenticated user
