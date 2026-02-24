@@ -15,3 +15,8 @@ router.post('/', protect, verificationController.createVerificationRequest);
 
 // Route: Submit verification (Admin verifies a user)
 router.put("/:id",protect,isVerifier,verificationController.submitVerification);
+
+// Route: Get all verification requests (Only admins can view)
+router.get("/",protect,isVerifier,verificationController.getAllRequests);
+
+module.exports = route
