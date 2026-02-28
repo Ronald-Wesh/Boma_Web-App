@@ -26,3 +26,30 @@ exports.createVerificationRequest = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// ADMIN: Approves verification
+exports.submitVerification = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user || user.role !== 'landlord') {
+      return res.status(404).json({ message: "Landlord not found" });
+    }
+
+    const request = await Verification.findOne({ landlord: user._id });
+    if (!request) return res.status(404).json({ message: "Verification request not found" });
+
+    user.isVerified = true;
+    user.verification_status = "verified";
+    user.verified_by = req.user._id;
+    await user.save();
+
+    request.status = "verified";
+    request.Verifier = req.user._id;
+    await request.save();
+
+    res.json({ message: "User verified", user, verification: request });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
