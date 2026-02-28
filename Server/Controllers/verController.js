@@ -53,3 +53,14 @@ exports.submitVerification = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// ADMIN: View all verification requests
+exports.getAllRequests = async (req, res) => {
+  try {
+    const requests = await Verification.find()
+      .populate('Landlord', 'username email')
+      .populate('Verifier', 'username email');
+    res.json(requests);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
