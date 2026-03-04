@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Import Routes
 const authRoutes = require("./Routes/authRoutes");
-//const adminRoutes=require("./Routes/adminRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
 const listingRoutes = require("./Routes/listingRoutes");
 const reviewRoutes = require("./Routes/reviewRoutes");
 const forumRoutes = require("./Routes/forumRoutes");
@@ -33,7 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api", reviewRoutes);
 app.use("/api", forumRoutes);
-//app.use("/api/admin",adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);

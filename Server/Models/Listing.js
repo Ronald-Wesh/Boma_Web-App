@@ -48,12 +48,10 @@ const ListingSchema=new mongoose.Schema({
         enum:['available','unavailable','pending'],
         default:'available'
     },
-    // isVerified:{
-    //     type:Boolean,
-    //     default:false
-    // },
-    
-
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
     location:{
         type:{
             type:String,
