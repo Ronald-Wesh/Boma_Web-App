@@ -14,3 +14,5 @@ Router.get("/buildings/:buildingId/forums",getSpecificBuildingForums);
 
 //Delete a Post
 Router.delete("/forums/:postId",protect,deletePost);
+
+module.exports=Router;
