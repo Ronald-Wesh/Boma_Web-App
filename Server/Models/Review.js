@@ -34,6 +34,10 @@ const ReviewSchema=new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false  // true if user actually lived/lives there
+    },
+    helpful: {
+        type: Number,
+        default: 0
     }
 },{timestamps:true});
 

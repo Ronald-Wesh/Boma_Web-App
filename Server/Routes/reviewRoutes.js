@@ -31,6 +31,6 @@ router.delete("/reviews/:id", protect, deleteReview);
 router.get("/users/:userId/reviews", getReviewsByUser);
 
 // Mark helpful
-router.post("/reviews/:id/helpful", protect, markHelpful);
+router.patch("/reviews/:id/helpful", protect, markHelpful);
 
 module.exports = router;

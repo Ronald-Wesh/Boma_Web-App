@@ -24,11 +24,13 @@ const authRoutes=require("./Routes/authRoutes");
 //const adminRoutes=require("./Routes/adminRoutes");
 const listingRoutes=require("./Routes/listingRoutes");
 const reviewRoutes=require("./Routes/reviewRoutes");
+const forumRoutes=require("./Routes/forumRoutes")
 
 //Use Routes
 app.use("/api/auth",authRoutes);
 app.use("/api/listings",listingRoutes)
 app.use("/api",reviewRoutes);
+app.use("/api",forumRoutes)
 //app.use("/api/admin",adminRoutes);
 
 app.listen(PORT,()=>{
