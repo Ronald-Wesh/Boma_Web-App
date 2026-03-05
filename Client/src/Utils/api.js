@@ -1,9 +1,13 @@
-
+// USED FOT http requests
+//MESSENGER BTW FRONTEND AND BACKEND
 import axios from 'axios';
 
+//access backend url
 const API_URL=import.meta.env.VITE_API_URL ||'http://localhost:5000/api';
 
+//crate custom axios instance
 export const API=axios.create({
+  //base url for all requests
   baseURL:API_URL,
   headers:{
     'Content-Type':"application/json"
@@ -11,7 +15,7 @@ export const API=axios.create({
 });
 
 //Add interceptor to include token in requests
-API.Interceptors.request.use(
+API.interceptors.request.use(
   (config)=>{
     const token=localStorage.getItem("token");
     if(token){
@@ -25,7 +29,7 @@ API.Interceptors.request.use(
 );
 
 //Add interceptor to handle responses
-API.Interceptors.response.use(
+API.interceptors.response.use(
   (response)=>{
     return response;
   },
