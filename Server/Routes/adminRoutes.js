@@ -10,11 +10,11 @@ const { protect, isAdmin } = require("../Middleware/authMiddleware");
 
 // User routes
 router.get("/unverified-users", protect, isAdmin, getUnverifiedUsers);
-router.put("/verify-user/:userId", protect, isAdmin, verifyUser);
+router.patch("/verify-user/:userId", protect, isAdmin, verifyUser);
 
 // Listing routes
 router.get("/unverified-listings", protect, isAdmin, getUnverifiedListings);
-router.put("/verify-listing/:listingId", protect, isAdmin, verifyListing);
+router.patch("/verify-listing/:listingId", protect, isAdmin, verifyListing);
 
 module.exports = router;
 
