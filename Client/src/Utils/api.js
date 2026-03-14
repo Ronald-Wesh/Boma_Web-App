@@ -45,7 +45,7 @@ API.interceptors.response.use(
 );  
 
 //Export Auth API endpoints
-export const authApi={
+export const authAPI={
   register:(userData)=>API.post('/auth/register',userData),
   login:(credentials)=>API.post('/auth/login',credentials),
   getProfile:()=>API.get('/auth/get-profile'),
