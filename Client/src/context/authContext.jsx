@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { authAPI } from '../Utils/api';
 import toast from 'react-hot-toast'
-import { AuthContext } from './useAuth';
+import { AuthContext } from '../hooks/useAuth';
 
 //Component wraps the entire app
 export const AuthProvider=({children})=>{//children=components that will be wrapped
