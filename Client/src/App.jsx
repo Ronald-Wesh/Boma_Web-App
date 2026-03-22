@@ -1,12 +1,10 @@
 // import { useState } from 'react'
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import {
-  UserButton,
-  SignedIn,
-  SignedOut,
-  SignIn,
-} from "@clerk/clerk-react";
+import { UserButton, SignedIn, SignedOut, SignIn } from "@clerk/clerk-react";
+import { toast} from "sonner";
+import { useEffect } from "react";
+
 function App() {
   return (
     <>
