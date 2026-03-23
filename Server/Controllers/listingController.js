@@ -77,14 +77,58 @@ exports.createListing = async (req, res) => {
 //   <span className="badge">✔ Verified</span>
 // )}
 
-//Get all Listings
+//Get all Listings — supports search, status, verified, sort, pagination
 exports.getAllListings = async (req, res) => {
   try {
-    const listings = await Listing.find().populate(
-      "createdBy",
-      "username isVerified",
-    );
-    res.status(200).json(listings);
+    const { search, status, verified, sort, page = 1, limit = 12 } = req.query;
+
+    // Build dynamic filter object
+    const filter = {};
+
+    // Text search across title, description, address
+    if (search) {
+      const regex = new RegExp(search, "i");
+      filter.$or = [
+        { title: regex },
+        { description: regex },
+        { address: regex },
+      ];
+    }
+
+    // Filter by listing status (available/unavailable/pending)
+    if (status) {
+      filter.status = status;
+    }
+
+    // Filter verified listings only
+    if (verified === "true") {
+      filter.isVerified = true;
+    }
+
+    // Build sort object
+    let sortObj = { createdAt: -1 }; // default: newest first
+    if (sort === "price_asc") sortObj = { price: 1 };
+    else if (sort === "price_desc") sortObj = { price: -1 };
+    else if (sort === "newest") sortObj = { createdAt: -1 };
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const [listings, total] = await Promise.all([
+      Listing.find(filter)
+        .populate("createdBy", "username isVerified role")
+        .populate("building", "name address average_rating total_reviews")
+        .sort(sortObj)
+        .skip(skip)
+        .limit(parseInt(limit)),
+      Listing.countDocuments(filter),
+    ]);
+
+    res.status(200).json({
+      listings,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit)),
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

@@ -56,7 +56,7 @@ export const authAPI={
 //Listing Api endpoints
 export const listingAPI={
   createListing:(listingData)=>API.post('/listings',listingData),
-  getAllListings:()=>API.get('/listings'),
+  getAllListings:(params)=>API.get('/listings',{params}),
   getListingById:(id)=>API.get(`/listings/${id}`),
   updateListing:(id,listingData)=>API.put(`/listings/${id}`,listingData),
   deleteListing:(id)=>API.delete(`/listings/${id}`)
