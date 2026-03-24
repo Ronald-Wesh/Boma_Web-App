@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { listingAPI } from "../Utils/api";
-import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth"; //gives us the user and isAuthenticated
+import { useNavigate } from "react-router-dom"; //changing pages
 import ListingCard from "../components/ListingCard";
 import { toast } from "sonner";
 
 // ─── Skeleton card for loading state ───
 function SkeletonCard() {
+  //is a fake loading card that is shown while the listings are loading
   return (
+    //instaed of a blank screen users seee loading animation
     <div className="flex flex-col bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 animate-pulse">
       {/* Image skeleton */}
       <div className="aspect-[4/3] bg-gray-200" />
@@ -33,15 +35,29 @@ function SkeletonCard() {
 
 // ─── Empty state illustration ───
 function EmptyState({ search }) {
+  //this is what is shown when there are no listings=when search no results
   return (
+    //{search} is a prop(data passed into)=what user is searching for
     <div className="col-span-full flex flex-col items-center justify-center py-20 px-4">
       {/* House icon */}
       <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center mb-6">
-        <svg className="w-12 h-12 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+        <svg
+          className="w-12 h-12 text-indigo-400"
+          fill="NONE"//DONT FILL SHAPE WITH COLOR
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.7}
+        >
+          <path
+            strokeLinecap="round"//ends of lines smooth
+            strokeLinejoin="round"//corners smooth
+            d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"//drawing instructions
+          />
         </svg>
       </div>
-      <h3 className="text-xl font-semibold text-gray-800 mb-2">No listings found</h3>
+      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+        No listings found
+      </h3>
       <p className="text-sm text-gray-500 text-center max-w-sm">
         {search
           ? `We couldn't find any listings matching "${search}". Try a different search term or adjust your filters.`
@@ -107,10 +123,12 @@ export default function Listings() {
         // let filtered = data.listings || [];
         let filtered = (data.listings || []).map((l) => ({
           ...l,
-          verified: l.isVerified // 🔥 normalize backend → frontend
+          verified: l.isVerified, // 🔥 normalize backend → frontend
         }));
-        if (priceMin) filtered = filtered.filter((l) => l.price >= Number(priceMin));
-        if (priceMax) filtered = filtered.filter((l) => l.price <= Number(priceMax));
+        if (priceMin)
+          filtered = filtered.filter((l) => l.price >= Number(priceMin));
+        if (priceMax)
+          filtered = filtered.filter((l) => l.price <= Number(priceMax));
 
         if (append) {
           setListings((prev) => [...prev, ...filtered]);
@@ -144,7 +162,8 @@ export default function Listings() {
   };
 
   // ── Callbacks for child actions ──
-  const handleDelete = (id) => setListings((prev) => prev.filter((l) => l._id !== id));
+  const handleDelete = (id) =>
+    setListings((prev) => prev.filter((l) => l._id !== id));
   const handleVerify = (id) =>
     setListings((prev) =>
       prev.map((l) => (l._id === id ? { ...l, isVerified: true } : l)),
@@ -160,10 +179,14 @@ export default function Listings() {
     setPriceMax("");
   };
 
-  const hasActiveFilters = search || status || verified || sort !== "newest" || priceMin || priceMax;
+  const hasActiveFilters =
+    search || status || verified || sort !== "newest" || priceMin || priceMax;
 
   return (
-    <div ref={topRef} className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <div
+      ref={topRef}
+      className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50"
+    >
       {/* ════════════════════════════════════ */}
       {/*          GRADIENT HEADER             */}
       {/* ════════════════════════════════════ */}
@@ -192,8 +215,18 @@ export default function Listings() {
                            text-white font-semibold rounded-xl border border-white/25
                            hover:bg-white/25 transition-all duration-200 text-sm"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
                 Create Listing
               </button>
@@ -220,7 +253,11 @@ export default function Listings() {
                 stroke="currentColor"
                 strokeWidth={2}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
               <input
                 type="text"
@@ -251,8 +288,18 @@ export default function Listings() {
                   <option value="unavailable">Unavailable</option>
                   <option value="pending">Pending</option>
                 </select>
-                <svg className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                <svg
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
 
@@ -270,8 +317,18 @@ export default function Listings() {
                   <option value="price_asc">Price: Low → High</option>
                   <option value="price_desc">Price: High → Low</option>
                 </select>
-                <svg className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                <svg
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
 
@@ -317,8 +374,18 @@ export default function Listings() {
                                 : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
                             }`}
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
                 </svg>
                 Verified Only
               </button>
@@ -340,8 +407,13 @@ export default function Listings() {
             {!loading && (
               <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                 <p className="text-xs text-gray-500">
-                  Showing <span className="font-semibold text-gray-700">{listings.length}</span> of{" "}
-                  <span className="font-semibold text-gray-700">{total}</span> listings
+                  Showing{" "}
+                  <span className="font-semibold text-gray-700">
+                    {listings.length}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-semibold text-gray-700">{total}</span>{" "}
+                  listings
                 </p>
                 {/* Mobile create button */}
                 {isAuthenticated && (
@@ -351,8 +423,18 @@ export default function Listings() {
                                text-white font-medium rounded-lg text-xs hover:bg-indigo-700
                                transition-colors duration-200"
                   >
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 4v16m8-8H4"
+                      />
                     </svg>
                     Create
                   </button>
@@ -375,18 +457,20 @@ export default function Listings() {
                       xl:grid-cols-4"
         >
           {/* Loading skeleton */}
-          {loading
-            ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
-            : listings.length > 0
-              ? listings.map((listing) => (
-                  <ListingCard
-                    key={listing._id}
-                    listing={listing}
-                    onDelete={handleDelete}
-                    onVerify={handleVerify}
-                  />
-                ))
-              : <EmptyState search={debouncedSearch} />}
+          {loading ? (
+            Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : listings.length > 0 ? (
+            listings.map((listing) => (
+              <ListingCard
+                key={listing._id}
+                listing={listing}
+                onDelete={handleDelete}
+                onVerify={handleVerify}
+              />
+            ))
+          ) : (
+            <EmptyState search={debouncedSearch} />
+          )}
         </div>
 
         {/* ── Load More / Pagination ── */}
@@ -404,9 +488,24 @@ export default function Listings() {
             >
               {loadingMore ? (
                 <>
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <svg
+                    className="w-4 h-4 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   Loading...
                 </>
@@ -420,7 +519,11 @@ export default function Listings() {
                     stroke="currentColor"
                     strokeWidth={2}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
                   </svg>
                 </>
               )}
