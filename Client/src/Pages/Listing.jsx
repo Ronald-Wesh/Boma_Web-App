@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth"; //gives us the user and isAuthentica
 import { useNavigate } from "react-router-dom"; //changing pages
 import ListingCard from "../components/ListingCard";
 import { toast } from "sonner";
+// import {useRef} from "react";
 
 // ─── Skeleton card for loading state ───
 function SkeletonCard() {
@@ -43,15 +44,15 @@ function EmptyState({ search }) {
       <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center mb-6">
         <svg
           className="w-12 h-12 text-indigo-400"
-          fill="NONE"//DONT FILL SHAPE WITH COLOR
+          fill="NONE" //DONT FILL SHAPE WITH COLOR
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={1.7}
         >
           <path
-            strokeLinecap="round"//ends of lines smooth
-            strokeLinejoin="round"//corners smooth
-            d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"//drawing instructions
+            strokeLinecap="round" //ends of lines smooth
+            strokeLinejoin="round" //corners smooth
+            d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" //drawing instructions
           />
         </svg>
       </div>
@@ -67,13 +68,15 @@ function EmptyState({ search }) {
   );
 }
 
-// ─── Debounce hook ───
+// ─── Debounce hook ───wait allittle before reacting  and only react if user stops typing
 function useDebounce(value, delay = 400) {
-  const [debounced, setDebounced] = useState(value);
+  //prevent unnceseary api calls based on single inputs0
+  const [debounced, setDebounced] = useState(value); //stores final delayed value
   useEffect(() => {
-    const id = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(id);
-  }, [value, delay]);
+    //runs when value or delay changes
+    const id = setTimeout(() => setDebounced(value), delay); //sets timer and updates delayed value
+    return () => clearTimeout(id); //cancel timer if value changes again
+  }, [value, delay]); //only run when value or delay changes
   return debounced;
 }
 
@@ -82,48 +85,51 @@ function useDebounce(value, delay = 400) {
  */
 export default function Listings() {
   // ── State ──
-  const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("");
-  const [verified, setVerified] = useState(false);
-  const [sort, setSort] = useState("newest");
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [listings, setListings] = useState([]); //list of items shown
+  const [loading, setLoading] = useState(true); //loading state
+  const [search, setSearch] = useState(""); //stores what user searches for
+  const [status, setStatus] = useState(""); //stores status of listing
+  const [verified, setVerified] = useState(false); //stores verified status of listing
+  const [sort, setSort] = useState("newest"); //controls order=newest,oldest,price,cheapest
+  const [priceMin, setPriceMin] = useState(""); //stores min pric
+  const [priceMax, setPriceMax] = useState(""); //stores max price
+  const [page, setPage] = useState(1); //stores current page
+  const [totalPages, setTotalPages] = useState(1); //stores total pages
+  const [total, setTotal] = useState(0); //stores total listings
+  const [loadingMore, setLoadingMore] = useState(false); //loading more listings=loading next page
 
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const debouncedSearch = useDebounce(search);
-  const topRef = useRef(null);
+  const debouncedSearch = useDebounce(search); //upadates after delay
+  const topRef = useRef(null); //scroll to top
 
   // ── Fetch listings from backend ──
   const fetchListings = useCallback(
+    //caching=only fetch when needed
     async (pageNum = 1, append = false) => {
-      if (append) setLoadingMore(true);
-      else setLoading(true);
+      if (append)
+        setLoadingMore(true); //loading more listings=next page
+      else setLoading(true); //loading initial listings
 
       try {
         const params = {
+          //parameters passed to the api call=request parameters
           ...(debouncedSearch && { search: debouncedSearch }),
           ...(status && { status }),
           ...(verified && { verified: true }),
           sort,
           page: pageNum,
-          limit: 12,
+          limit: 12, //number of listings per page
         };
 
-        const response = await listingAPI.getAllListings(params);
-        const data = response.data;
+        const response = await listingAPI.getAllListings(params); //send req to backend
+        const data = response.data; //extract data from response
 
         // Filter by price range client-side (backend doesn't have price filter yet)
         // let filtered = data.listings || [];
         let filtered = (data.listings || []).map((l) => ({
           ...l,
-          verified: l.isVerified, // 🔥 normalize backend → frontend
+          verified: l.isVerified, //Rename backend field so frontend understands it
         }));
         if (priceMin)
           filtered = filtered.filter((l) => l.price >= Number(priceMin));
@@ -131,37 +137,38 @@ export default function Listings() {
           filtered = filtered.filter((l) => l.price <= Number(priceMax));
 
         if (append) {
-          setListings((prev) => [...prev, ...filtered]);
+          setListings((prev) => [...prev, ...filtered]); //add new listings to existing ones
         } else {
-          setListings(filtered);
+          setListings(filtered); //replace old listings with new ones completely
         }
 
-        setTotal(data.total || 0);
-        setTotalPages(data.totalPages || 1);
-        setPage(pageNum);
+        setTotal(data.total || 0); //total listings
+        setTotalPages(data.totalPages || 1); //total pages
+        setPage(pageNum); //current page
       } catch (error) {
         console.error("Error fetching listings:", error);
         toast.error("Failed to fetch listings");
       } finally {
-        setLoading(false);
-        setLoadingMore(false);
+        //runs regardless of success or failure
+        setLoading(false); //stop loading
+        setLoadingMore(false); //stop loading more
       }
     },
-    [debouncedSearch, status, verified, sort, priceMin, priceMax],
+    [debouncedSearch, status, verified, sort, priceMin, priceMax], //function updates when these change
   );
 
   // ── Re-fetch when filters change (reset to page 1) ──
   useEffect(() => {
     setPage(1);
-    fetchListings(1, false);
+    fetchListings(1, false); //fetch fresh data not appending
   }, [fetchListings]);
 
   // ── Load more (pagination) ──
   const loadMore = () => {
-    if (page < totalPages) fetchListings(page + 1, true);
+    if (page < totalPages) fetchListings(page + 1, true); //true =append not replace
   };
 
-  // ── Callbacks for child actions ──
+  // ── Callbacks for child actions ── NO BACKEND CONNECTION
   const handleDelete = (id) =>
     setListings((prev) => prev.filter((l) => l._id !== id));
   const handleVerify = (id) =>
@@ -180,19 +187,17 @@ export default function Listings() {
   };
 
   const hasActiveFilters =
-    search || status || verified || sort !== "newest" || priceMin || priceMax;
+    search || status || verified || sort !== "newest" || priceMin || priceMax; //IF ANY ACTIVE  SHOW BUTTON OR HIGHLIGHT ACTIVE
 
   return (
     <div
-      ref={topRef}
-      className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50"
+      ref={topRef} //scroll to top links page to top
+      className="min-h-screen bg-gradient-to-b from-gray-400 via-white to-gray-200 rounded-xl"
     >
-      {/* ════════════════════════════════════ */}
-      {/*          GRADIENT HEADER             */}
-      {/* ════════════════════════════════════ */}
+      {/* TOP BANNER=HERO SECTION */}
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 pt-8 pb-24 px-4 relative overflow-hidden">
         {/* Decorative circles */}
-        <div className="absolute top-0 left-0 w-72 h-72 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-72 h-72 bg-white/9 rounded-full -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/2" />
         <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
 
@@ -208,7 +213,7 @@ export default function Listings() {
             </div>
 
             {/* Create listing button — only for logged-in users */}
-            {isAuthenticated && (
+            {isAuthenticated && (//only sg=how if is authentiacted is true
               <button
                 onClick={() => navigate("/listings/create")}
                 className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white/15 backdrop-blur-sm
