@@ -46,10 +46,18 @@ exports.getSpecificBuildingForums = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   try {
+    //user must be logged in
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+    //find post
     const post = await ForumPost.findById(req.params.postId);
     if (!post) return res.status(404).json({ message: "Post Not Found" });
-    if (post.user.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not Authrized" });
+    //must be owner or admin
+    const isOwner = post.user.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+    if (!isOwner || !isAdmin) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden You can only delete your own posts" });
     }
     await post.deleteOne();
     res.json({ message: "Post Deleted Successfully" });

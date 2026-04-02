@@ -151,12 +151,24 @@ exports.getListingById = async (req, res) => {
 //Update a listing
 exports.updateListing = async (req, res) => {
   try {
+    //Must be logged in
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
+    //Get the listing
+    const listing=await Listing.findById(req.params.id);
+    if(!listing) return res.status(404).json({message:"Listing Not Found"})
+
+    //Must be owner or admin
+    const isOwner=listing.createdBy.toString()===user._id.toString()
+    const isAdmin=user.role==="admin"
+    if(!isOwner ||!isAdmin){
+      return res.status(403).json({message:"Forbidden You can only update your own listings"})
+    }
 
     const updatedListing = await Listing.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true },
+      { new: true ,runValidators:true},
     );
     res.status(200).json(updatedListing);
   } catch (err) {
@@ -167,7 +179,19 @@ exports.updateListing = async (req, res) => {
 //Delete a listing
 exports.deleteListing = async (req, res) => {
   try {
+    //user must be logged in
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+    //find listing
+    const listing=await Listing.findById(req.params.id);
+    if(!listing) return res.status(404).json({message:"Listing /not Found"});
+
+    //Must be owner or admin
+    const isOwner=listing.createdBy.toString()===req.user._id.toString();
+    const isAdmin=req.user.role==="admin";
+    if(!isOwner||!isAdmin){
+      return res.status(403).json({message:"Forbidden You can only delete your own listings"});
+    }
+
 
     await Listing.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Listing Deleted Successfully" });

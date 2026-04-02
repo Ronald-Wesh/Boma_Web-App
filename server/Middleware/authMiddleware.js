@@ -35,4 +35,4 @@ exports.isAdmin=(req,res,next)=>{
         res.status(401).json({message:"Not Authorized as Admin"});
     }
 
-}  
+};
