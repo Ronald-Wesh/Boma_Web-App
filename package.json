@@ -1,1 +1,13 @@
-{}
+{
+  "name": "irir-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --dir client dev\" \"pnpm --dir server dev\"",
+    "dev:client": "pnpm --dir client dev",
+    "dev:server": "pnpm --dir server dev",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
