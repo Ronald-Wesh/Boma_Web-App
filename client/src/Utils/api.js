@@ -10,7 +10,8 @@ export const API=axios.create({
   baseURL:API_URL,
   headers:{
     'Content-Type':"application/json"
-  }
+  },
+  withCredentials:true,
 });
 
 //RUNS B4 EVERY REQUEST

@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server:{
+    proxy:{//proxy to connect to the backend no need for axios.get("http://localhost:5000/api/listings")
+      "/api":{
+        target:"http://localhost:5000",
+        changeOrigin:true,
+        secure:false,
+      },
+    },
+  },
 })
