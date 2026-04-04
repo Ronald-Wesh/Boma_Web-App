@@ -47,7 +47,7 @@ exports.createReview = async (req, res) => {
 exports.getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find()
-      .populate("reviewer", "username isVerified")
+      .populate("reviewer", "name verificationStatus")
       .populate("building", "title location");
     res.status(200).json(reviews);
   } catch (err) {
@@ -66,7 +66,7 @@ exports.getBuildingReviews = async (req, res) => {
     const filter = { building: req.params.buildingId };
 
     const reviews = await Review.find(filter)
-      .populate("reviewer", "username isVerified")
+      .populate("reviewer", "name verificationStatus")
       .sort(sort)
       .skip((pageNum - 1) * limitNum)
       .limit(limitNum);
@@ -112,7 +112,7 @@ exports.updateReview = async (req, res) => {
     //must be owner or admin
     const isOwner = review.reviewer.toString() === user._id.toString();
     const isAdmin = user.role === "admin";
-    if (!isOwner || !isAdmin)
+    if (!isOwner && !isAdmin)
       return res.status(403).json({ message: "Forbidden" });
 
     //const {title,comment,categories,isAnonymous}=req.body;
@@ -146,7 +146,7 @@ exports.deleteReview = async (req, res) => {
     //must be owner or admin
     const isOwner = review.reviewer.toString() === user._id.toString();
     const isAdmin = user.role === "admin";
-    if (!isOwner || !isAdmin)
+    if (!isOwner && !isAdmin)
       return res.status(403).json({ message: "Forbidden" });
 
     //Delete review and update building's average rating and total reviews

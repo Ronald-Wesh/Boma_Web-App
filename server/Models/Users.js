@@ -1,34 +1,26 @@
 const mongoose = require("mongoose");
-// const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
-      required: true,
+      required: [true, "Name is required"],
       trim: true,
-      unique: true,
-      minLength: [3, "Username must be atleast 3 Characters Long"],
-      maxLength: [20, "Username has too many characters"],
+      minlength: [2, "Name must be at least 2 characters long"],
+      maxlength: [100, "Name cannot exceed 100 characters"],
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       unique: true,
       trim: true,
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email adress"],
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
     passwordHash: {
       type: String,
-      required: [true, "Enter a vaid email address"],
-      minLength: [6, "Password must be atleast 6 characters Long"],
-      select: false, //Not visible
-    },
-    phone: {
-      type: String,
-      required: true,
-      default: "",
+      required: [true, "Password hash is required"],
+      select: false,
     },
     role: {
       type: String,
@@ -49,6 +41,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["verified", "unverified", "pending"],
       default: "unverified",
+    },
+    avatar: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    phone: {
+      type: String,
+      trim: true,
+      default: "",
     },
   },
   { timestamps: true },

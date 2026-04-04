@@ -21,7 +21,7 @@ exports.getAllForums = async (req, res) => {
   try {
     //populate-replaces the buikding and user id with the actual building and user data
     const posts = await ForumPost.find()
-      .populate("user", "username")
+      .populate("user", "name")
       .populate("building");
     res.status(200).json(posts);
   } catch (err) {
@@ -36,7 +36,7 @@ exports.getSpecificBuildingForums = async (req, res) => {
     const buildingPosts = await ForumPost.find({
       building: req.params.buildingId,
     })
-      .populate("user", "username")
+      .populate("user", "name")
       .sort({ createdAt: -1 });
     res.status(200).json(buildingPosts);
   } catch (err) {
@@ -54,7 +54,7 @@ exports.deletePost = async (req, res) => {
     //must be owner or admin
     const isOwner = post.user.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
-    if (!isOwner || !isAdmin) {
+    if (!isOwner && !isAdmin) {
       return res
         .status(403)
         .json({ message: "Forbidden You can only delete your own posts" });

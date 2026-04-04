@@ -12,7 +12,7 @@ exports.getBuildingListings = async (req, res) => {
 
     //const {buildingId}=req.params;
     const listings = await Listing.find({ building: req.params.buildingId })
-      .populate("createdBy", "username email isVerified")
+      .populate("createdBy", "name email verificationStatus")
       .sort({ createdAt: -1 });
     res.status(200).json({
       building: {
@@ -36,7 +36,7 @@ exports.getBuildingReviews = async (req, res) => {
   try {
     const reviews = await Review.find({
       building: req.params.buildingId,
-    }).populate("reviewer", "username isVerified");
+    }).populate("reviewer", "name verificationStatus");
     res.status(200).json(reviews);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -74,7 +74,7 @@ exports.getBuildingInsights = async (req, res) => {
 
     // Get reviews for the building
     const reviews = await Review.find({ building: buildingId })
-      .populate("user", "username")
+      .populate("user", "name")
       .sort({ createdAt: -1 })
       .limit(10);
 

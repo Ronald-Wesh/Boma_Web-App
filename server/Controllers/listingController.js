@@ -72,8 +72,8 @@ exports.createListing = async (req, res) => {
   }
 };
 
-// const listings = await Listing.find().populate('createdBy', 'username isVerified');
-// {listing.owner.isVerified && (
+// const listings = await Listing.find().populate('createdBy', 'name verificationStatus');
+// {listing.owner.verificationStatus === "verified" && (
 //   <span className="badge">✔ Verified</span>
 // )}
 
@@ -115,7 +115,7 @@ exports.getAllListings = async (req, res) => {
 
     const [listings, total] = await Promise.all([
       Listing.find(filter)
-        .populate("createdBy", "username isVerified role")
+        .populate("createdBy", "name verificationStatus role")
         .populate("building", "name address average_rating total_reviews")
         .sort(sortObj)
         .skip(skip)
@@ -139,7 +139,7 @@ exports.getListingById = async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id).populate(
       "createdBy",
-      "username isVerified",
+      "name verificationStatus",
     );
     if (!listing) return res.status(404).json({ message: "Listing Not Found" });
     res.status(200).json(listing);
@@ -153,6 +153,7 @@ exports.updateListing = async (req, res) => {
   try {
     //Must be logged in
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+    const user = req.user;
 
     //Get the listing
     const listing=await Listing.findById(req.params.id);
@@ -161,7 +162,7 @@ exports.updateListing = async (req, res) => {
     //Must be owner or admin
     const isOwner=listing.createdBy.toString()===user._id.toString()
     const isAdmin=user.role==="admin"
-    if(!isOwner ||!isAdmin){
+    if(!isOwner && !isAdmin){
       return res.status(403).json({message:"Forbidden You can only update your own listings"})
     }
 
@@ -188,7 +189,7 @@ exports.deleteListing = async (req, res) => {
     //Must be owner or admin
     const isOwner=listing.createdBy.toString()===req.user._id.toString();
     const isAdmin=req.user.role==="admin";
-    if(!isOwner||!isAdmin){
+    if(!isOwner && !isAdmin){
       return res.status(403).json({message:"Forbidden You can only delete your own listings"});
     }
 

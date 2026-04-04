@@ -7,7 +7,7 @@ exports.verifyUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.userId,
-      { isVerified: true },
+      { verificationStatus: "verified" },
       { new: true },
     );
 
@@ -21,7 +21,9 @@ exports.verifyUser = async (req, res) => {
 // Get Unverified Users
 exports.getUnverifiedUsers = async (req, res) => {
   try {
-    const users = await User.find({ isVerified: false }).select("-password");
+    const users = await User.find({
+      verificationStatus: { $in: ["pending", "unverified"] },
+    }).select("-passwordHash");
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -33,7 +35,7 @@ exports.getUnverifiedListings = async (req, res) => {
   try {
     const listings = await Listing.find({ isVerified: false }).populate(
       "createdBy",
-      "username email",
+      "name email verificationStatus",
     );
     res.status(200).json(listings);
   } catch (err) {

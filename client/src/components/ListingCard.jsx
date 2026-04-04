@@ -43,14 +43,13 @@ export default function ListingCard({ listing, onDelete, onVerify }) {
   const handleImgError = () => setImgSrc(FALLBACK_IMAGE);
 
   // ── Derived flags ──
-  const isOwner = user?._id === listing?.createdBy?._id;
+  const isOwner = user?.id === listing?.createdBy?._id;
   const isNew =
     listing?.createdAt &&
     Date.now() - new Date(listing.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
   const showVerifiedBadge =
     listing?.isVerified ||
-    listing?.createdBy?.isVerified ||
-    listing?.createdBy?.role === "landlord";
+    listing?.createdBy?.verificationStatus === "verified";
   const rating = listing?.building?.average_rating;
 
   // ── Admin: verify listing ──
@@ -233,15 +232,15 @@ export default function ListingCard({ listing, onDelete, onVerify }) {
         )}
 
         {/* Owner/creator info */}
-        {listing?.createdBy?.username && (
+        {listing?.createdBy?.name && (
           <div className="flex items-center gap-1.5 mt-1 pt-2 border-t border-gray-50">
             <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center">
               <span className="text-[10px] font-bold text-white uppercase">
-                {listing.createdBy.username.charAt(0)}
+                {listing.createdBy.name.charAt(0)}
               </span>
             </div>
             <span className="text-xs text-gray-500 font-medium truncate">
-              {listing.createdBy.username}
+              {listing.createdBy.name}
             </span>
           </div>
         )}
