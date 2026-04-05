@@ -67,6 +67,7 @@ export const authAPI = {
 export const listingAPI = {
   createListing: (listingData) => API.post("/listings", listingData),
   getAllListings: (params) => API.get("/listings", { params }),
+  getNearbyListings: (params) => API.get("/listings/nearby", { params }),
   getListingById: (id) => API.get(`/listings/${id}`),
   updateListing: (id, listingData) => API.put(`/listings/${id}`, listingData),
   deleteListing: (id) => API.delete(`/listings/${id}`),
@@ -80,6 +81,7 @@ export const listingAPI = {
 
 //Building API endpoints
 export const buildingAPI = {
+  getAllBuildings: () => API.get("/buildings"),
   getBuildingListings: (id) => API.get(`/buildings/${id}/listings`),
   getBuildingInsights: (id) => API.get(`/buildings/${id}/insights`),
   getNearbyBuildings: (id) => API.get(`/buildings/${id}/nearby`),
@@ -207,5 +209,4 @@ export const adminAPI = {
 //   verifyUser:(id)=>API.patch(`/admin/verify-user/${id}`),
 //   verifyListing:(id)=>API.patch(`/admin/verify-listing/${id}`)
 // }
-
 

@@ -1,23 +1,21 @@
-const express=require("express")
-const router=express.Router();
-const {protect}=require("../Middleware/authMiddleware");
+const express = require("express");
+const router = express.Router();
+const { protect } = require("../Middleware/authMiddleware");
 
-const {createListing,getAllListings,getListingById,updateListing,deleteListing}=require("../Controllers/listingController")
+const {
+  createListing,
+  getAllListings,
+  getNearbyListings,
+  getListingById,
+  updateListing,
+  deleteListing,
+} = require("../Controllers/listingController");
 
-//Create a new listing
-router.post("/",protect,createListing);
+router.get("/", getAllListings);
+router.get("/nearby", getNearbyListings);
+router.get("/:id", getListingById);
+router.post("/", protect, createListing);
+router.put("/:id", protect, updateListing);
+router.delete("/:id", protect, deleteListing);
 
-//Get All Listings
-router.get("/",getAllListings);
-
-//Get a single listing By id
-router.get("/:id",getListingById);
-
-//Update a listing
-router.put("/:id",protect,updateListing);
-
-//Delete a Listing
-router.delete("/:id",protect,deleteListing);
-
-module.exports=router;
-
+module.exports = router;

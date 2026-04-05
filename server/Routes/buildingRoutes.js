@@ -5,6 +5,7 @@ const reviewController = require("../Controllers/reviewController");
 const { protect } = require("../Middleware/authMiddleware");
 
 // Building listings and insights
+router.get("/", buildingController.getAllBuildings);
 router.get("/:buildingId/listings", buildingController.getBuildingListings);
 router.get("/:buildingId/insights", buildingController.getBuildingInsights);
 router.get("/:buildingId/nearby", buildingController.getNearbyBuildings);

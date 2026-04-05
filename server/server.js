@@ -28,12 +28,14 @@ app.use(express.urlencoded({ extended: true }));
 const authRoutes = require("./Routes/authRoutes");
 const adminRoutes = require("./Routes/adminRoutes");
 const listingRoutes = require("./Routes/listingRoutes");
+const buildingRoutes = require("./Routes/buildingRoutes");
 const reviewRoutes = require("./Routes/reviewRoutes");
 const forumRoutes = require("./Routes/forumRoutes");
 
 //Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
+app.use("/api/buildings", buildingRoutes);
 app.use("/api", reviewRoutes);
 app.use("/api", forumRoutes);
 app.use("/api/admin", adminRoutes);

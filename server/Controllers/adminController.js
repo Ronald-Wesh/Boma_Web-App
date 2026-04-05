@@ -34,7 +34,7 @@ exports.getUnverifiedUsers = async (req, res) => {
 exports.getUnverifiedListings = async (req, res) => {
   try {
     const listings = await Listing.find({ isVerified: false }).populate(
-      "createdBy",
+      "landlordId",
       "name email verificationStatus",
     );
     res.status(200).json(listings);

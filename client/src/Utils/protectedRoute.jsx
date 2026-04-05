@@ -1,6 +1,5 @@
 //Who is allowed to see which pages
-import React from 'react';
-import {Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const LoadingScreen = ({ message }) => (
@@ -20,7 +19,7 @@ export const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/listings" replace />;
   }
   //if logged in allow access to the page
   return children;
@@ -40,7 +39,7 @@ export const RoleProtectedRoute=({children,allowedRoles=[],redirectTo="/listings
   }
   //if not logged in redirect to login page
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/listings" replace />;
   }
 //if logged in but not allowed role redirect to login page
   if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {
@@ -73,5 +72,3 @@ export const TenantRoute = ({ children }) => {
     </RoleProtectedRoute>
   );
 };
-
-
