@@ -2,18 +2,6 @@ const Building = require("../Models/Building");
 const Review = require("../Models/Review");
 const Listing = require("../Models/Listing");
 
-exports.getAllBuildings = async (req, res) => {
-  try {
-    const buildings = await Building.find()
-      .select("name address location average_rating total_reviews")
-      .sort({ name: 1 });
-
-    res.status(200).json({ buildings });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
 //Get All Listings for a building
 exports.getBuildingListings = async (req, res) => {
   try {
@@ -23,8 +11,8 @@ exports.getBuildingListings = async (req, res) => {
       return res.status(404).json({ message: "Building Not Found" });
 
     //const {buildingId}=req.params;
-    const listings = await Listing.find({ buildingId: req.params.buildingId })
-      .populate("landlordId", "name email verificationStatus")
+    const listings = await Listing.find({ building: req.params.buildingId })
+      .populate("createdBy", "name email verificationStatus")
       .sort({ createdAt: -1 });
     res.status(200).json({
       building: {
@@ -66,7 +54,7 @@ exports.getBuildingInsights = async (req, res) => {
     }
 
     // Get all listings in the building
-    const listings = await Listing.find({ buildingId });
+    const listings = await Listing.find({ building: buildingId });
 
     // Calculate price statistics
     const prices = listings.map((l) => l.price);
@@ -164,9 +152,9 @@ exports.getNearbyBuildings = async (req, res) => {
     // Get listing counts for each building
     const buildingsWithStats = await Promise.all(
       nearbyBuildings.map(async (b) => {
-        const listingCount = await Listing.countDocuments({ buildingId: b._id });
+        const listingCount = await Listing.countDocuments({ building: b._id });
         const avgPrice = await Listing.aggregate([
-          { $match: { buildingId: b._id } },
+          { $match: { building: b._id } },
           { $group: { _id: null, avgPrice: { $avg: "$price" } } },
         ]);
 
