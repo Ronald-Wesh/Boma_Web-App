@@ -6,7 +6,7 @@ const connectDb=async()=>{
     try{
         //Fail fast if URI missing=check if URI exists
         if(!process.env.MONGO_URI){
-            throw new Error("MONGO_URI missing in .env file")
+            throw new Error("MONGO_URI is missing. Add it to server/.env, the repo-root .env, or the shell environment.")
         }
 
         await mongoose.connect(process.env.MONGO_URI);

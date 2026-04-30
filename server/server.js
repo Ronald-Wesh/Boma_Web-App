@@ -1,4 +1,9 @@
-require("dotenv").config();
+const path = require("path");
+const dotenv = require("dotenv");
+
+// Load backend env files relative to this file so `pnpm dev` works from repo root.
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const cors = require("cors");
 const morgan = require("morgan");
