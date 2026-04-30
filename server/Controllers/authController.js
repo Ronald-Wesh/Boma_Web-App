@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
 const User = require("../Models/Users");
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
@@ -7,12 +8,63 @@ const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]{8,}$/;
 const PUBLIC_REGISTRATION_ROLES = new Set(["tenant", "landlord"]);
 
+let googleClient;
+
+const getGoogleClient = () => {
+  if (!process.env.GOOGLE_CLIENT_ID) {
+    const error = new Error("GOOGLE_CLIENT_ID is not configured");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  if (!googleClient) {
+    googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  }
+
+  return googleClient;
+};
+
+const verifyGoogleIdToken = async (credential) => {
+  if (typeof credential !== "string" || !credential.trim()) {
+    const error = new Error("Google credential is required");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  try {
+    const ticket = await getGoogleClient().verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    if (!payload?.sub || !payload?.email || !payload.email_verified) {
+      const error = new Error("Google account email could not be verified");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    return payload;
+  } catch (error) {
+    if (error.statusCode) {
+      throw error;
+    }
+
+    const authError = new Error("Invalid Google credential");
+    authError.statusCode = 401;
+    throw authError;
+  }
+};
+
 const sanitizeUser = (user) => ({
   id: user._id.toString(),
   name: user.name,
   email: user.email,
   role: user.role,
-  verificationStatus: user.verificationStatus,
+  authProvider: user.authProvider || "password",
+  emailVerified: Boolean(user.emailVerified),
+  verificationStatus:
+    user.verificationStatus || user.verication_Status || "unverified",
   avatar: user.avatar,
   phone: user.phone,
   createdAt: user.createdAt,
@@ -95,6 +147,8 @@ exports.register = async (req, res) => {
       name: normalizedName,
       email: normalizedEmail,
       passwordHash,
+      authProvider: "password",
+      emailVerified: false,
       role: normalizedRole,
       verificationStatus,
       avatar: typeof avatar === "string" ? avatar.trim() : "",
@@ -140,6 +194,14 @@ exports.login = async (req, res) => {
       });
     }
 
+    if (!user.passwordHash) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "This account does not have a password yet. Continue with Google sign-in.",
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
       return res.status(401).json({
@@ -157,6 +219,70 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const { credential } = req.body;
+    const payload = await verifyGoogleIdToken(credential);
+    const email = payload.email.toLowerCase();
+    const googleSub = payload.sub;
+
+    let user = await User.findOne({
+      $or: [{ googleSub }, { email }],
+    }).select("+passwordHash");
+
+    if (!user) {
+      user = await User.create({
+        name: payload.name || email.split("@")[0],
+        email,
+        googleSub,
+        authProvider: "google",
+        emailVerified: true,
+        avatar: payload.picture || "",
+        role: "tenant",
+        verificationStatus: "unverified",
+      });
+    } else {
+      if (user.googleSub && user.googleSub !== googleSub) {
+        return res.status(409).json({
+          success: false,
+          message:
+            "A different Google account is already linked to this email address.",
+        });
+      }
+
+      if (!user.googleSub) {
+        user.googleSub = googleSub;
+        user.authProvider = user.passwordHash ? "both" : "google";
+      }
+
+      user.emailVerified = true;
+
+      if (!user.name && payload.name) {
+        user.name = payload.name;
+      }
+
+      if (!user.avatar && payload.picture) {
+        user.avatar = payload.picture;
+      }
+
+      await user.save();
+    }
+
+    const token = signToken(user);
+
+    return res.status(200).json({
+      success: true,
+      token,
+      user: sanitizeUser(user),
+    });
+  } catch (err) {
+    return res.status(err.statusCode || 500).json({
       success: false,
       message: err.message,
     });

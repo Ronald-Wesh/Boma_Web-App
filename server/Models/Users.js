@@ -19,8 +19,23 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: {
       type: String,
-      required: [true, "Password hash is required"],
       select: false,
+      default: null,
+    },
+    googleSub: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
+    authProvider: {
+      type: String,
+      enum: ["password", "google", "both"],
+      default: "password",
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false,
     },
     role: {
       type: String,
@@ -37,7 +52,7 @@ const userSchema = new mongoose.Schema(
     //   type: Boolean,
     //   default: false,
     // },
-    verication_Status: {
+    verificationStatus: {
       type: String,
       enum: ["verified", "unverified", "pending"],
       default: "unverified",
@@ -55,6 +70,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+userSchema.virtual("verication_Status")
+  .get(function () {
+    return this.verificationStatus;
+  })
+  .set(function (value) {
+    this.verificationStatus = value;
+  });
 
 // //Pre save middleware/HOOK to hash the password
 // //.pre('save', ...): registers a pre-save middleware (hook)

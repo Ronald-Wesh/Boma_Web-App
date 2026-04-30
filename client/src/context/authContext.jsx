@@ -7,6 +7,14 @@ import {
 import { toast } from "sonner";
 import { AuthContext } from "../hooks/useAuth";
 
+const disableGoogleAutoSelect = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.google?.accounts?.id?.disableAutoSelect?.();
+};
+
 //Component wraps the entire app
 export const AuthProvider = ({ children }) => {
   //children=components that will be wrapped
@@ -125,7 +133,32 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  const loginWithGoogle = async (payload) => {
+    try {
+      setLoading(true);
+      const response = await authAPI.google(payload);
+      const { token: nextToken, user: nextUser } = response.data;
+
+      persistAuth(nextToken, nextUser);
+      toast.success(
+        `Welcome to Boma ${nextUser.name || nextUser.email.split("@")[0]}!`,
+      );
+      return { success: true, token: nextToken, user: nextUser };
+    } catch (error) {
+      console.error("Google login failed", error);
+      toast.error(error.response?.data?.message || "Google login failed");
+      return {
+        success: false,
+        error: error.response?.data?.message || "Google login failed",
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
+    disableGoogleAutoSelect();
     clearAuthState();
     toast.success("Logged out Successfully");
   };
@@ -163,6 +196,7 @@ export const AuthProvider = ({ children }) => {
 
     //actions
     login,
+    loginWithGoogle,
     register,
     logout,
     refreshUser,

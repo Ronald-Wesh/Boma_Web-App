@@ -22,7 +22,9 @@ export const registerUnauthorizedHandler = (handler) => {
 };
 
 const isAuthFormRequest = (url = "") =>
-  url.includes("/auth/login") || url.includes("/auth/register");
+  url.includes("/auth/login") ||
+  url.includes("/auth/register") ||
+  url.includes("/auth/google");
 
 export const API = axios.create({
   baseURL: API_URL,
@@ -60,6 +62,7 @@ API.interceptors.response.use(
 export const authAPI = {
   register: (userData) => API.post("/auth/register", userData),
   login: (credentials) => API.post("/auth/login", credentials),
+  google: (payload) => API.post("/auth/google", payload),
   getMe: () => API.get("/auth/me"),
 };
 
@@ -207,5 +210,4 @@ export const adminAPI = {
 //   verifyUser:(id)=>API.patch(`/admin/verify-user/${id}`),
 //   verifyListing:(id)=>API.patch(`/admin/verify-listing/${id}`)
 // }
-
 
