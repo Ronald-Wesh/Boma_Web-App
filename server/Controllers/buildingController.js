@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Building = require("../Models/Building");
 const Review = require("../Models/Review");
 const Listing = require("../Models/Listing");
@@ -59,8 +60,8 @@ exports.getBuildingInsights = async (req, res) => {
     // Calculate price statistics
     const prices = listings.map((l) => l.price);
     const priceStats = {
-      min: Math.min(...prices) || 0,
-      max: Math.max(...prices) || 0,
+      min: prices.length ? Math.min(...prices) : 0,
+      max: prices.length ? Math.max(...prices) : 0,
       average: prices.length
         ? (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2)
         : 0,
@@ -74,16 +75,30 @@ exports.getBuildingInsights = async (req, res) => {
 
     // Get reviews for the building
     const reviews = await Review.find({ building: buildingId })
-      .populate("user", "name")
+      .populate("reviewer", "name")
       .sort({ createdAt: -1 })
       .limit(10);
 
-    // Calculate rating breakdown
+    // Calculate rating breakdown (overall average per review, bucketed 1-5)
     const ratingBreakdown = await Review.aggregate([
-      { $match: { building: mongoose.Types.ObjectId(buildingId) } },
+      { $match: { building: new mongoose.Types.ObjectId(buildingId) } },
+      {
+        $project: {
+          overall: {
+            $avg: [
+              "$categories.cleanliness",
+              "$categories.maintenance",
+              "$categories.amenities",
+              "$categories.security",
+              "$categories.water_availability",
+              "$categories.landlord_reliability",
+            ],
+          },
+        },
+      },
       {
         $group: {
-          _id: "$rating",
+          _id: { $round: ["$overall", 0] },
           count: { $sum: 1 },
         },
       },

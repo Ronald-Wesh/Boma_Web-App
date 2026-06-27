@@ -21,12 +21,12 @@ const ReviewSchema=new mongoose.Schema({
         required:true
     },
     categories:{
-        cleanliness:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
-        maintenance:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
-        amenities:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
-        security:{type:[Number,"Rate From scale of 1 to 5 "],min:1,max:5},
-        water_availabilty:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5},
-        landlord_reliabilty:{type:[Number,"Rate from scale of 1 to 5"],min:1,max:5}
+        cleanliness:{type:Number,min:1,max:5},
+        maintenance:{type:Number,min:1,max:5},
+        amenities:{type:Number,min:1,max:5},
+        security:{type:Number,min:1,max:5},
+        water_availability:{type:Number,min:1,max:5},
+        landlord_reliability:{type:Number,min:1,max:5}
     },
     isAnonymous:{type:Boolean,
         default:true

@@ -27,6 +27,14 @@ const BuildingSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
+    categoryRatings:{
+        cleanliness:{type:Number,default:0},
+        maintenance:{type:Number,default:0},
+        amenities:{type:Number,default:0},
+        security:{type:Number,default:0},
+        water_availability:{type:Number,default:0},
+        landlord_reliability:{type:Number,default:0}
+    },
     total_reviews:{
         type:Number,
         default:0

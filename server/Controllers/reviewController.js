@@ -48,7 +48,7 @@ exports.getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find()
       .populate("reviewer", "name verificationStatus")
-      .populate("building", "title location");
+      .populate("building", "name address");
     res.status(200).json(reviews);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -201,29 +201,40 @@ async function updateBuildingRating(buildingId) {
     },
   ]);
 
+  const emptyCategories = {
+    cleanliness: 0,
+    maintenance: 0,
+    amenities: 0,
+    security: 0,
+    water_availability: 0,
+    landlord_reliability: 0,
+  };
+
   if (stats.length > 0) {
+    const s = stats[0];
+    const categoryRatings = {
+      cleanliness: s.avgCleanliness || 0,
+      maintenance: s.avgMaintenance || 0,
+      amenities: s.avgAmenities || 0,
+      security: s.avgSecurity || 0,
+      water_availability: s.avgWater || 0,
+      landlord_reliability: s.avgLandlord || 0,
+    };
+
+    // Overall building rating = mean of the category averages (a single Number for cards)
+    const values = Object.values(categoryRatings);
+    const overall = values.reduce((sum, v) => sum + v, 0) / values.length;
+
     await Building.findByIdAndUpdate(buildingId, {
-      total_reviews: stats[0].totalReviews,
-      averageRating: {
-        cleanliness: stats[0].avgCleanliness,
-        maintenance: stats[0].avgMaintenance,
-        amenities: stats[0].avgAmenities,
-        security: stats[0].avgSecurity,
-        water_availability: stats[0].avgWater,
-        landlord_reliability: stats[0].avgLandlord,
-      },
+      total_reviews: s.totalReviews,
+      average_rating: Number(overall.toFixed(2)),
+      categoryRatings,
     });
   } else {
     await Building.findByIdAndUpdate(buildingId, {
       total_reviews: 0,
-      averageRating: {
-        cleanliness: 0,
-        maintenance: 0,
-        amenities: 0,
-        security: 0,
-        water_availability: 0,
-        landlord_reliability: 0,
-      },
+      average_rating: 0,
+      categoryRatings: emptyCategories,
     });
   }
 }

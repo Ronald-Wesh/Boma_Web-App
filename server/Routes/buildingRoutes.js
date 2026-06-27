@@ -1,19 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const buildingController = require("../Controllers/buildingController");
-const reviewController = require("../Controllers/reviewController");
-const { protect } = require("../Middleware/authMiddleware");
 
+// Mounted at /api/buildings
 // Building listings and insights
 router.get("/:buildingId/listings", buildingController.getBuildingListings);
 router.get("/:buildingId/insights", buildingController.getBuildingInsights);
 router.get("/:buildingId/nearby", buildingController.getNearbyBuildings);
 
-// Reviews
-router.post("/:buildingId/reviews", protect, reviewController.createReview);
-router.get("/:buildingId/reviews", reviewController.getBuildingReviews);
-router.put("/reviews/:reviewId", protect, reviewController.updateReview);
-router.delete("/reviews/:reviewId", protect, reviewController.deleteReview);
-router.patch("/reviews/:reviewId/helpful", reviewController.markHelpful);
+// NOTE: review routes live in reviewRoutes.js (mounted at /api) to avoid duplicate handlers.
 
 module.exports = router;

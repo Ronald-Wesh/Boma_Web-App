@@ -36,29 +36,11 @@
 
 // export default App;
 import "./App.css";
-import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import Listings from "./Pages/Listing";
 import AuthPage from "./Pages/Auth";
-import { ProtectedRoute } from "./Utils/protectedRoute";
 import { useAuth } from "./hooks/useAuth";
-
-const HomeRedirect = () => {
-  const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-stone-950 text-stone-100">
-        <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-3">
-          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-amber-400" />
-          <span className="text-sm font-medium">Loading Boma...</span>
-        </div>
-      </div>
-    );
-  }
-
-  return <Navigate to={isAuthenticated ? "/listings" : "/login"} replace />;
-};
 
 export default function App() {
   const location = useLocation();
@@ -69,7 +51,7 @@ export default function App() {
   return (
     <>
       <nav className="sticky top-0 z-20 flex items-center justify-between border-b border-stone-200/70 bg-white/90 px-4 py-4 backdrop-blur sm:px-6">
-        <Link to={isAuthenticated ? "/listings" : "/login"} className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-stone-900 text-sm font-semibold text-amber-300">
             B
           </span>
@@ -122,17 +104,11 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<HomeRedirect />} />
+        {/* Public listings home — no login required (blueprint: Listings is the public core) */}
+        <Route path="/" element={<Listings />} />
+        <Route path="/listings" element={<Listings />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} />
-        <Route
-          path="/listings"
-          element={
-            <ProtectedRoute>
-              <Listings />
-            </ProtectedRoute>
-          }
-        />
       </Routes>
 
       <Toaster richColors position="top-right" />

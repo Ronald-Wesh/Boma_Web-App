@@ -31,11 +31,20 @@ const ListingSchema=new mongoose.Schema({
         required:true
     },
     features:{
-        type:String,
+        type:[String],
         default:[]
     },
-    amenities:{type:String,
+    amenities:{type:[String],
         default:[]
+    },
+    images:{
+        type:[String],
+        default:[]
+    },
+    roomType:{
+        type:String,
+        enum:['bedsitter','single_room','shared_room','studio','one_bedroom','two_bedroom','other'],
+        default:'other'
     },
     bedrooms:{type:Number,
         min:0

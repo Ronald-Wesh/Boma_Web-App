@@ -39,7 +39,9 @@ export default function ListingCard({ listing, onDelete, onVerify }) {
   );
 
   // ── Image error fallback ──
-  const [imgSrc, setImgSrc] = useState(listing?.image || FALLBACK_IMAGE);
+  const [imgSrc, setImgSrc] = useState(
+    listing?.images?.[0] || listing?.image || FALLBACK_IMAGE,
+  );
   const handleImgError = () => setImgSrc(FALLBACK_IMAGE);
 
   // ── Derived flags ──
