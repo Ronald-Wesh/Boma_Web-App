@@ -9,6 +9,10 @@ const BuildingSchema=new mongoose.Schema({
         type:String,
         required:[true,"Building address is required"]
     },
+    campus:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Campus"
+    },
     location:{
         type:{
             type:String,

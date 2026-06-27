@@ -36,11 +36,15 @@ const listingRoutes = require("./Routes/listingRoutes");
 const reviewRoutes = require("./Routes/reviewRoutes");
 const forumRoutes = require("./Routes/forumRoutes");
 const buildingRoutes = require("./Routes/buildingRoutes");
+const campusRoutes = require("./Routes/campusRoutes");
+const roommateRoutes = require("./Routes/roommateRoutes");
 
 //Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/buildings", buildingRoutes);
+app.use("/api/campuses", campusRoutes);
+app.use("/api/roommates", roommateRoutes);
 app.use("/api", reviewRoutes);
 app.use("/api", forumRoutes);
 app.use("/api/admin", adminRoutes);
