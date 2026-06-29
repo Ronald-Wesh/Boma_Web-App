@@ -81,6 +81,13 @@ export const listingAPI = {
 //   deleteImage:(publicId)=>API.delete(`/images/${publicId}`),
 // }
 
+//Campus API endpoints
+export const campusAPI = {
+  getAllCampuses: () => API.get("/campuses"),
+  getCampusById: (id) => API.get(`/campuses/${id}`),
+  getCampusBuildings: (id) => API.get(`/campuses/${id}/buildings`),
+};
+
 //Building API endpoints
 export const buildingAPI = {
   getBuildingListings: (id) => API.get(`/buildings/${id}/listings`),

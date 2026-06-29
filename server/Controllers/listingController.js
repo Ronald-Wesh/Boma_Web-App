@@ -83,10 +83,24 @@ exports.createListing = async (req, res) => {
 //   <span className="badge">✔ Verified</span>
 // )}
 
-//Get all Listings — supports search, status, verified, sort, pagination
+//Get all Listings — supports search, status, verified, sort, pagination,
+// plus roomType / price range / amenities / campus filters (all additive:
+// each only narrows results when its query param is present).
 exports.getAllListings = async (req, res) => {
   try {
-    const { search, status, verified, sort, page = 1, limit = 12 } = req.query;
+    const {
+      search,
+      status,
+      verified,
+      sort,
+      page = 1,
+      limit = 12,
+      roomType,
+      minPrice,
+      maxPrice,
+      amenities,
+      campus,
+    } = req.query;
 
     // Build dynamic filter object
     const filter = {};
@@ -111,6 +125,46 @@ exports.getAllListings = async (req, res) => {
       filter.isVerified = true;
     }
 
+    // Room type(s) — comma-separated list → match any
+    if (roomType) {
+      const types = roomType
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+      if (types.length) filter.roomType = { $in: types };
+    }
+
+    // Price range (KES / month)
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    // Amenities — listing must include ALL selected amenities
+    if (amenities) {
+      const list = amenities
+        .split(",")
+        .map((a) => a.trim())
+        .filter(Boolean);
+      if (list.length) filter.amenities = { $all: list };
+    }
+
+    // Campus — resolve to the buildings anchored to those campuses,
+    // then restrict listings to those buildings.
+    if (campus) {
+      const campusIds = campus
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean);
+      if (campusIds.length) {
+        const buildings = await Building.find({
+          campus: { $in: campusIds },
+        }).select("_id");
+        filter.building = { $in: buildings.map((b) => b._id) };
+      }
+    }
+
     // Build sort object
     let sortObj = { createdAt: -1 }; // default: newest first
     if (sort === "price_asc") sortObj = { price: 1 };
@@ -122,7 +176,11 @@ exports.getAllListings = async (req, res) => {
     const [listings, total] = await Promise.all([
       Listing.find(filter)
         .populate("createdBy", "name verificationStatus role")
-        .populate("building", "name address average_rating total_reviews")
+        .populate({
+          path: "building",
+          select: "name address average_rating total_reviews campus",
+          populate: { path: "campus", select: "name shortName" },
+        })
         .sort(sortObj)
         .skip(skip)
         .limit(parseInt(limit)),
