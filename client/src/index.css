@@ -1,1 +1,173 @@
+/* ───────────────────────────────────────────────────────────────
+   Boma Editorial — design system foundation
+   Tokens ported from the Stitch "Boma Editorial" design system
+   (Axene structure + Boma warmth). Drives every screen.
+   Fonts are loaded via <link> in index.html.
+   ─────────────────────────────────────────────────────────────── */
+
 @import "tailwindcss";
+
+@theme {
+  /* ── Colors (semantic, Material-3 style) ── */
+  --color-primary: #001c13;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #133127; /* forest green — hero/footer/CTA bg */
+  --color-on-primary-container: #7a9a8c;
+  --color-primary-fixed: #c8eadb;
+  --color-primary-fixed-dim: #adcebf;
+  --color-on-primary-fixed: #022017;
+  --color-on-primary-fixed-variant: #2f4d41;
+  --color-inverse-primary: #adcebf;
+
+  --color-secondary: #855300;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #fea619; /* honey — primary accent / CTA */
+  --color-on-secondary-container: #684000;
+  --color-secondary-fixed: #ffddb8;
+  --color-secondary-fixed-dim: #ffb95f;
+  --color-on-secondary-fixed: #2a1700;
+  --color-on-secondary-fixed-variant: #653e00;
+
+  --color-tertiary: #181814;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #2d2c28;
+  --color-on-tertiary-container: #95938e;
+  --color-tertiary-fixed: #e6e2dc;
+  --color-tertiary-fixed-dim: #c9c6c0;
+  --color-on-tertiary-fixed: #1c1c18;
+  --color-on-tertiary-fixed-variant: #484743;
+
+  --color-background: #f6faf6;
+  --color-on-background: #181d1a;
+  --color-surface: #f6faf6;
+  --color-on-surface: #181d1a;
+  --color-surface-bone: #f3efe7; /* warm cream surface */
+  --color-surface-bright: #f6faf6;
+  --color-surface-dim: #d6dbd7;
+  --color-surface-variant: #dfe4e0;
+  --color-on-surface-variant: #414845;
+  --color-surface-tint: #466559;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f0f5f1;
+  --color-surface-container: #eaefeb;
+  --color-surface-container-high: #e5e9e5;
+  --color-surface-container-highest: #dfe4e0;
+  --color-inverse-surface: #2c322f;
+  --color-inverse-on-surface: #edf2ee;
+
+  --color-outline: #727975;
+  --color-outline-variant: #c1c8c3;
+  --color-hairline: rgba(19, 49, 39, 0.1); /* used as border-hairline */
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* Status + warmth accents */
+  --color-emerald-verified: #10b981;
+  --color-amber-pending: #d97706;
+  --color-rose-danger: #f43f5e;
+  --color-honey-ink: #3a2600;
+  --color-soft-honey: #fdecc8;
+  --color-slate-muted: #56635e;
+
+  /* ── Typography ── */
+  --font-display-hero: "Outfit", sans-serif;
+  --font-headline-section: "Outfit", sans-serif;
+  --font-body-main: "Inter", sans-serif;
+  --font-body-strong: "Inter", sans-serif;
+  --font-label-eyebrow: "JetBrains Mono", monospace;
+  --font-price-tabular: "JetBrains Mono", monospace;
+
+  --text-display-hero: 80px;
+  --text-display-hero--line-height: 0.95;
+  --text-display-hero--letter-spacing: -3px;
+  --text-display-hero--font-weight: 900;
+
+  --text-display-hero-mobile: 44px;
+  --text-display-hero-mobile--line-height: 1;
+  --text-display-hero-mobile--letter-spacing: -2px;
+  --text-display-hero-mobile--font-weight: 900;
+
+  --text-headline-section: 32px;
+  --text-headline-section--line-height: 1.1;
+  --text-headline-section--letter-spacing: -2px;
+  --text-headline-section--font-weight: 800;
+
+  --text-body-main: 16px;
+  --text-body-main--line-height: 1.6;
+  --text-body-main--letter-spacing: 0;
+  --text-body-main--font-weight: 400;
+
+  --text-body-strong: 16px;
+  --text-body-strong--line-height: 1.6;
+  --text-body-strong--letter-spacing: 0;
+  --text-body-strong--font-weight: 600;
+
+  --text-price-tabular: 18px;
+  --text-price-tabular--line-height: 1;
+  --text-price-tabular--letter-spacing: -0.5px;
+  --text-price-tabular--font-weight: 600;
+
+  --text-label-eyebrow: 11px;
+  --text-label-eyebrow--line-height: 1.2;
+  --text-label-eyebrow--letter-spacing: 2px;
+  --text-label-eyebrow--font-weight: 500;
+
+  /* ── Spacing (editorial rhythm) ── */
+  --spacing-section-gap: 4rem;
+  --spacing-grid-margin: 2rem;
+  --spacing-gutter: 1px;
+  --spacing-stack-sm: 0.5rem;
+  --spacing-stack-md: 1rem;
+  --spacing-stack-lg: 1.5rem;
+
+  /* ── Radius ── (Stitch "softened square" scale) */
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+}
+
+/* Stitch overrides `rounded-full` to 0.75rem (soft rect, not a pill/circle).
+   Tailwind v4's rounded-full is a static 9999px utility, so we redefine it. */
+@utility rounded-full {
+  border-radius: 0.75rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-body-main);
+  }
+
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  }
+}
+
+/* Honey accent for the brand period: boma<span>.</span> */
+.boma-period {
+  color: var(--color-secondary-container);
+}
+
+/* Ruled-grid hairline scaffolding used by editorial sections */
+.ruled-grid {
+  display: grid;
+  border-left: 1px solid var(--color-hairline);
+}
+.ruled-grid > div {
+  border-right: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+}
