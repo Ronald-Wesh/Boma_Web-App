@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>boma. | Map View - Student Housing Nairobi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Outfit:wght@800;900&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#133127",
+                      "secondary": "#855300",
+                      "primary-fixed": "#c8eadb",
+                      "on-tertiary-container": "#95938e",
+                      "background": "#f6faf6",
+                      "secondary-container": "#fea619",
+                      "on-primary-fixed": "#022017",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "surface": "#f6faf6",
+                      "outline": "#727975",
+                      "honey-ink": "#3a2600",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d6dbd7",
+                      "primary": "#001c13",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "tertiary-container": "#2d2c28",
+                      "primary-fixed-dim": "#adcebf",
+                      "on-surface-variant": "#414845",
+                      "amber-pending": "#d97706",
+                      "tertiary-fixed-dim": "#c9c6c0",
+                      "border-hairline": "rgba(19, 49, 39, 0.1)",
+                      "soft-honey": "#fdecc8",
+                      "rose-danger": "#f43f5e",
+                      "emerald-verified": "#10b981",
+                      "on-surface": "#181d1a",
+                      "secondary-fixed": "#ffddb8",
+                      "on-secondary-fixed": "#2a1700",
+                      "outline-variant": "#c1c8c3",
+                      "inverse-on-surface": "#edf2ee",
+                      "on-primary-fixed-variant": "#2f4d41",
+                      "surface-container-high": "#e5e9e5",
+                      "surface-container": "#eaefeb",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "on-background": "#181d1a",
+                      "surface-bone": "#f3efe7",
+                      "slate-muted": "#56635e",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-low": "#f0f5f1",
+                      "surface-tint": "#466559",
+                      "on-error": "#ffffff",
+                      "surface-bright": "#f6faf6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#dfe4e0",
+                      "tertiary": "#181814",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#adcebf",
+                      "on-primary-container": "#7a9a8c",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-tertiary-fixed-variant": "#484743",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#684000",
+                      "inverse-surface": "#2c322f",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#dfe4e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "grid-margin": "2rem",
+                      "section-gap": "4rem",
+                      "gutter": "1px",
+                      "stack-sm": "0.5rem",
+                      "stack-md": "1rem",
+                      "stack-lg": "1.5rem"
+              },
+              "fontFamily": {
+                      "body-main": ["Inter"],
+                      "headline-section": ["Outfit"],
+                      "display-hero-mobile": ["Outfit"],
+                      "price-tabular": ["JetBrains Mono"],
+                      "label-eyebrow": ["JetBrains Mono"],
+                      "display-hero": ["Outfit"],
+                      "body-strong": ["Inter"]
+              },
+              "fontSize": {
+                      "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-section": ["32px", {"lineHeight": "1.1", "letterSpacing": "-2px", "fontWeight": "800"}],
+                      "display-hero-mobile": ["44px", {"lineHeight": "1.0", "letterSpacing": "-2px", "fontWeight": "900"}],
+                      "price-tabular": ["18px", {"lineHeight": "1.0", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                      "label-eyebrow": ["11px", {"lineHeight": "1.2", "letterSpacing": "2px", "fontWeight": "500"}],
+                      "display-hero": ["80px", {"lineHeight": "0.95", "letterSpacing": "-3px", "fontWeight": "900"}],
+                      "body-strong": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-bone text-primary font-body-main antialiased h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-bright border-b border-border-hairline sticky top-0 z-50">
+<nav class="flex justify-between items-center max-w-7xl mx-auto px-grid-margin h-16">
+<div class="flex items-center gap-stack-lg">
+<a class="font-display-hero-mobile text-display-hero-mobile text-primary tracking-tighter" href="#">boma<span class="text-secondary">.</span></a>
+<div class="hidden md:flex gap-stack-lg ml-8">
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors" href="#">listings</a>
+<a class="text-primary font-body-strong border-b-2 border-secondary-container pb-1" href="#">map</a>
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors" href="#">forums</a>
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors" href="#">reviews</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="px-6 py-2 border border-border-hairline text-primary font-body-main hover:bg-surface-container transition-all text-sm rounded-lg">list your place</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white overflow-hidden">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+</div>
+</div>
+</nav>
+</header>
+<!-- Toolbar Filters -->
+<section class="bg-surface-bright border-b border-border-hairline px-grid-margin py-3 z-40">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-stack-md">
+<div class="flex items-center flex-wrap gap-4 divide-x divide-border-hairline">
+<div class="flex flex-col pr-4">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-1">SEARCH CAMPUS/AREA</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-muted">search</span>
+<input class="bg-transparent border-none p-0 text-sm focus:ring-0 placeholder:text-outline-variant font-body-main w-48" placeholder="Kenyatta University..." type="text"/>
+</div>
+</div>
+<div class="flex flex-col px-4">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-1">PRICE RANGE</span>
+<button class="flex items-center gap-2 text-sm">
+<span>KSh 5k - 15k</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<div class="flex flex-col px-4">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-1">PROPERTY TYPE</span>
+<button class="flex items-center gap-2 text-sm">
+<span>Bedsitters</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<div class="flex flex-col px-4">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-1">DISTANCE</span>
+<button class="flex items-center gap-2 text-sm">
+<span>&lt; 10 min walk</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container p-1 rounded-lg flex">
+<button class="px-4 py-1 text-sm font-body-main text-slate-muted hover:text-primary">List</button>
+<button class="px-4 py-1 text-sm font-body-strong bg-white shadow-sm rounded-md text-primary">Map</button>
+</div>
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted">128 HOMES</span>
+</div>
+</div>
+</section>
+<!-- Split Main Layout -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Pane: Scrollable List (40%) -->
+<aside class="w-[40%] bg-surface-bone overflow-y-auto no-scrollbar border-r border-border-hairline">
+<div class="divide-y divide-border-hairline">
+<!-- Listing Card 1 -->
+<div class="p-6 flex gap-6 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLtVbDMvqTHGmfn2oLHcVipBhwP6iByBchQDl9yVGkwWvIy_o9QYNPjAUQZ8Mx8SykO2_5Cgb--ZDE8JrzcReX-PshlQgqKMm9ejrWjtpLoi_IzkPBsnLRfwEaOSl8p1RcPRCZOqHbI5sfCKX8KGjCyxY6Q2ijGVIVOK2tZ3TF33ap2PIt1O_tzn8BxxapeZa9tIST_8nZ328uMrrOfITY30cUsxZPxgJ-JnjtGWE60FC1FKlTC47KxcCr9Y"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">ROYSAMBU • 5 MIN</span>
+<div class="flex items-center gap-1 bg-emerald-verified/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-emerald-verified" style="font-variation-settings: 'FILL' 1; font-size: 14px;">verified</span>
+<span class="text-[10px] font-bold text-emerald-verified uppercase tracking-wider">Verified</span>
+</div>
+</div>
+<h3 class="font-headline-section text-[20px] text-primary tracking-tight leading-tight mb-2">sunrise bedsitters</h3>
+<div class="flex gap-3 text-slate-muted text-xs">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">wifi</span> WiFi</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bolt</span> Utilities incl.</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">security</span> 24/7 Gate</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-4">
+<span class="font-price-tabular text-price-tabular text-primary">KSh 8,500/mo</span>
+</div>
+</div>
+</div>
+<!-- Listing Card 2 -->
+<div class="p-6 flex gap-6 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLuYiIKic5D7SyBdDhoGFQRok91DUx3sC6wjs20Va9YsXG9aCJeT4drprzSSPj993hWC22_tKzJ0iJwu3TzQ4_z_DuqqkzbzUARQT7sAJioBVLxLOG9pzDQ5aaytdysYcvecTay7ZKy1aH9zMcoe9KxYEPQxx58adYFMkdwVsFHWIIl5MCDGZ7djLJhMT7d1oh2vBV1UDuRazijOfOhHPYptrlmT1hP0dBUPZ2bVXF7PfWiTIQYQe0oqID0"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">ZIMMERMAN • 8 MIN</span>
+</div>
+<h3 class="font-headline-section text-[20px] text-primary tracking-tight leading-tight mb-2">modern studio loft</h3>
+<div class="flex gap-3 text-slate-muted text-xs">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">kitchen</span> Full Kitchen</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">water_drop</span> Borehole</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-4">
+<span class="font-price-tabular text-price-tabular text-primary">KSh 12,000/mo</span>
+</div>
+</div>
+</div>
+<!-- Listing Card 3 -->
+<div class="p-6 flex gap-6 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container">
+<img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLtiSJqX_tlOfLAvgiV-SyndtMtXtWF68hvr_9kKmiqIy0ZGyoVM0mLpaf0Pi-vLULVVGEn8zKhCOXz17pweWtA0vFjS58SUwlkwfdODvMxSZFc4lEay8USBB8WRreRj9TvFdPJJBleYysdhwD5HSFtSuV-HmZsqFBNxHCsaYykCkcbbOe8MUsOyeum3pxXzHQDQqabrWWXsMiAC9hF-OY0agxfk0ezKnRAf-UMZ038s-6j-HEZxhLtu15Q"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">KAHAWA • 3 MIN</span>
+<div class="flex items-center gap-1 bg-emerald-verified/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-emerald-verified" style="font-variation-settings: 'FILL' 1; font-size: 14px;">verified</span>
+<span class="text-[10px] font-bold text-emerald-verified uppercase tracking-wider">Verified</span>
+</div>
+</div>
+<h3 class="font-headline-section text-[20px] text-primary tracking-tight leading-tight mb-2">emerald court rooms</h3>
+<div class="flex gap-3 text-slate-muted text-xs">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">cleaning_services</span> Laundry</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">balcony</span> Balcony</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-4">
+<span class="font-price-tabular text-price-tabular text-primary">KSh 9,000/mo</span>
+</div>
+</div>
+</div>
+<!-- Repeat for filler content -->
+<div class="p-6 flex gap-6 hover:bg-surface-container transition-colors cursor-pointer group opacity-60">
+<div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container-high"></div>
+<div class="flex-1 flex flex-col justify-center">
+<div class="h-4 w-24 bg-surface-container-highest mb-2"></div>
+<div class="h-6 w-48 bg-surface-container-highest mb-2"></div>
+<div class="h-4 w-32 bg-surface-container-highest"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Pane: Interactive Map (60%) -->
+<section class="flex-1 relative bg-[#e0dfdb] overflow-hidden">
+<!-- Simulated Map Texture -->
+<div class="absolute inset-0 opacity-40 mix-blend-multiply pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 0); background-size: 40px 40px;"></div>
+<div class="hidden" data-location="Kenyatta University Nairobi" style=""></div>
+<!-- Map Elements (Nairobi-themed) -->
+<div class="absolute top-[20%] left-[30%] w-32 h-16 bg-white/50 border border-slate-muted/20 rounded-lg flex items-center justify-center -rotate-12">
+<span class="font-label-eyebrow text-[10px] text-slate-muted">THIKA ROAD</span>
+</div>
+<!-- Map Pins -->
+<div class="absolute top-[40%] left-[45%]">
+<button class="bg-white border border-border-hairline px-3 py-1.5 rounded-full shadow-lg font-price-tabular text-sm text-primary hover:scale-110 transition-transform">12K</button>
+</div>
+<div class="absolute top-[65%] left-[30%]">
+<button class="bg-white border border-border-hairline px-3 py-1.5 rounded-full shadow-lg font-price-tabular text-sm text-primary hover:scale-110 transition-transform">9K</button>
+</div>
+<div class="absolute top-[50%] left-[60%]">
+<button class="bg-white border border-border-hairline px-3 py-1.5 rounded-full shadow-lg font-price-tabular text-sm text-primary hover:scale-110 transition-transform">11.5K</button>
+</div>
+<!-- Active Pin & Floating Popup -->
+<div class="absolute top-[35%] left-[25%] flex flex-col items-center">
+<!-- Popup Card -->
+<div class="mb-3 bg-white w-64 p-3 rounded-2xl shadow-xl border border-border-hairline relative animate-bounce-subtle">
+<div class="flex gap-3">
+<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLtVbDMvqTHGmfn2oLHcVipBhwP6iByBchQDl9yVGkwWvIy_o9QYNPjAUQZ8Mx8SykO2_5Cgb--ZDE8JrzcReX-PshlQgqKMm9ejrWjtpLoi_IzkPBsnLRfwEaOSl8p1RcPRCZOqHbI5sfCKX8KGjCyxY6Q2ijGVIVOK2tZ3TF33ap2PIt1O_tzn8BxxapeZa9tIST_8nZ328uMrrOfITY30cUsxZPxgJ-JnjtGWE60FC1FKlTC47KxcCr9Y"/>
+</div>
+<div class="flex flex-col justify-center">
+<h4 class="font-headline-section text-sm leading-tight text-primary mb-1">sunrise bedsitters</h4>
+<span class="font-price-tabular text-sm text-primary">KSh 8.5K</span>
+<a class="mt-2 text-[11px] font-body-strong text-secondary flex items-center gap-1" href="#">
+                                VIEW DETAILS
+                                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Tail -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-r border-b border-border-hairline"></div>
+</div>
+<!-- The Pin -->
+<div class="relative">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-honey-ink font-price-tabular text-sm shadow-2xl border-4 border-white">8.5K</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-secondary-container/20 rounded-full animate-ping pointer-events-none"></div>
+</div>
+</div>
+<!-- Search Area Button -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2">
+<button class="bg-white px-6 py-2.5 rounded-full shadow-lg border border-border-hairline font-body-strong text-sm text-primary flex items-center gap-2 hover:bg-surface-bone transition-colors">
+<span class="material-symbols-outlined text-lg">refresh</span>
+                    Search this area
+                </button>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-10 right-10 flex flex-col gap-2">
+<div class="bg-white rounded-xl shadow-lg border border-border-hairline flex flex-col overflow-hidden">
+<button class="p-3 hover:bg-surface-bone border-b border-border-hairline transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="p-3 hover:bg-surface-bone transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<button class="bg-white p-3 rounded-xl shadow-lg border border-border-hairline hover:bg-surface-bone transition-colors">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Area (Global) -->
+<footer class="bg-primary text-on-primary-container border-t border-border-hairline py-4 px-grid-margin z-50">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-hero-mobile text-2xl text-on-primary-container tracking-tighter">boma.</span>
+<p class="text-xs font-body-main">© 2024 boma. all rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6 text-[11px] font-label-eyebrow uppercase tracking-widest text-on-primary-container">
+<a class="hover:text-white transition-colors" href="#">listings</a>
+<a class="hover:text-white transition-colors" href="#">roommates</a>
+<a class="hover:text-white transition-colors" href="#">about</a>
+<a class="hover:text-white transition-colors" href="#">contact</a>
+<a class="hover:text-white transition-colors" href="#">privacy</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for map pins
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Subtle animation for the floating popup
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce-subtle {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-8px); }
+            }
+            .animate-bounce-subtle {
+                animation: bounce-subtle 4s ease-in-out infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body></html>

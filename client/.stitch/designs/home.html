@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>boma. | find your people, then your place.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "surface-bone": "#f3efe7",
+                        "error": "#ba1a1a",
+                        "slate-muted": "#56635e",
+                        "secondary-fixed": "#ffddb8",
+                        "on-tertiary-container": "#95938e",
+                        "tertiary": "#181814",
+                        "on-surface-variant": "#414845",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-error-container": "#93000a",
+                        "border-hairline": "rgba(19, 49, 39, 0.1)",
+                        "primary-fixed": "#c8eadb",
+                        "tertiary-container": "#2d2c28",
+                        "on-background": "#181d1a",
+                        "surface-bright": "#f6faf6",
+                        "on-secondary": "#ffffff",
+                        "outline": "#727975",
+                        "tertiary-fixed": "#e6e2dc",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#dfe4e0",
+                        "on-tertiary-fixed-variant": "#484743",
+                        "on-tertiary": "#ffffff",
+                        "emerald-verified": "#10b981",
+                        "on-primary": "#ffffff",
+                        "honey-ink": "#3a2600",
+                        "on-primary-container": "#7a9a8c",
+                        "on-secondary-container": "#684000",
+                        "surface-container-low": "#f0f5f1",
+                        "outline-variant": "#c1c8c3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e5e9e5",
+                        "amber-pending": "#d97706",
+                        "surface-tint": "#466559",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-variant": "#dfe4e0",
+                        "on-surface": "#181d1a",
+                        "secondary": "#855300",
+                        "primary-container": "#133127",
+                        "primary-fixed-dim": "#adcebf",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "rose-danger": "#f43f5e",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fea619",
+                        "on-primary-fixed": "#022017",
+                        "inverse-primary": "#adcebf",
+                        "inverse-on-surface": "#edf2ee",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "primary": "#001c13",
+                        "surface-dim": "#d6dbd7",
+                        "on-primary-fixed-variant": "#2f4d41",
+                        "surface": "#f6faf6",
+                        "soft-honey": "#fdecc8",
+                        "inverse-surface": "#2c322f",
+                        "background": "#f6faf6",
+                        "surface-container": "#eaefeb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-gap": "4rem",
+                        "gutter": "1px",
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "grid-margin": "2rem",
+                        "stack-lg": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-strong": ["Inter"],
+                        "price-tabular": ["JetBrains Mono"],
+                        "headline-section": ["Outfit"],
+                        "display-hero": ["Outfit"],
+                        "display-hero-mobile": ["Outfit"],
+                        "label-eyebrow": ["JetBrains Mono"],
+                        "body-main": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-strong": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "600"}],
+                        "price-tabular": ["18px", {"lineHeight": "1.0", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                        "headline-section": ["32px", {"lineHeight": "1.1", "letterSpacing": "-2px", "fontWeight": "800"}],
+                        "display-hero": ["80px", {"lineHeight": "0.95", "letterSpacing": "-3px", "fontWeight": "900"}],
+                        "display-hero-mobile": ["44px", {"lineHeight": "1.0", "letterSpacing": "-2px", "fontWeight": "900"}],
+                        "label-eyebrow": ["11px", {"lineHeight": "1.2", "letterSpacing": "2px", "fontWeight": "500"}],
+                        "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f6faf6;
+            color: #181d1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .boma-period { color: #fea619; }
+        .ruled-grid {
+            display: grid;
+            border-left: 1px solid rgba(19, 49, 39, 0.1);
+        }
+        .ruled-grid > div {
+            border-right: 1px solid rgba(19, 49, 39, 0.1);
+            border-bottom: 1px solid rgba(19, 49, 39, 0.1);
+        }
+    </style>
+</head>
+<body class="font-body-main text-body-main">
+<!-- TopNavBar -->
+<nav class="bg-surface sticky top-0 z-50 border-b border-hairline w-full h-16 flex justify-between items-center px-grid-margin mx-auto">
+<div class="flex items-center gap-10">
+<span class="font-display-hero text-headline-section text-primary lowercase leading-none">boma<span class="text-secondary-container">.</span></span>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-body-main hover:text-secondary-container transition-colors duration-200" href="#">listings</a>
+<a class="text-on-surface-variant font-body-main hover:text-secondary-container transition-colors duration-200" href="#">roommates</a>
+<a class="text-on-surface-variant font-body-main hover:text-secondary-container transition-colors duration-200" href="#">reviews</a>
+<a class="text-on-surface-variant font-body-main hover:text-secondary-container transition-colors duration-200" href="#">forums</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary p-2">search</button>
+<a class="hidden md:block text-on-surface-variant font-body-strong hover:text-primary transition-colors" href="#">sign in</a>
+<button class="bg-secondary-container text-honey-ink px-6 py-2 rounded-full font-body-strong transition-all hover:brightness-110 active:scale-95">get started</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="bg-primary-container relative overflow-hidden flex flex-col items-center justify-center text-center py-24 md:py-32 px-grid-margin">
+<div class="z-10 max-w-4xl">
+<span class="font-label-eyebrow text-label-eyebrow text-secondary-container mb-6 block uppercase tracking-[4px]">Student Housing · Verified · Kenya</span>
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero text-surface-bone lowercase mb-12">
+                find your people,<br/>then your place.
+            </h1>
+<div class="bg-surface-bone p-2 rounded-full flex flex-col md:flex-row items-center gap-2 max-w-2xl mx-auto border border-hairline">
+<div class="flex items-center px-6 py-2 flex-1 w-full">
+<span class="material-symbols-outlined mr-3 text-primary opacity-50">location_on</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-primary font-body-main placeholder:text-outline-variant" placeholder="Which campus?" type="text"/>
+</div>
+<button class="bg-primary-container text-surface-bone px-8 py-3 rounded-full font-body-strong w-full md:w-auto hover:bg-primary transition-all">search houses</button>
+</div>
+<div class="mt-12 flex justify-center gap-12 text-surface-bone/60 font-label-eyebrow text-[10px] uppercase tracking-widest">
+<div class="flex flex-col gap-1">
+<span class="text-surface-bone text-lg font-price-tabular">12.4k+</span>
+<span>active students</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-surface-bone text-lg font-price-tabular">850+</span>
+<span>verified houses</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-surface-bone text-lg font-price-tabular">24/7</span>
+<span>support team</span>
+</div>
+</div>
+</div>
+<!-- Atmospheric Background Element -->
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary-container to-transparent opacity-50 pointer-events-none"></div>
+</header>
+<!-- Differentiators (Ruled Grid) -->
+<section class="max-w-7xl mx-auto py-section-gap px-grid-margin">
+<div class="grid grid-cols-1 md:grid-cols-3 border-t border-hairline border-l border-hairline">
+<div class="p-12 border-r border-b border-hairline group hover:bg-surface-bone transition-colors duration-500">
+<span class="material-symbols-outlined text-primary text-4xl mb-6 group-hover:scale-110 transition-transform">group</span>
+<h3 class="font-headline-section text-headline-section text-primary lowercase mb-4">roommate matching</h3>
+<p class="text-on-surface-variant font-body-main">connect with peers based on lifestyle, study habits, and budget before signing a lease.</p>
+</div>
+<div class="p-12 border-r border-b border-hairline group hover:bg-surface-bone transition-colors duration-500">
+<span class="material-symbols-outlined text-primary text-4xl mb-6 group-hover:scale-110 transition-transform">verified_user</span>
+<h3 class="font-headline-section text-headline-section text-primary lowercase mb-4">resident reviews</h3>
+<p class="text-on-surface-variant font-body-main">read honest feedback from current and former student residents about landlords and facilities.</p>
+</div>
+<div class="p-12 border-r border-b border-hairline group hover:bg-surface-bone transition-colors duration-500">
+<span class="material-symbols-outlined text-primary text-4xl mb-6 group-hover:scale-110 transition-transform">forum</span>
+<h3 class="font-headline-section text-headline-section text-primary lowercase mb-4">campus forums</h3>
+<p class="text-on-surface-variant font-body-main">stay updated with hyper-local campus news, events, and safety alerts from your boma community.</p>
+</div>
+</div>
+</section>
+<!-- Featured Listings -->
+<section class="bg-surface-bone py-section-gap">
+<div class="max-w-7xl mx-auto px-grid-margin">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="font-label-eyebrow text-label-eyebrow text-on-primary-container uppercase tracking-[2px] block mb-2">Editor's Picks</span>
+<h2 class="font-headline-section text-display-hero-mobile md:text-headline-section text-primary lowercase">fresh near campus</h2>
+</div>
+<a class="font-body-strong text-primary border-b border-primary hover:text-secondary-container hover:border-secondary-container transition-all pb-1" href="#">view all listings</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-lg">
+<!-- Card 1 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/5] overflow-hidden rounded-full mb-6">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A sun-drenched, minimalist student apartment in Nairobi with warm wood textures, cream-colored walls, and large windows looking out onto lush greenery. The interior is curated with modern, clean-lined furniture and soft woven rugs, following a sophisticated light-mode aesthetic with honey-colored wood accents and deep forest green textiles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuNsBr1k8ReJnXv6Yn0etgR_BvHI2cZUEoawgHgpRSwZCYfFndItFAGuA02TTB9Qlhb6NHObP_AAq2Qz7-K5ei_-SPnQTDo-XkJEH0AMDnl6drPSLfTk3zE-GE3x63DOVQlE8CP8ZlBBZMtHm6e_dOOLE6EwRNX3xdlhqn9IYezYO0S2H9Ly6Upbz9FRF7Ta33xcvAWlRvOgLqBNmCKCHB984YjdScTyO9G1lRCii_ROmgtcXY77MFFd0Cqe9kyCaMGw0zlLhYNXFt"/>
+<div class="absolute top-4 left-4 bg-emerald-verified text-surface-bone px-3 py-1 rounded-full text-[10px] font-label-eyebrow flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            VERIFIED
+                        </div>
+</div>
+<div class="space-y-1">
+<span class="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase tracking-widest">Kilimani · 0.5km from UoN</span>
+<h4 class="font-headline-section text-xl text-primary lowercase">the acacia heights</h4>
+<div class="flex justify-between items-baseline pt-2">
+<span class="font-price-tabular text-lg text-primary">kes 32,000<span class="text-sm font-body-main text-outline">/mo</span></span>
+<span class="text-outline text-xs font-body-main">2 spots left</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/5] overflow-hidden rounded-full mb-6">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A contemporary shared living space for students, featuring a large communal wooden table surrounded by sleek, ergonomic chairs. The room is flooded with natural light, highlighting the cream sand walls and subtle hairline architectural details. The atmosphere is calm and professional, with a palette of soft neutrals and vibrant honey-toned lighting fixtures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHaoLwFjTGPdM9AVfjPKFuZI-h5tTcLgs3ZS7fGfs1s0tYF0TsDPlABiR_vTOn9HzpfRxlwXnJE2R3GvxdDNc_nHZJ2uCTqDCLvyHqFSWnxh97OjwW2VO2qXisae03ORS_VLpReCpuQYtxfi0iCb3CX5upL3jWIiyqHByXigB7k5MH9fwXri4tHnjg38nZX5W_Q5GMqKy7NAHCqHbIXu9qbc5Id43dKwP3hGfYzTjmDwM7Eq8f7AWYEuPNMx7ES8FSHEo13IiIjIxT"/>
+<div class="absolute top-4 left-4 bg-emerald-verified text-surface-bone px-3 py-1 rounded-full text-[10px] font-label-eyebrow flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            VERIFIED
+                        </div>
+</div>
+<div class="space-y-1">
+<span class="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase tracking-widest">Madaraka · 0.2km from Strathmore</span>
+<h4 class="font-headline-section text-xl text-primary lowercase">strath square studios</h4>
+<div class="flex justify-between items-baseline pt-2">
+<span class="font-price-tabular text-lg text-primary">kes 28,500<span class="text-sm font-body-main text-outline">/mo</span></span>
+<span class="text-outline text-xs font-body-main">fully booked</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-[4/5] overflow-hidden rounded-full mb-6">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A bright and airy bedroom in a student hostel, designed with a minimalist homestead aesthetic. The room features high-contrast dark green metal bed frames against cream-toned walls, technical monospaced labels on storage units, and soft honey-colored pendant lights. The space is organized and disciplined, offering a premium residential feel for students." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRIGjLy9I5ZEbQMB-cn41CkAyDPjoNnTJ48PvRnMpw-9_5HOdF96cQQ3YYGCHqev-y-cMFkGAWzqLjLIDRsnjQErnAbeiRTBkedRLz4cj7ep7P3gWCTwLLqeaoVPGtOQU0PZPMX2k-S8Dp7vwcLRsnHBhY8YqP-NtkyS3K_8g0IUhOFhp2nYnhEq6c3PMenBYLp96DBbb2MaYsbSxJvuYkOjEKStn8GC7eIodJ5Whm_SepXhkeOoRKgWVQJFkXmPpHCVvl851lncMT"/>
+<div class="absolute top-4 left-4 bg-amber-pending text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-label-eyebrow flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+                            PENDING VERIFICATION
+                        </div>
+</div>
+<div class="space-y-1">
+<span class="font-label-eyebrow text-label-eyebrow text-on-surface-variant uppercase tracking-widest">Juja · 1.0km from JKUAT</span>
+<h4 class="font-headline-section text-xl text-primary lowercase">the hive residency</h4>
+<div class="flex justify-between items-baseline pt-2">
+<span class="font-price-tabular text-lg text-primary">kes 18,000<span class="text-sm font-body-main text-outline">/mo</span></span>
+<span class="text-outline text-xs font-body-main">15 spots left</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Band -->
+<section class="bg-primary-container py-24 text-center">
+<div class="max-w-2xl mx-auto px-grid-margin">
+<h2 class="font-display-hero text-headline-section md:text-5xl text-surface-bone lowercase mb-10 leading-tight">your next place is one search away.</h2>
+<button class="bg-secondary-container text-honey-ink px-12 py-4 rounded-full font-body-strong text-lg hover:scale-105 active:scale-95 transition-all">browse listings</button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-primary-container text-on-primary-container border-t border-hairline py-section-gap px-grid-margin">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-stack-lg">
+<div class="col-span-1 md:col-span-1">
+<span class="font-display-hero text-headline-section text-surface-bone lowercase mb-6 block">boma<span class="text-secondary-container">.</span></span>
+<p class="opacity-60 max-w-xs font-body-main mb-8">redefining the student living experience through community and verified trust.</p>
+<div class="flex gap-4">
+<button class="w-8 h-8 rounded-full border border-hairline flex items-center justify-center opacity-60 hover:opacity-100 hover:border-secondary-container transition-all">
+<span class="material-symbols-outlined text-lg">share</span>
+</button>
+<button class="w-8 h-8 rounded-full border border-hairline flex items-center justify-center opacity-60 hover:opacity-100 hover:border-secondary-container transition-all">
+<span class="material-symbols-outlined text-lg">public</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<span class="font-label-eyebrow text-[10px] uppercase tracking-widest text-secondary-container">listings</span>
+<ul class="space-y-2">
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Nairobi Central</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Westlands / Parklands</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Juja / Thika Road</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Rongai / Madaraka</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<span class="font-label-eyebrow text-[10px] uppercase tracking-widest text-secondary-container">community</span>
+<ul class="space-y-2">
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Find Roommates</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Campus Forums</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Resident Reviews</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Safety Guidelines</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<span class="font-label-eyebrow text-[10px] uppercase tracking-widest text-secondary-container">legal</span>
+<ul class="space-y-2">
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Terms of Service</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Property Listing Rules</a></li>
+<li><a class="font-body-main opacity-80 hover:opacity-100 hover:text-secondary-container transition-all" href="#">Contact Support</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-20 mt-20 border-t border-hairline flex flex-col md:flex-row justify-between items-center gap-6 opacity-40 font-label-eyebrow text-[10px]">
+<span>© 2024 boma. All rights reserved.</span>
+<div class="flex gap-8">
+<span>Made for students, by students.</span>
+<span>Nairobi, Kenya</span>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for search bar focus
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput?.parentElement?.parentElement;
+        
+        searchInput?.addEventListener('focus', () => {
+            searchContainer.classList.add('border-secondary-container');
+            searchContainer.classList.add('scale-[1.02]');
+        });
+        
+        searchInput?.addEventListener('blur', () => {
+            searchContainer.classList.remove('border-secondary-container');
+            searchContainer.classList.remove('scale-[1.02]');
+        });
+
+        // Hover animation for differentiators
+        const cards = document.querySelectorAll('.ruled-grid > div');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
+            });
+        });
+    </script>
+</body></html>

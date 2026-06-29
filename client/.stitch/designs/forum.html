@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>boma. | Campus Community Forum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#684000",
+                    "surface-container-lowest": "#ffffff",
+                    "border-hairline": "rgba(19, 49, 39, 0.1)",
+                    "secondary-container": "#fea619",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface": "#f6faf6",
+                    "primary-fixed": "#c8eadb",
+                    "on-primary-container": "#7a9a8c",
+                    "background": "#f6faf6",
+                    "inverse-primary": "#adcebf",
+                    "on-tertiary-fixed": "#1c1c18",
+                    "tertiary-fixed-dim": "#c9c6c0",
+                    "primary": "#001c13",
+                    "surface-dim": "#d6dbd7",
+                    "on-primary-fixed-variant": "#2f4d41",
+                    "inverse-surface": "#2c322f",
+                    "surface-container": "#eaefeb",
+                    "amber-pending": "#d97706",
+                    "emerald-verified": "#10b981",
+                    "inverse-on-surface": "#edf2ee",
+                    "surface-bone": "#f3efe7",
+                    "rose-danger": "#f43f5e",
+                    "primary-container": "#133127",
+                    "on-surface": "#181d1a",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#181814",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "honey-ink": "#3a2600",
+                    "outline-variant": "#c1c8c3",
+                    "surface-container-high": "#e5e9e5",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#dfe4e0",
+                    "on-primary-fixed": "#022017",
+                    "soft-honey": "#fdecc8",
+                    "surface-container-low": "#f0f5f1",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#dfe4e0",
+                    "primary-fixed-dim": "#adcebf",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#466559",
+                    "on-surface-variant": "#414845",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#2d2c28",
+                    "on-tertiary-fixed-variant": "#484743",
+                    "secondary": "#855300",
+                    "on-tertiary-container": "#95938e",
+                    "slate-muted": "#56635e",
+                    "tertiary-fixed": "#e6e2dc",
+                    "secondary-fixed": "#ffddb8",
+                    "on-primary": "#ffffff",
+                    "outline": "#727975",
+                    "surface-bright": "#f6faf6",
+                    "on-background": "#181d1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-lg": "1.5rem",
+                    "stack-md": "1rem",
+                    "stack-sm": "0.5rem",
+                    "section-gap": "4rem",
+                    "gutter": "1px",
+                    "grid-margin": "2rem"
+            },
+            "fontFamily": {
+                    "display-hero": ["Outfit"],
+                    "body-strong": ["Inter"],
+                    "body-main": ["Inter"],
+                    "label-eyebrow": ["JetBrains Mono"],
+                    "headline-section": ["Outfit"],
+                    "price-tabular": ["JetBrains Mono"],
+                    "display-hero-mobile": ["Outfit"]
+            },
+            "fontSize": {
+                    "display-hero": ["80px", {"lineHeight": "0.95", "letterSpacing": "-3px", "fontWeight": "900"}],
+                    "body-strong": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "600"}],
+                    "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-eyebrow": ["11px", {"lineHeight": "1.2", "letterSpacing": "2px", "fontWeight": "500"}],
+                    "headline-section": ["32px", {"lineHeight": "1.1", "letterSpacing": "-2px", "fontWeight": "800"}],
+                    "price-tabular": ["18px", {"lineHeight": "1.0", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                    "display-hero-mobile": ["44px", {"lineHeight": "1.0", "letterSpacing": "-2px", "fontWeight": "900"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-campus {
+            border-left: 2px solid #fea619;
+            background: rgba(254, 166, 25, 0.05);
+        }
+        .ruled-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+        }
+        @media (max-width: 1024px) {
+            .ruled-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .hairline-y { border-left: 1px solid rgba(19, 49, 39, 0.1); }
+        .hairline-x { border-bottom: 1px solid rgba(19, 49, 39, 0.1); }
+    </style>
+</head>
+<body class="bg-surface text-primary font-body-main selection:bg-soft-honey selection:text-honey-ink">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-hairline">
+<nav class="flex justify-between items-center px-grid-margin py-stack-md w-full max-w-7xl mx-auto">
+<div class="font-display-hero text-display-hero-mobile lowercase text-primary">boma<span class="text-secondary-container">.</span></div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-main text-body-main text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">listings</a>
+<a class="font-body-main text-body-main text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">roommates</a>
+<a class="font-body-main text-body-main text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">reviews</a>
+<a class="font-body-main text-body-main text-primary border-b-2 border-secondary-container" href="#">forums</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-body-strong active:opacity-80 transition-opacity">
+                Sign In
+            </button>
+</nav>
+</header>
+<main class="pt-24 min-h-screen">
+<!-- Hero Header -->
+<section class="bg-surface-bone py-section-gap px-grid-margin border-b border-hairline">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="max-w-2xl">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-4 block">CAMPUS COMMUNITY</span>
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero lowercase mb-6">ask anything. find your people.</h1>
+<p class="font-body-main text-slate-muted max-w-lg">The hub for Kenya's student living. Get real advice from students at your campus on housing, safety, and life in the city.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full md:w-64 pl-12 pr-4 py-3 bg-surface border border-hairline rounded-lg focus:ring-1 focus:ring-secondary-container focus:border-secondary-container outline-none font-body-main" placeholder="Search discussions..." type="text"/>
+</div>
+<button class="bg-secondary-container text-honey-ink px-8 py-3 rounded-lg font-body-strong flex items-center justify-center gap-2 hover:opacity-90 transition-opacity whitespace-nowrap">
+<span class="material-symbols-outlined">add_circle</span>
+                        start a thread
+                    </button>
+</div>
+</div>
+</section>
+<!-- Main Forum Grid -->
+<div class="max-w-7xl mx-auto px-grid-margin">
+<div class="ruled-grid">
+<!-- Left Sidebar: Campuses -->
+<aside class="py-stack-lg pr-8 hidden lg:block">
+<div class="mb-12">
+<h3 class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-6">CAMPUSES</h3>
+<nav class="flex flex-col">
+<a class="active-campus px-4 py-3 flex justify-between items-center transition-colors" href="#">
+<span class="font-body-main text-primary">kenyatta university</span>
+<span class="font-label-eyebrow text-slate-muted">12.4k</span>
+</a>
+<a class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors" href="#">
+<span class="font-body-main text-on-surface-variant">jkuat juja</span>
+<span class="font-label-eyebrow text-slate-muted">8.1k</span>
+</a>
+<a class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors" href="#">
+<span class="font-body-main text-on-surface-variant">university of nairobi</span>
+<span class="font-label-eyebrow text-slate-muted">15.2k</span>
+</a>
+<a class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors" href="#">
+<span class="font-body-main text-on-surface-variant">roysambu apartments</span>
+<span class="font-label-eyebrow text-slate-muted">4.3k</span>
+</a>
+<a class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors" href="#">
+<span class="font-body-main text-on-surface-variant">kahawa wendani</span>
+<span class="font-label-eyebrow text-slate-muted">6.7k</span>
+</a>
+<a class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors" href="#">
+<span class="font-body-main text-on-surface-variant">ruiru</span>
+<span class="font-label-eyebrow text-slate-muted">3.1k</span>
+</a>
+</nav>
+</div>
+<div>
+<h3 class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-6">TOPICS</h3>
+<nav class="flex flex-col gap-2">
+<a class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">home</span>
+<span class="font-body-main">housing</span>
+</a>
+<a class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-body-main">roommates</span>
+</a>
+<a class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="font-body-main">safety</span>
+</a>
+<a class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span class="font-body-main">utilities</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Center Feed -->
+<section class="hairline-y border-r border-hairline py-stack-lg px-0 md:px-8">
+<!-- Feed Tabs -->
+<div class="flex gap-8 border-b border-hairline mb-8 px-4 md:px-0">
+<button class="pb-4 font-label-eyebrow text-label-eyebrow uppercase text-primary border-b-2 border-primary">LATEST</button>
+<button class="pb-4 font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant hover:text-primary">TOP</button>
+<button class="pb-4 font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant hover:text-primary">UNANSWERED</button>
+</div>
+<!-- Thread List -->
+<div class="flex flex-col">
+<!-- Thread Item 1 (Pinned) -->
+<article class="flex gap-6 py-6 border-b border-hairline hover:bg-surface-container-low transition-colors group px-4 md:px-0">
+<div class="flex flex-col items-center gap-1 min-w-[40px]">
+<button class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">arrow_drop_up</button>
+<span class="font-price-tabular text-body-strong">124</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">push_pin</span>
+<span class="font-label-eyebrow text-[10px] uppercase text-secondary-container">Pinned</span>
+</div>
+<h2 class="font-headline-section text-[22px] lowercase mb-2 group-hover:text-secondary-container transition-colors">is roysambu safe for first years at night?</h2>
+<p class="text-slate-muted line-clamp-2 mb-4">i'm joining ku in september and found a studio near TRM. i'm worried about the commute if i have evening classes...</p>
+<div class="flex flex-wrap items-center gap-4">
+<img alt="Profile" class="w-6 h-6 rounded-full object-cover border border-hairline" src="https://lh3.googleusercontent.com/aida/AP1WRLu7cJO3yEeLXrw6QVRPWwGeCatAcHtLFHk_3FYRiDfyDI_ZwXQ0RTzq8dMjDE0hOd0ece_Y3fzQFrPCtwt51Rjq9xOls8BTdCuNfJEsAYLr8P1a0dv6Up0MpqVcXzG9suUq7wtRbPnHaKX_A-bz_subgH0WcYpa9hSm3q1dbY2CVtYpLwKPsa1w7BroxK8smDpPmrd7mtGI9n9Je4mJNDoVfZpmzdxzY9swH5LGgfjZ_tno5gACxFoV8jw"/>
+<span class="font-label-eyebrow text-[11px] text-on-surface-variant">3h ago • 42 replies</span>
+<div class="flex gap-2">
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">ROYSAMBU</span>
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">SAFETY</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Thread Item 2 -->
+<article class="flex gap-6 py-6 border-b border-hairline hover:bg-surface-container-low transition-colors group px-4 md:px-0">
+<div class="flex flex-col items-center gap-1 min-w-[40px]">
+<button class="material-symbols-outlined text-outline group-hover:text-primary">arrow_drop_up</button>
+<span class="font-price-tabular text-body-strong">56</span>
+</div>
+<div class="flex-grow">
+<h2 class="font-headline-section text-[22px] lowercase mb-2 group-hover:text-secondary-container transition-colors">anyone subletting near ku for jan semester?</h2>
+<p class="text-slate-muted line-clamp-2 mb-4">looking for a shared apartment, preferably female roommates. budget is around 8k-12k including water/electricity.</p>
+<div class="flex flex-wrap items-center gap-4">
+<img alt="Profile" class="w-6 h-6 rounded-full object-cover border border-hairline" src="https://lh3.googleusercontent.com/aida/AP1WRLtV8Ewr00lrZqtlOk0H5fCEmwya-qYJSfjLRZ2ru8lb7Sp4PvOFrbtwvkH4_6F0cp1VNvuR83fqJQzDFaQ1cm-cLFv0jWb4zvsJMSHivjeaLndwS-OGRvppD4uNHmtSq_eO1e6zsWsonf3e__Cqv7iuG0J-jS35ZPPGAX0WTCcK7LF4iQ9-rEfXoUppA7JiNdAUXvsyp8Po2cLbnvyZVuGeZx7QDiZcEfpUoC8B61Ftk151_0S_4Iet2xto"/>
+<span class="font-label-eyebrow text-[11px] text-on-surface-variant">5h ago • 12 replies</span>
+<div class="flex gap-2">
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">KU</span>
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">HOUSING</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Thread Item 3 -->
+<article class="flex gap-6 py-6 border-b border-hairline hover:bg-surface-container-low transition-colors group px-4 md:px-0">
+<div class="flex flex-col items-center gap-1 min-w-[40px]">
+<button class="material-symbols-outlined text-outline group-hover:text-primary">arrow_drop_up</button>
+<span class="font-price-tabular text-body-strong">89</span>
+</div>
+<div class="flex-grow">
+<h2 class="font-headline-section text-[22px] lowercase mb-2 group-hover:text-secondary-container transition-colors">best wifi for kahawa wendani bedsitters?</h2>
+<p class="text-slate-muted line-clamp-2 mb-4">Zuku is acting up lately. Are there any local fiber providers in Wendani that are reliable for online exams?</p>
+<div class="flex flex-wrap items-center gap-4">
+<img alt="Profile" class="w-6 h-6 rounded-full object-cover border border-hairline" src="https://lh3.googleusercontent.com/aida/AP1WRLshaKK-LkB_2nhR1mVy1Ykfdzl0lCIJ4GzZ_V7l2d88VW5wYn9Wtx0JlK0mJhoJnYs68EF1AmYMbQrh4wNXF407vzywMDntQx2yZjoYezn1gVvMk1pHdSRWNA9k_VTJopbjm3bdVJI6BxTzt0gYQGhF_5c0irK47rHhDJzFG-lRH8-lgEPHhHUFUGDJDGBvSaKukQBlFTlS1TWB9G1bOqULn__FbjHfaDLjZZ0WQX7eyRrHh5QfEftI5ts"/>
+<span class="font-label-eyebrow text-[11px] text-on-surface-variant">8h ago • 67 replies</span>
+<div class="flex gap-2">
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">WENDANI</span>
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">UTILITIES</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Thread Item 4 (Answered) -->
+<article class="flex gap-6 py-6 border-b border-hairline hover:bg-surface-container-low transition-colors group px-4 md:px-0">
+<div class="flex flex-col items-center gap-1 min-w-[40px]">
+<button class="material-symbols-outlined text-outline group-hover:text-primary">arrow_drop_up</button>
+<span class="font-price-tabular text-body-strong">231</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-emerald-verified text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-eyebrow text-[10px] uppercase text-emerald-verified">Answered</span>
+</div>
+<h2 class="font-headline-section text-[22px] lowercase mb-2 group-hover:text-secondary-container transition-colors">landlord asking 3 months deposit — normal?</h2>
+<p class="text-slate-muted line-clamp-2 mb-4">Found a place in Juja but the agent says I need to pay 3 months deposit plus rent. Is this the standard now or a scam?</p>
+<div class="flex flex-wrap items-center gap-4">
+<img alt="Profile" class="w-6 h-6 rounded-full object-cover border border-hairline" src="https://lh3.googleusercontent.com/aida/AP1WRLtHMxX9wugGTisoyJUcFGKBlRwmiE9MUQEezHUjJqvdhF1eERU5oOYoAVJU-TpYtqy1fWs4n3vTciEz9Ll-xlto4HJq-UPzBVJKKCWEac-P_Y7HqShMb6uG3Fnc-17aAC69RgoVHT79UsEqWT9B8kdp6fIG7WAhDixlf2Pii04jTnZ_K2lxaZuk3DXDBzaZ_vdwb6Dl5HJ63k2HQSSdAcECJp3vGthylAaP4QA3bSAufromNi-Je_-MHeI1"/>
+<span class="font-label-eyebrow text-[11px] text-on-surface-variant">1d ago • 105 replies</span>
+<div class="flex gap-2">
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">JUJA</span>
+<span class="bg-surface-bone px-2 py-1 font-label-eyebrow text-[10px] uppercase border border-hairline">LEGAL</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="py-12 flex justify-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center border border-primary text-primary font-body-strong">1</button>
+<button class="w-10 h-10 flex items-center justify-center border border-hairline text-on-surface-variant hover:border-primary">2</button>
+<button class="w-10 h-10 flex items-center justify-center border border-hairline text-on-surface-variant hover:border-primary">3</button>
+<button class="w-10 h-10 flex items-center justify-center border border-hairline text-on-surface-variant hover:border-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Right Sidebar -->
+<aside class="py-stack-lg pl-8 hidden xl:block">
+<div class="p-6 border border-hairline mb-10">
+<h3 class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-4">COMMUNITY GUIDELINES</h3>
+<ul class="space-y-4">
+<li class="flex gap-3 text-[13px] text-slate-muted">
+<span class="font-price-tabular text-primary">01.</span>
+<span>Be helpful and respectful to your fellow students.</span>
+</li>
+<li class="flex gap-3 text-[13px] text-slate-muted">
+<span class="font-price-tabular text-primary">02.</span>
+<span>No direct advertising of hostels (use listings page).</span>
+</li>
+<li class="flex gap-3 text-[13px] text-slate-muted">
+<span class="font-price-tabular text-primary">03.</span>
+<span>Report suspicious activities or scams immediately.</span>
+</li>
+</ul>
+<button class="mt-6 w-full py-2 border border-primary font-label-eyebrow text-[11px] uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Read Full Rules</button>
+</div>
+<div>
+<h3 class="font-label-eyebrow text-label-eyebrow uppercase text-on-surface-variant mb-6">TRENDING THIS WEEK</h3>
+<div class="space-y-6">
+<a class="group block" href="#">
+<h4 class="font-body-strong text-sm lowercase mb-1 group-hover:text-secondary-container transition-colors">best hostels in juja under 15k</h4>
+<span class="font-label-eyebrow text-[10px] text-slate-muted uppercase">243 students discussing</span>
+</a>
+<a class="group block" href="#">
+<h4 class="font-body-strong text-sm lowercase mb-1 group-hover:text-secondary-container transition-colors">avoid these agents near wendani gate</h4>
+<span class="font-label-eyebrow text-[10px] text-slate-muted uppercase">189 students discussing</span>
+</a>
+<a class="group block" href="#">
+<h4 class="font-body-strong text-sm lowercase mb-1 group-hover:text-secondary-container transition-colors">subletting for industrial attachment period</h4>
+<span class="font-label-eyebrow text-[10px] text-slate-muted uppercase">156 students discussing</span>
+</a>
+<a class="group block" href="#">
+<h4 class="font-body-strong text-sm lowercase mb-1 group-hover:text-secondary-container transition-colors">cooking with gas vs electricity in bedsitters</h4>
+<span class="font-label-eyebrow text-[10px] text-slate-muted uppercase">92 students discussing</span>
+</a>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container text-on-primary-fixed border-t border-hairline mt-section-gap">
+<div class="max-w-7xl mx-auto px-grid-margin py-section-gap">
+<div class="flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="max-w-xs">
+<div class="font-display-hero text-display-hero-mobile lowercase text-on-primary mb-6">boma<span class="text-secondary-container">.</span></div>
+<p class="font-body-main text-on-primary-container/80 text-sm leading-relaxed">Kenya's premier student rental ecosystem. Built by students, for students, with a focus on community and safety.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-12 md:gap-24">
+<div>
+<h4 class="font-label-eyebrow text-label-eyebrow uppercase text-on-primary-container mb-6">Platform</h4>
+<ul class="space-y-3">
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Listings</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Roommates</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Reviews</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Forums</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-eyebrow text-label-eyebrow uppercase text-on-primary-container mb-6">Support</h4>
+<ul class="space-y-3">
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Safety</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Terms</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Privacy</a></li>
+<li><a class="text-sm font-body-main text-on-primary hover:text-secondary-container transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="col-span-2 sm:col-span-1">
+<h4 class="font-label-eyebrow text-label-eyebrow uppercase text-on-primary-container mb-6">Social</h4>
+<div class="flex gap-4">
+<a class="w-8 h-8 rounded-full bg-on-primary-container/20 flex items-center justify-center hover:bg-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</a>
+<a class="w-8 h-8 rounded-full bg-on-primary-container/20 flex items-center justify-center hover:bg-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-6">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-primary-container">© 2024 boma. All rights reserved.</span>
+<div class="flex gap-8">
+<span class="font-label-eyebrow text-label-eyebrow uppercase text-on-primary-container">Made with <span class="text-secondary-container">♥</span> in Nairobi</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for upvote highlighting
+        document.querySelectorAll('article button.material-symbols-outlined').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const countSpan = this.nextElementSibling;
+                let current = parseInt(countSpan.innerText);
+                
+                if (this.style.fontVariationSettings.includes("'FILL' 1")) {
+                    this.style.fontVariationSettings = "'FILL' 0";
+                    this.classList.remove('text-secondary-container');
+                    this.classList.add('text-outline');
+                    countSpan.innerText = current - 1;
+                } else {
+                    this.style.fontVariationSettings = "'FILL' 1";
+                    this.classList.add('text-secondary-container');
+                    this.classList.remove('text-outline');
+                    countSpan.innerText = current + 1;
+                }
+            });
+        });
+    </script>
+</body></html>

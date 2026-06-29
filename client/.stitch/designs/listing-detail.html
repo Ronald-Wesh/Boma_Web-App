@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>boma. | sunrise bedsitters</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Outfit:wght@800;900&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "surface-bone": "#f3efe7",
+                "on-primary-fixed-variant": "#2f4d41",
+                "surface-tint": "#466559",
+                "on-tertiary-fixed": "#1c1c18",
+                "on-background": "#181d1a",
+                "surface-container": "#eaefeb",
+                "on-secondary-fixed": "#2a1700",
+                "on-surface-variant": "#414845",
+                "outline": "#727975",
+                "inverse-on-surface": "#edf2ee",
+                "tertiary-fixed": "#e6e2dc",
+                "on-secondary-container": "#684000",
+                "on-primary-fixed": "#022017",
+                "on-primary": "#ffffff",
+                "error-container": "#ffdad6",
+                "on-secondary-fixed-variant": "#653e00",
+                "surface-variant": "#dfe4e0",
+                "primary": "#001c13",
+                "soft-honey": "#fdecc8",
+                "secondary-container": "#fea619",
+                "error": "#ba1a1a",
+                "inverse-primary": "#adcebf",
+                "on-secondary": "#ffffff",
+                "on-tertiary-container": "#95938e",
+                "surface": "#f6faf6",
+                "emerald-verified": "#10b981",
+                "secondary-fixed-dim": "#ffb95f",
+                "rose-danger": "#f43f5e",
+                "honey-ink": "#3a2600",
+                "surface-container-highest": "#dfe4e0",
+                "tertiary-container": "#2d2c28",
+                "amber-pending": "#d97706",
+                "primary-fixed": "#c8eadb",
+                "inverse-surface": "#2c322f",
+                "on-tertiary-fixed-variant": "#484743",
+                "surface-container-low": "#f0f5f1",
+                "background": "#f6faf6",
+                "outline-variant": "#c1c8c3",
+                "on-error-container": "#93000a",
+                "primary-container": "#133127",
+                "on-error": "#ffffff",
+                "border-hairline": "rgba(19, 49, 39, 0.1)",
+                "secondary-fixed": "#ffddb8",
+                "on-tertiary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-high": "#e5e9e5",
+                "tertiary-fixed-dim": "#c9c6c0",
+                "primary-fixed-dim": "#adcebf",
+                "on-surface": "#181d1a",
+                "tertiary": "#181814",
+                "surface-dim": "#d6dbd7",
+                "surface-bright": "#f6faf6",
+                "secondary": "#855300",
+                "slate-muted": "#56635e",
+                "on-primary-container": "#7a9a8c"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "stack-md": "1rem",
+                "stack-lg": "1.5rem",
+                "grid-margin": "2rem",
+                "gutter": "1px",
+                "stack-sm": "0.5rem",
+                "section-gap": "4rem"
+              },
+              "fontFamily": {
+                "price-tabular": ["JetBrains Mono"],
+                "body-main": ["Inter"],
+                "label-eyebrow": ["JetBrains Mono"],
+                "display-hero-mobile": ["Outfit"],
+                "headline-section": ["Outfit"],
+                "display-hero": ["Outfit"],
+                "body-strong": ["Inter"]
+              },
+              "fontSize": {
+                "price-tabular": ["18px", {"lineHeight": "1.0", "letterSpacing": "-0.5px", "fontWeight": "600"}],
+                "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                "label-eyebrow": ["11px", {"lineHeight": "1.2", "letterSpacing": "2px", "fontWeight": "500"}],
+                "display-hero-mobile": ["44px", {"lineHeight": "1.0", "letterSpacing": "-2px", "fontWeight": "900"}],
+                "headline-section": ["32px", {"lineHeight": "1.1", "letterSpacing": "-2px", "fontWeight": "800"}],
+                "display-hero": ["80px", {"lineHeight": "0.95", "letterSpacing": "-3px", "fontWeight": "900"}],
+                "body-strong": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #faf6f0; color: #133127; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .rule-grid > * { border-bottom: 1px solid rgba(19, 49, 39, 0.1); }
+        .rule-grid-v > * { border-right: 1px solid rgba(19, 49, 39, 0.1); }
+        .rule-grid-v > *:last-child { border-right: none; }
+    </style>
+</head>
+<body class="font-body-main text-body-main">
+<!-- Top Navigation -->
+<header class="bg-surface-bright dark:bg-surface-bright w-full top-0 sticky border-b border-border-hairline z-50">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-grid-margin h-16">
+<a class="font-display-hero-mobile text-display-hero-mobile text-primary dark:text-primary tracking-tighter" href="#">
+                boma<span class="text-secondary-container">.</span>
+</a>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="text-primary font-body-strong border-b-2 border-secondary-container pb-1 transition-colors duration-200" href="#">listings</a>
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors duration-200" href="#">roommates</a>
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors duration-200" href="#">reviews</a>
+<a class="text-slate-muted font-body-main hover:text-primary transition-colors duration-200" href="#">forums</a>
+</nav>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-body-strong hover:opacity-90 active:scale-95 transition-all">get started</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-grid-margin py-stack-lg">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 mb-stack-lg">
+<span class="font-label-eyebrow text-slate-muted">LISTINGS</span>
+<span class="text-border-hairline">/</span>
+<span class="font-label-eyebrow text-slate-muted">ROYSAMBU</span>
+<span class="text-border-hairline">/</span>
+<span class="font-label-eyebrow text-primary">SUNRISE BEDSITTERS</span>
+</nav>
+<!-- Gallery Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-section-gap">
+<div class="lg:col-span-2 aspect-[1.5] relative overflow-hidden rounded-xl bg-surface-bone">
+<img alt="Hero View of Sunrise Bedsitters" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGtlESS9GMv2TzLNzHV5_RD1t_Xic9lb3Vlm89edooY6oEmvj211RDvjxysR32FNjlvaDmsNvNaH47VgWfo9GtK9rVpmpBBVe8WiqCek0aR20Ro57awfVRgpSRQllyGtllALoEcRE0TzttKldO-zdJJhcEFYqtciYKObCzTrIyH6FJk4LvwVdGAu6IYOsFrQNXWmRtanBObt7GWZVmEpREIFnZnMMYExAfOYkxWDcri3q64Rw8JQKwsx1FdOmFTIwHjLxboCv-Yr9x"/>
+</div>
+<div class="lg:col-span-2 grid grid-cols-2 gap-4">
+<div class="aspect-square relative overflow-hidden rounded-xl bg-surface-bone">
+<img alt="Kitchen detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmkim3mMgRByFv7kdXR1XmWh87EdOM_scQghPd8paTi8iq1epZkNR0216tAWq-MHlP7BjiaSa4K_xZZSX00ToeqAnoxMABA5tHf91zi-bXvxUo5SopE4dZgX27hoIq5omE2bKwI-1Tg5jGCNX4Kt-4aSFXj4pQchJnn7PUd_Skoq9oHpRqXzVnDkUejqTRDLCt_yqQ5uUQ2WFpLeTHBTj1aqyzYMzsqGZ7aAH0-nnXK2XVq1eBTgDPnHH74WQDA-VOLalLLlFl0X2S"/>
+</div>
+<div class="aspect-square relative overflow-hidden rounded-xl bg-surface-bone">
+<img alt="Bathroom detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsa0pzVL6Y3PGKD76vls9orAZhK3Slkr_nNSLFZeDGutCp8EJ9f4ck204fm8TQfZ_0rWZ7GM3J6GD3bDVSjzsHc5ZmmJkXq-yEyeKrZPDME7RIVWnLx99SERhUSW12aVtD2KwKDr2JJH_CHDBC5WKa0gNdzoMP8G9XopUXEo5HLv5j1xIAMTGnkplWatE4OELStuLc1JsNLYORBgxjfoGOWuQ-X7t2pzY0YrFDxujWh_MQb39X8m2S7KXGmwFCRN0Y_8RZghP-6qUx"/>
+</div>
+<div class="aspect-square relative overflow-hidden rounded-xl bg-surface-bone">
+<img alt="Study area detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHEkcQZNyQ1ANb5LLU_myRiWegx8WCJxxYZ8U89rJqgMV_dxSGwYDS2VKtGIkhMDSQW8CxDWECd7hN4mUx-Fj-Y79G47UW8eOAPb1DMFWuA32BWzudd-FC0WHcAYd811aw4biEueGIITdKYT0yw1Be7xqCGrAW5994HeuPasFdlhzlj3O9hxvpJN2AFNvCuBfATH3DTpAXdj_vxbp0mZEvIgutrhu1RIcjsB10J0rgknCwPZQIxP2UOwOY4wrYDcYly1gQnMOT7EAF"/>
+</div>
+<div class="aspect-square relative overflow-hidden rounded-xl bg-surface-bone">
+<img alt="Reading corner detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8Cg87RmwVIUmihFpIjPhlDoAVq8-eAUOsg71GIvqWSx7-4DQd1Ouc1vjS9cCIKvAF9PXI7h_CkQG8oxzKVOOV8XcmgqGzJlWkv0kxQwmOw8u1pv9UZcQ7VR82nxlSn3YnPU7Q1o3F5pjIJXlL1rRVA5xPQ_ayeZE0vK6dUIa1HWK-bVyarFOjRhJHAMUXlfjS9zq4G12PFQspAqX3icSWHZ-TvuDfRZ5yeVJ_LIDlWnJ9t8Q7wlbbMvmM1vf8pzoy_P-mznGJ5y13"/>
+</div>
+</div>
+</section>
+<!-- Main Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column -->
+<div class="lg:col-span-8">
+<!-- Title Section -->
+<div class="mb-stack-lg">
+<div class="flex flex-wrap items-center gap-3 mb-2">
+<span class="font-label-eyebrow text-primary tracking-[0.2em]">ROYSAMBU · 1.2KM TO KENYATTA UNIVERSITY</span>
+<span class="bg-emerald-verified/10 text-emerald-verified text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            VERIFIED BUILDING
+                        </span>
+</div>
+<h1 class="font-headline-section text-headline-section text-primary lowercase mb-4">sunrise bedsitters</h1>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-body-strong">4.6</span>
+<span class="text-slate-muted font-body-main">(38 reviews)</span>
+</div>
+<span class="w-1 h-1 bg-border-hairline rounded-full"></span>
+<span class="font-price-tabular text-primary">KSh 9,500 / mo</span>
+</div>
+</div>
+<!-- Overview -->
+<section class="mb-section-gap pt-stack-lg border-t border-border-hairline">
+<h2 class="font-body-strong text-primary lowercase mb-2">the modern homestead for students.</h2>
+<p class="text-slate-muted leading-relaxed">
+                        sunrise bedsitters offers clean, secure, and sun-drenched rooms designed for focus and community. Located in the heart of Roysambu, this residence provides a sanctuary for students who value discipline and a premium living atmosphere.
+                    </p>
+</section>
+<!-- Spec Grid -->
+<section class="mb-section-gap">
+<div class="grid grid-cols-2 md:grid-cols-4 border-t border-l border-border-hairline">
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">ROOM TYPE</p>
+<p class="font-body-strong text-primary">Bedsitter</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">BATHROOMS</p>
+<p class="font-body-strong text-primary">1</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">FURNISHED</p>
+<p class="font-body-strong text-primary">Yes</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">WATER</p>
+<p class="font-body-strong text-primary">Included</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">WIFI</p>
+<p class="font-body-strong text-primary">Available</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">SECURITY</p>
+<p class="font-body-strong text-primary">24/7</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">DEPOSIT</p>
+<p class="font-body-strong text-primary">1 month</p>
+</div>
+<div class="p-6 border-r border-b border-border-hairline">
+<p class="font-label-eyebrow text-slate-muted mb-1">DISTANCE</p>
+<p class="font-body-strong text-primary">1.2 km</p>
+</div>
+</div>
+</section>
+<!-- Reviews -->
+<section class="mb-section-gap">
+<h3 class="font-headline-section text-[24px] text-primary lowercase mb-stack-lg">community feedback</h3>
+<div class="flex flex-col md:flex-row gap-12 items-start mb-12">
+<div class="flex flex-col items-center">
+<span class="text-[64px] font-display-hero text-secondary-container leading-none">4.6</span>
+<div class="flex text-secondary-container mt-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star_half</span>
+</div>
+</div>
+<div class="flex-1 w-full space-y-3">
+<div class="flex items-center gap-4">
+<span class="font-label-eyebrow w-24">CLEANLINESS</span>
+<div class="flex-1 h-1.5 bg-surface-bone rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 90%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-eyebrow w-24">SECURITY</span>
+<div class="flex-1 h-1.5 bg-surface-bone rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 95%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-eyebrow w-24">VALUE</span>
+<div class="flex-1 h-1.5 bg-surface-bone rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 85%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Review List -->
+<div class="space-y-0 border-t border-border-hairline">
+<div class="py-stack-lg border-b border-border-hairline">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-body-strong text-primary">sarah w.</p>
+<p class="font-label-eyebrow text-slate-muted">SEPTEMBER 2024</p>
+</div>
+<div class="flex text-secondary-container scale-75 origin-right">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-slate-muted italic">"the lighting in the morning is incredible. really helps with my morning study sessions. the security guard is also very friendly and observant."</p>
+</div>
+<div class="py-stack-lg border-b border-border-hairline">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-body-strong text-primary">kevin o.</p>
+<p class="font-label-eyebrow text-slate-muted">AUGUST 2024</p>
+</div>
+<div class="flex text-secondary-container scale-75 origin-right">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+</div>
+<p class="text-slate-muted italic">"very close to school. the wifi is stable enough for zoom calls. standard bedsitter but much cleaner than others in the area."</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column Sidebar -->
+<div class="lg:col-span-4">
+<div class="sticky top-24 space-y-stack-lg">
+<!-- Enquiry Card -->
+<div class="bg-white border border-border-hairline p-6 rounded-xl">
+<div class="mb-6">
+<p class="font-label-eyebrow text-slate-muted mb-1">MONTHLY RENT</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-section text-primary">KSh 9,500</span>
+<span class="font-body-main text-slate-muted">/ mo</span>
+</div>
+<p class="font-label-eyebrow text-emerald-verified mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+                                AVAILABLE FROM OCT 1ST
+                            </p>
+</div>
+<form class="space-y-4">
+<div>
+<label class="font-label-eyebrow text-slate-muted block mb-1">FULL NAME</label>
+<input class="w-full border-border-hairline focus:ring-secondary-container focus:border-secondary-container bg-surface-bright p-3 rounded text-sm" placeholder="your name" type="text"/>
+</div>
+<div>
+<label class="font-label-eyebrow text-slate-muted block mb-1">PHONE NUMBER</label>
+<input class="w-full border-border-hairline focus:ring-secondary-container focus:border-secondary-container bg-surface-bright p-3 rounded text-sm" placeholder="+254..." type="tel"/>
+</div>
+<button class="w-full bg-secondary-container text-honey-ink font-body-strong py-4 rounded-lg hover:opacity-90 transition-all flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined">mail</span>
+                                enquire now
+                            </button>
+<button class="w-full border border-border-hairline text-primary font-body-strong py-4 rounded-lg hover:bg-surface-bone transition-all" type="button">
+                                schedule a viewing
+                            </button>
+</form>
+</div>
+<!-- Landlord Card -->
+<div class="bg-surface-bone p-6 rounded-xl border border-border-hairline">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-section text-xl">
+                                JM
+                            </div>
+<div>
+<p class="font-body-strong text-primary lowercase">joseph maina</p>
+<div class="flex items-center gap-1 text-[10px] text-emerald-verified font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                                    verified landlord
+                                </div>
+</div>
+</div>
+<p class="text-xs text-slate-muted leading-relaxed mb-4">"I prioritize a quiet environment for my tenants. I'm always available for maintenance requests."</p>
+<div class="flex gap-2">
+<span class="text-[10px] bg-white border border-border-hairline px-2 py-1 rounded font-label-eyebrow text-primary">98% RESPONSIVE</span>
+<span class="text-[10px] bg-white border border-border-hairline px-2 py-1 rounded font-label-eyebrow text-primary">3 YEAR MEMBER</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Similar Listings -->
+<section class="mt-section-gap py-section-gap border-t border-border-hairline">
+<h2 class="font-headline-section text-headline-section text-primary lowercase mb-stack-lg">similar listings nearby</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg">
+<!-- Listing Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] overflow-hidden rounded-xl mb-4 bg-surface-bone relative">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A bright, sun-filled student studio apartment in Nairobi with minimalist furniture, a cream-colored bed, and a green potted plant on a small desk. Soft evening light streams through the window, casting long shadows. Architectural photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9VesFcqYd95qqDdoMyFvdEmFOf5rg9onZWXE0vqLyFQgtPOBGLOGvdS0s94ynW9H4hD1UNKiKOPq7KBAeSim-J9irFtKUygBkaOs8NdK-nFMCi0djNAfnRv5k3HD5aa10c39ulffh_wq-4Md7xlLVLIGjzgq5JloRIrun9fOAm-jNGwDy6v91VXVwxYQeI-NFG_Hc9gZ_eYxComN6i5ccjcRmtecKP7BA4_cobNC_w_rq39tRpVSgJPoKnvxTPzDJkRw3Obah3cYJ')"></div>
+</div>
+<div class="space-y-1">
+<p class="font-label-eyebrow text-slate-muted">ROYSAMBU · 1.5KM</p>
+<h4 class="font-body-strong text-primary lowercase group-hover:text-secondary-container transition-colors">the heights studios</h4>
+<p class="font-price-tabular text-primary">KSh 10,200 <span class="text-xs font-normal text-slate-muted">/ mo</span></p>
+</div>
+</div>
+<!-- Listing Card 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] overflow-hidden rounded-xl mb-4 bg-surface-bone relative">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A modern apartment building interior hallway in Kenya, showing clean white tiled floors, dark green accent walls, and elegant wooden doors. The lighting is soft and warm, highlighting the high-end editorial homestead aesthetic. Symmetrical architectural composition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPbr3TbtOLfFX3j0EzTEAxo4507BS6sR9MpWskwe3xoWhC5oJ__1vFG1FM77MgzDiu0VasCjVGP_pUY8VGp3sQ1JdzPtkoYp-d3PPih0J-uOHbVWmtmA3NkZvJBhxee5r3icQAzrdUhOzDI54JfXvsGrYKbZMWVpCPdLEIj6wV0vQDIRbL-qeP4CjMs0gbyUdrXSk5G2BoKt2kjgI3NSTjFLRDdh79gW2iSV_9Y28ZaJPxQDLW-Xr4W80zqZWH7jbJiTbYTwfdyV2R')"></div>
+</div>
+<div class="space-y-1">
+<p class="font-label-eyebrow text-slate-muted">KASARANI · 2.1KM</p>
+<h4 class="font-body-strong text-primary lowercase group-hover:text-secondary-container transition-colors">valley view rooms</h4>
+<p class="font-price-tabular text-primary">KSh 8,800 <span class="text-xs font-normal text-slate-muted">/ mo</span></p>
+</div>
+</div>
+<!-- Listing Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] overflow-hidden rounded-xl mb-4 bg-surface-bone relative">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Close-up of a stylish student workstation in Nairobi featuring a honey-colored wooden desk, a sleek black laptop, a small ceramic lamp, and a large window overlooking a lush garden. The vibe is peaceful, academic, and premium. Natural light photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2_W3zvMKoWvG-9k7nEC8dsSwYAnAXXIY4tIIEkd-jV2BvDtNoxIZuo5aU1VWmzvlMjIlcSMD85GuJVXNyYOZSh6P-g11ybXBTlIsqMrHMixB9VYALKanh9LWDVfLG-EdU99pYNwo705DbYiWO_ND6ETJyEESCU7Nq6JcLzPHHlWnp4nWfwCMQGAUXfTwpdZgQa35MkLKk3Fg9Ufxq-vje4b03j2fwNwBJd0Hq1BZrnYBOadAWnuPvmmBT2bxqGeaR28hro4jy5gP4')"></div>
+</div>
+<div class="space-y-1">
+<p class="font-label-eyebrow text-slate-muted">ROYSAMBU · 0.8KM</p>
+<h4 class="font-body-strong text-primary lowercase group-hover:text-secondary-container transition-colors">olive branch units</h4>
+<p class="font-price-tabular text-primary">KSh 11,500 <span class="text-xs font-normal text-slate-muted">/ mo</span></p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container w-full py-section-gap border-t border-border-hairline mt-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-stack-lg max-w-7xl mx-auto px-grid-margin">
+<div class="col-span-1 md:col-span-1">
+<span class="font-display-hero-mobile text-display-hero-mobile text-on-primary dark:text-on-primary-container tracking-tighter">boma<span class="text-secondary-container">.</span></span>
+<p class="text-on-primary-container mt-4 opacity-70 font-body-main">Student housing, redefined through discipline and design.</p>
+</div>
+<div>
+<h5 class="text-on-primary font-body-strong mb-4 lowercase">explore</h5>
+<ul class="space-y-2">
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">listings</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">roommates</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">reviews</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">forums</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-on-primary font-body-strong mb-4 lowercase">company</h5>
+<ul class="space-y-2">
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">about</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">contact</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">privacy</a></li>
+<li><a class="text-on-primary-container font-body-main hover:text-secondary-fixed-dim transition-colors" href="#">terms</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-on-primary font-body-strong mb-4 lowercase">newsletter</h5>
+<p class="text-on-primary-container text-xs mb-4 opacity-70">Weekly insights on Nairobi student living.</p>
+<div class="flex">
+<input class="bg-primary-container border-on-primary-container/20 text-on-primary p-2 flex-1 rounded-l text-sm" placeholder="email" type="text"/>
+<button class="bg-secondary-container text-honey-ink px-4 py-2 rounded-r font-body-strong">join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-grid-margin mt-12 pt-8 border-t border-on-primary-container/10">
+<p class="text-on-primary-container text-xs opacity-50">© 2024 boma. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

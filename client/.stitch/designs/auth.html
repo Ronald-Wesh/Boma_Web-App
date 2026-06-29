@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>boma. - Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#fea619",
+                        "tertiary": "#181814",
+                        "on-primary-container": "#7a9a8c",
+                        "surface-container-highest": "#dfe4e0",
+                        "tertiary-fixed": "#e6e2dc",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e5e9e5",
+                        "on-surface-variant": "#414845",
+                        "surface-bright": "#f6faf6",
+                        "surface-container": "#eaefeb",
+                        "primary-fixed-dim": "#adcebf",
+                        "primary-container": "#133127",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "inverse-on-surface": "#edf2ee",
+                        "on-background": "#181d1a",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "outline": "#727975",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#181d1a",
+                        "surface-dim": "#d6dbd7",
+                        "rose-danger": "#f43f5e",
+                        "amber-pending": "#d97706",
+                        "surface-variant": "#dfe4e0",
+                        "emerald-verified": "#10b981",
+                        "honey-ink": "#3a2600",
+                        "on-primary-fixed": "#022017",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "tertiary-container": "#2d2c28",
+                        "on-tertiary-fixed-variant": "#484743",
+                        "error-container": "#ffdad6",
+                        "secondary": "#855300",
+                        "background": "#f6faf6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffddb8",
+                        "border-hairline": "rgba(19, 49, 39, 0.1)",
+                        "on-primary-fixed-variant": "#2f4d41",
+                        "soft-honey": "#fdecc8",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c1c8c3",
+                        "on-secondary-fixed": "#2a1700",
+                        "on-secondary-container": "#684000",
+                        "surface-tint": "#466559",
+                        "surface-container-low": "#f0f5f1",
+                        "surface-bone": "#f3efe7",
+                        "slate-muted": "#56635e",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "inverse-primary": "#adcebf",
+                        "primary-fixed": "#c8eadb",
+                        "primary": "#001c13",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2c322f",
+                        "surface": "#f6faf6",
+                        "on-tertiary-container": "#95938e",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "1rem",
+                        "grid-margin": "2rem",
+                        "section-gap": "4rem",
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "1.5rem",
+                        "gutter": "1px"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["Outfit"],
+                        "headline-section": ["Outfit"],
+                        "price-tabular": ["JetBrains Mono"],
+                        "body-main": ["Inter"],
+                        "label-eyebrow": ["JetBrains Mono"],
+                        "display-hero-mobile": ["Outfit"],
+                        "body-strong": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["80px", { "lineHeight": "0.95", "letterSpacing": "-3px", "fontWeight": "900" }],
+                        "headline-section": ["32px", { "lineHeight": "1.1", "letterSpacing": "-2px", "fontWeight": "800" }],
+                        "price-tabular": ["18px", { "lineHeight": "1.0", "letterSpacing": "-0.5px", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-eyebrow": ["11px", { "lineHeight": "1.2", "letterSpacing": "2px", "fontWeight": "500" }],
+                        "display-hero-mobile": ["44px", { "lineHeight": "1.0", "letterSpacing": "-2px", "fontWeight": "900" }],
+                        "body-strong": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hairline-border {
+            border-color: rgba(19, 49, 39, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-main antialiased h-screen w-full flex overflow-hidden">
+<!-- Left Column (Brand Panel) - 45% -->
+<div class="hidden lg:flex w-[45%] bg-surface-bone flex-col justify-between border-r border-hairline relative">
+<!-- Top Section -->
+<div class="px-grid-margin py-section-gap z-10 flex-shrink-0">
+<img class="h-10 mb-section-gap object-contain" data-alt="The boma. wordmark logo in lowercase with a heavy dark green sans-serif font and a small amber square period, representing modern student housing." src="https://lh3.googleusercontent.com/aida/AP1WRLsAOfTFRB8r5lCZQ6jVLLQRr17dy0_E3TPXKsQ_cg6x3yndTksxnhh33JsjvZQi_uH0w_04F9QE_j5sBE9CAWK8-ZtOy8Ce-e76HXNAaw9j70i7oONgj4QMZMPOPvekCI3wLrUtFxHKUOMzqCxZYAhL7LPBPGHJKHShHUwsiaS8bzcFqs3yG_-L6YPaNQkToMJ9zVWl8wyCyAYPQ5xdjN9rITF-3XwOlTuoTDjI3lTKTQsAxNZtNOFLWWkA"/>
+<h1 class="font-display-hero text-display-hero text-primary lowercase tracking-tighter leading-none mb-6">
+                find your people,<br/>then your place.
+            </h1>
+<p class="font-body-main text-body-main text-slate-muted max-w-md">
+                Join a community of verified student housing, honest resident reviews, and roommate matching.
+            </p>
+</div>
+<!-- Image Section -->
+<div class="flex-grow relative overflow-hidden px-grid-margin pb-grid-margin">
+<div class="w-full h-full rounded-xl overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover rounded-xl" data-alt="A warm, sun-drenched modern student apartment interior featuring a minimalist wooden desk, a neat bed with a green throw, and large windows letting in golden hour light, reflecting a premium residential aesthetic." src="https://lh3.googleusercontent.com/aida/AP1WRLtVbDMvqTHGmfn2oLHcVipBhwP6iByBchQDl9yVGkwWvIy_o9QYNPjAUQZ8Mx8SykO2_5Cgb--ZDE8JrzcReX-PshlQgqKMm9ejrWjtpLoi_IzkPBsnLRfwEaOSl8p1RcPRCZOqHbI5sfCKX8KGjCyxY6Q2ijGVIVOK2tZ3TF33ap2PIt1O_tzn8BxxapeZa9tIST_8nZ328uMrrOfITY30cUsxZPxgJ-JnjtGWE60FC1FKlTC47KxcCr9Y"/>
+</div>
+</div>
+<!-- Footer -->
+<div class="px-grid-margin pb-grid-margin z-10 flex-shrink-0 pt-4">
+<p class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase tracking-widest">
+                made for students, by students.
+            </p>
+</div>
+</div>
+<!-- Right Column (Form Panel) - 55% -->
+<div class="w-full lg:w-[55%] flex flex-col justify-center items-center px-6 md:px-12 lg:px-24 overflow-y-auto bg-surface py-12">
+<div class="w-full max-w-md">
+<!-- Mobile Header (Visible only on mobile) -->
+<div class="lg:hidden mb-12 text-center">
+<img class="h-8 mx-auto mb-6 object-contain" data-alt="The boma. wordmark logo in lowercase with a heavy dark green sans-serif font and a small amber square period, representing modern student housing." src="https://lh3.googleusercontent.com/aida/AP1WRLsAOfTFRB8r5lCZQ6jVLLQRr17dy0_E3TPXKsQ_cg6x3yndTksxnhh33JsjvZQi_uH0w_04F9QE_j5sBE9CAWK8-ZtOy8Ce-e76HXNAaw9j70i7oONgj4QMZMPOPvekCI3wLrUtFxHKUOMzqCxZYAhL7LPBPGHJKHShHUwsiaS8bzcFqs3yG_-L6YPaNQkToMJ9zVWl8wyCyAYPQ5xdjN9rITF-3XwOlTuoTDjI3lTKTQsAxNZtNOFLWWkA"/>
+<h1 class="font-display-hero-mobile text-display-hero-mobile text-primary lowercase tracking-tighter leading-none">
+                    welcome to boma.
+                </h1>
+</div>
+<!-- Eyebrow -->
+<div class="hidden lg:block mb-8">
+<span class="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase tracking-widest">welcome to boma</span>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-hairline mb-8">
+<button class="flex-1 pb-4 font-body-strong text-body-strong text-primary border-b-2 border-secondary-container transition-colors" id="tab-signin" onclick="switchTab('signin')">sign in</button>
+<button class="flex-1 pb-4 font-body-main text-body-main text-slate-muted border-b-2 border-transparent hover:text-primary transition-colors" id="tab-signup" onclick="switchTab('signup')">create account</button>
+</div>
+<!-- Sign In Form -->
+<form class="space-y-6" id="form-signin">
+<div>
+<label class="block font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-2">Email</label>
+<input class="w-full bg-transparent border border-hairline rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-0 font-body-main text-body-main text-primary placeholder:text-outline-variant transition-colors" placeholder="student@university.edu" type="email"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">Password</label>
+<a class="font-label-eyebrow text-label-eyebrow text-primary hover:text-secondary-container transition-colors" href="#">forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-transparent border border-hairline rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-0 font-body-main text-body-main text-primary placeholder:text-outline-variant transition-colors" id="signin-password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" onclick="togglePassword('signin-password')" type="button">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-secondary-container text-primary font-body-strong text-body-strong py-3 rounded-lg hover:bg-secondary-fixed transition-colors mt-2" type="button">
+                    sign in
+                </button>
+</form>
+<!-- Create Account Form (Hidden by default) -->
+<form class="space-y-6 hidden" id="form-signup">
+<!-- Role Selector -->
+<div class="grid grid-cols-2 gap-4 mb-2">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="role" type="radio"/>
+<div class="border border-hairline rounded-lg p-4 text-center peer-checked:border-primary peer-checked:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined mb-2 text-primary">person_search</span>
+<div class="font-body-strong text-sm text-primary">i'm looking for a place</div>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="role" type="radio"/>
+<div class="border border-hairline rounded-lg p-4 text-center peer-checked:border-primary peer-checked:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined mb-2 text-primary">real_estate_agent</span>
+<div class="font-body-strong text-sm text-primary">i'm a landlord</div>
+</div>
+</label>
+</div>
+<div>
+<label class="block font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-2">Full Name</label>
+<input class="w-full bg-transparent border border-hairline rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-0 font-body-main text-body-main text-primary placeholder:text-outline-variant transition-colors" placeholder="Jane Doe" type="text"/>
+</div>
+<div>
+<label class="block font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-2">Email</label>
+<input class="w-full bg-transparent border border-hairline rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-0 font-body-main text-body-main text-primary placeholder:text-outline-variant transition-colors" placeholder="student@university.edu" type="email"/>
+</div>
+<div>
+<label class="block font-label-eyebrow text-label-eyebrow text-slate-muted uppercase mb-2">Password</label>
+<div class="relative">
+<input class="w-full bg-transparent border border-hairline rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-0 font-body-main text-body-main text-primary placeholder:text-outline-variant transition-colors" id="signup-password" placeholder="Create a strong password" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors" onclick="togglePassword('signup-password')" type="button">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+</button>
+</div>
+<p class="font-body-main text-xs text-slate-muted mt-2">Must be at least 8 characters.</p>
+</div>
+<button class="w-full bg-secondary-container text-primary font-body-strong text-body-strong py-3 rounded-lg hover:bg-secondary-fixed transition-colors mt-2" type="button">
+                    create account
+                </button>
+</form>
+<!-- Divider -->
+<div class="flex items-center my-8">
+<div class="flex-grow border-t border-hairline"></div>
+<span class="px-4 font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">or</span>
+<div class="flex-grow border-t border-hairline"></div>
+</div>
+<!-- Social Login -->
+<button class="w-full bg-transparent border border-hairline text-primary font-body-strong text-body-strong py-3 rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-3">
+<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                continue with Google
+            </button>
+<!-- Footer Links -->
+<div class="mt-12 text-center flex justify-center gap-6">
+<a class="font-label-eyebrow text-label-eyebrow text-slate-muted hover:text-primary transition-colors" href="#">terms of service</a>
+<a class="font-label-eyebrow text-label-eyebrow text-slate-muted hover:text-primary transition-colors" href="#">privacy policy</a>
+</div>
+</div>
+</div>
+<script>
+        function switchTab(tab) {
+            const signinForm = document.getElementById('form-signin');
+            const signupForm = document.getElementById('form-signup');
+            const signinTab = document.getElementById('tab-signin');
+            const signupTab = document.getElementById('tab-signup');
+
+            if (tab === 'signin') {
+                signinForm.classList.remove('hidden');
+                signup</script></body></html>
