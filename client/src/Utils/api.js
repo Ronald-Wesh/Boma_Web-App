@@ -113,6 +113,15 @@ export const forumAPI = {
   deleteForum: (id) => API.delete(`/forums/${id}`),
 };
 
+//Roommate matching API endpoints
+export const roommateAPI = {
+  browseProfiles: (params) => API.get("/roommates", { params }),
+  getMyProfile: () => API.get("/roommates/me"),
+  upsertMyProfile: (data) => API.post("/roommates/me", data),
+  deleteMyProfile: () => API.delete("/roommates/me"),
+  getMatches: () => API.get("/roommates/matches"),
+};
+
 export const adminAPI = {
   verifyUser: (id) => API.patch(`/admin/verify-user/${id}`),
   verifyListing: (id) => API.patch(`/admin/verify-listing/${id}`),
