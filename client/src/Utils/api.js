@@ -90,6 +90,7 @@ export const campusAPI = {
 
 //Building API endpoints
 export const buildingAPI = {
+  getAllBuildings: () => API.get("/buildings"),
   getBuildingListings: (id) => API.get(`/buildings/${id}/listings`),
   getBuildingInsights: (id) => API.get(`/buildings/${id}/insights`),
   getNearbyBuildings: (id) => API.get(`/buildings/${id}/nearby`),

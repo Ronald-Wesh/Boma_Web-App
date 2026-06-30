@@ -163,7 +163,7 @@ export default function Roommates() {
     const params = {};
     if (campus) params.campus = campus;
     const { data } = await roommateAPI.browseProfiles(params);
-    setEntries(
+    setMoreEntries(
       (data || []).map((profile) => ({
         profile,
         compatibility: null,
@@ -176,6 +176,8 @@ export default function Roommates() {
   // otherwise fall back to public browse.
   const load = useCallback(async () => {
     setLoading(true);
+    setMatchEntries([]);
+    setMoreEntries([]);
     try {
       if (!isAuthenticated) {
         setMode("browse");
@@ -199,19 +201,22 @@ export default function Roommates() {
 
       const { data } = await roommateAPI.getMatches();
       setMode("matches");
-      setEntries(
+      setMatchEntries(
         (data.matches || []).map(({ profile, compatibility }) => ({
           profile,
           compatibility,
           breakdown: buildBreakdown(me, profile),
         })),
       );
+      // Also populate the broader "explore more" pool below the ranked section.
+      await loadBrowse(campusFilter);
     } catch (error) {
       console.error("Failed to load roommates", error);
       toast.error(
         error.response?.data?.message || "Failed to load roommate matches",
       );
-      setEntries([]);
+      setMatchEntries([]);
+      setMoreEntries([]);
     } finally {
       setLoading(false);
     }
@@ -352,63 +357,66 @@ export default function Roommates() {
       {/* Feed */}
       <main className="w-full py-section-gap">
         <div className="max-w-screen-2xl mx-auto px-grid-margin">
-          <div className="mb-stack-lg">
-            <span className="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">
-              {heading}
-            </span>
-          </div>
-
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
-              {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-                <div key={index} className="bg-surface p-stack-lg">
-                  <div className="flex items-center gap-stack-md mb-stack-md">
-                    <div className="w-14 h-14 rounded-full bg-surface-container animate-pulse" />
-                    <div className="flex-1 space-y-2">
-                      <div className="h-4 w-24 bg-surface-container animate-pulse" />
-                      <div className="h-3 w-16 bg-surface-container animate-pulse" />
-                    </div>
+            <FeedSkeleton />
+          ) : mode === "matches" ? (
+            matchEntries.length === 0 && moreEntries.length === 0 ? (
+              <EmptyState
+                icon="groups"
+                title="no matches just yet"
+                body="widen your budget or move-in window — new students join every week."
+              />
+            ) : (
+              <div className="space-y-section-gap">
+                {matchEntries.length > 0 && (
+                  <div>
+                    <SectionLabel>{heading}</SectionLabel>
+                    <CardGrid
+                      entries={matchEntries}
+                      onConnect={handleConnect}
+                      onView={(p, meta) =>
+                        setViewEntry({ profile: p, compatibility: meta.compatibility })
+                      }
+                    />
                   </div>
-                  <div className="space-y-2 mb-stack-md">
-                    <div className="h-2 w-full bg-surface-container animate-pulse" />
-                    <div className="h-2 w-full bg-surface-container animate-pulse" />
-                    <div className="h-2 w-2/3 bg-surface-container animate-pulse" />
+                )}
+                {moreEntries.length > 0 && (
+                  <div>
+                    <SectionLabel>explore more</SectionLabel>
+                    <CardGrid
+                      entries={moreEntries}
+                      onConnect={handleConnect}
+                      onView={(p, meta) =>
+                        setViewEntry({ profile: p, compatibility: meta.compatibility })
+                      }
+                    />
                   </div>
-                  <div className="h-10 w-full bg-surface-container animate-pulse rounded-full" />
-                </div>
-              ))}
-            </div>
-          ) : entries.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center py-section-gap min-h-[40vh]">
-              <span className="material-symbols-outlined text-5xl text-outline-variant mb-4">
-                groups
-              </span>
-              <h3 className="font-headline-section text-2xl text-primary lowercase mb-2">
-                {mode === "matches"
-                  ? "no matches just yet"
-                  : "no roommate seekers here yet"}
-              </h3>
-              <p className="font-body-main text-on-surface-variant max-w-sm">
-                {mode === "matches"
-                  ? "widen your budget or move-in window — new students join every week."
-                  : "be the first from your campus to start looking."}
-              </p>
-            </div>
+                )}
+              </div>
+            )
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
-              {entries.map(({ profile, compatibility, breakdown }) => (
-                <RoommateCard
-                  key={profile._id}
-                  profile={profile}
-                  compatibility={compatibility}
-                  breakdown={breakdown}
+            <>
+              <div className="mb-stack-lg">
+                <span className="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">
+                  {heading}
+                </span>
+              </div>
+              {moreEntries.length === 0 ? (
+                <EmptyState
+                  icon="groups"
+                  title="no roommate seekers here yet"
+                  body="be the first from your campus to start looking."
+                />
+              ) : (
+                <CardGrid
+                  entries={moreEntries}
                   onConnect={handleConnect}
                   onView={(p, meta) =>
                     setViewEntry({ profile: p, compatibility: meta.compatibility })
                   }
                 />
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </main>

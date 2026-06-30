@@ -3,6 +3,9 @@ const router = express.Router();
 const buildingController = require("../Controllers/buildingController");
 
 // Mounted at /api/buildings
+// List all buildings (used by forum/review composers)
+router.get("/", buildingController.getAllBuildings);
+
 // Building listings and insights
 router.get("/:buildingId/listings", buildingController.getBuildingListings);
 router.get("/:buildingId/insights", buildingController.getBuildingInsights);

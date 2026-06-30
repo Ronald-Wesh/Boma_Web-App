@@ -9,6 +9,7 @@ import Roommates from "./Pages/Roommates";
 import RoommateProfileEditor from "./Pages/RoommateProfileEditor";
 import Reviews from "./Pages/Reviews";
 import BuildingReviews from "./Pages/BuildingReviews";
+import Forum from "./Pages/Forum";
 import AuthPage from "./Pages/Auth";
 import ComingSoon from "./Pages/ComingSoon";
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/roommates/profile" element={<RoommateProfileEditor />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviews/:buildingId" element={<BuildingReviews />} />
+          <Route path="/forums" element={<Forum />} />
           {/* Unbuilt editorial pages land here until they're built */}
           <Route path="*" element={<ComingSoon />} />
         </Route>

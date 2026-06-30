@@ -3,6 +3,18 @@ const Building = require("../Models/Building");
 const Review = require("../Models/Review");
 const Listing = require("../Models/Listing");
 
+//Get All Buildings (name + address, for selectors)
+exports.getAllBuildings = async (req, res) => {
+  try {
+    const buildings = await Building.find()
+      .select("name address")
+      .sort("name");
+    res.status(200).json(buildings);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 //Get All Listings for a building
 exports.getBuildingListings = async (req, res) => {
   try {
