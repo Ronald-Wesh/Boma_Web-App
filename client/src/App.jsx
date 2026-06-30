@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import SiteLayout from "./components/layout/SiteLayout";
 import Home from "./Pages/Home";
-import Listings from "./Pages/Listing";
+import Browse from "./Pages/Browse";
 import AuthPage from "./Pages/Auth";
 import ComingSoon from "./Pages/ComingSoon";
 
@@ -14,7 +14,7 @@ export default function App() {
         {/* Chromed pages share the editorial header + footer */}
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/listings" element={<Listings />} />
+          <Route path="/listings" element={<Browse />} />
           {/* Unbuilt editorial pages land here until they're built */}
           <Route path="*" element={<ComingSoon />} />
         </Route>
