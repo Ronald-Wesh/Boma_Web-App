@@ -62,6 +62,77 @@ const completeness = (profile) => {
   return Math.round((filled / 5) * 100);
 };
 
+// Eyebrow label that heads each feed section.
+function SectionLabel({ children }) {
+  return (
+    <div className="mb-stack-lg">
+      <span className="font-label-eyebrow text-label-eyebrow text-slate-muted uppercase">
+        {children}
+      </span>
+    </div>
+  );
+}
+
+// Ruled grid of roommate cards.
+function CardGrid({ entries, onConnect, onView }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
+      {entries.map(({ profile, compatibility, breakdown }) => (
+        <RoommateCard
+          key={profile._id}
+          profile={profile}
+          compatibility={compatibility}
+          breakdown={breakdown}
+          onConnect={onConnect}
+          onView={onView}
+        />
+      ))}
+    </div>
+  );
+}
+
+function EmptyState({ icon, title, body, compact = false }) {
+  return (
+    <div
+      className={`flex flex-col items-center justify-center text-center border border-hairline ${
+        compact ? "py-12" : "py-section-gap min-h-[40vh]"
+      }`}
+    >
+      <span className="material-symbols-outlined text-5xl text-outline-variant mb-4">
+        {icon}
+      </span>
+      <h3 className="font-headline-section text-2xl text-primary lowercase mb-2">
+        {title}
+      </h3>
+      <p className="font-body-main text-on-surface-variant max-w-sm">{body}</p>
+    </div>
+  );
+}
+
+function FeedSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
+      {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+        <div key={index} className="bg-surface p-stack-lg">
+          <div className="flex items-center gap-stack-md mb-stack-md">
+            <div className="w-14 h-14 rounded-full bg-surface-container animate-pulse" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 w-24 bg-surface-container animate-pulse" />
+              <div className="h-3 w-16 bg-surface-container animate-pulse" />
+            </div>
+          </div>
+          <div className="space-y-2 mb-stack-md">
+            <div className="h-2 w-full bg-surface-container animate-pulse" />
+            <div className="h-2 w-full bg-surface-container animate-pulse" />
+            <div className="h-2 w-2/3 bg-surface-container animate-pulse" />
+          </div>
+          <div className="h-10 w-full bg-surface-container animate-pulse rounded-full" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Roommates() {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -70,8 +141,10 @@ export default function Roommates() {
   const [campusFilter, setCampusFilter] = useState("");
 
   const [myProfile, setMyProfile] = useState(null);
-  // entries: [{ profile, compatibility, breakdown }]
-  const [entries, setEntries] = useState([]);
+  // Each entry: { profile, compatibility, breakdown }. matchEntries are the
+  // ranked, hard-filtered matches; moreEntries is the wider pool to explore.
+  const [matchEntries, setMatchEntries] = useState([]);
+  const [moreEntries, setMoreEntries] = useState([]);
   // "matches" once the user has a profile; "browse" otherwise (incl. logged out)
   const [mode, setMode] = useState("browse");
   const [loading, setLoading] = useState(true);
