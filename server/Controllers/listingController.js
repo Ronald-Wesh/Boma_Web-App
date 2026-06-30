@@ -198,13 +198,18 @@ exports.getAllListings = async (req, res) => {
   }
 };
 
-//Get a single listing by ID
+//Get a single listing by ID — with building (ratings + campus) and landlord,
+// everything the detail page needs in one call.
 exports.getListingById = async (req, res) => {
   try {
-    const listing = await Listing.findById(req.params.id).populate(
-      "createdBy",
-      "name verificationStatus",
-    );
+    const listing = await Listing.findById(req.params.id)
+      .populate("createdBy", "name verificationStatus role createdAt avatar")
+      .populate({
+        path: "building",
+        select:
+          "name address average_rating total_reviews categoryRatings campus",
+        populate: { path: "campus", select: "name shortName location" },
+      });
     if (!listing) return res.status(404).json({ message: "Listing Not Found" });
     res.status(200).json(listing);
   } catch (err) {

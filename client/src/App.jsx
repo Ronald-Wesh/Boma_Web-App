@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import SiteLayout from "./components/layout/SiteLayout";
 import Home from "./Pages/Home";
 import Browse from "./Pages/Browse";
+import ListingDetail from "./Pages/ListingDetail";
 import AuthPage from "./Pages/Auth";
 import ComingSoon from "./Pages/ComingSoon";
 
@@ -15,6 +16,7 @@ export default function App() {
         <Route element={<SiteLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/listings" element={<Browse />} />
+          <Route path="/listings/:id" element={<ListingDetail />} />
           {/* Unbuilt editorial pages land here until they're built */}
           <Route path="*" element={<ComingSoon />} />
         </Route>
