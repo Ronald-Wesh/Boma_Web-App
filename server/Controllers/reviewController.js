@@ -48,7 +48,11 @@ exports.getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find()
       .populate("reviewer", "name verificationStatus")
-      .populate("building", "name address");
+      .populate(
+        "building",
+        "name address average_rating total_reviews categoryRatings",
+      )
+      .sort("-createdAt");
     res.status(200).json(reviews);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -65,6 +69,8 @@ exports.getBuildingReviews = async (req, res) => {
 
     const filter = { building: req.params.buildingId };
 
+    const building = await Building.findById(req.params.buildingId);
+
     const reviews = await Review.find(filter)
       .populate("reviewer", "name verificationStatus")
       .sort(sort)
@@ -74,6 +80,7 @@ exports.getBuildingReviews = async (req, res) => {
     const totalReviews = await Review.countDocuments(filter);
 
     res.status(200).json({
+      building,
       reviews,
       pagination: {
         total: totalReviews,
