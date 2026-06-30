@@ -98,6 +98,7 @@ export const buildingAPI = {
 export const reviewAPI = {
   createReview: (id, reviewData) =>
     API.post(`buildings/${id}/reviews`, reviewData),
+  getAllReviews: () => API.get("/reviews"),
   getBuildingReviews: (id) => API.get(`buildings/${id}/reviews`),
   updateReview: (id, reviewData) => API.put(`reviews/${id}`, reviewData),
   deleteReview: (id) => API.delete(`reviews/${id}`),
