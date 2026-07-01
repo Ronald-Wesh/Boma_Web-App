@@ -153,6 +153,8 @@ export default function Forum() {
                   createdAt={row.createdAt}
                   isOwner={isAuthenticated && user?._id === row.ownerId}
                   onDelete={() => handleDelete(row.docId)}
+                  isAuthenticated={isAuthenticated}
+                  currentUserId={user?._id}
                 />
               ))}
             </div>

@@ -22,6 +22,7 @@ const Building = require("./Models/Building");
 const Listing = require("./Models/Listing");
 const Review = require("./Models/Review");
 const Forum = require("./Models/ForumPost");
+const ForumComment = require("./Models/ForumComment");
 const RoommateProfile = require("./Models/RoommateProfile");
 
 // ─── small helpers ───────────────────────────────────────────────────────
@@ -100,6 +101,7 @@ async function seed() {
     Listing.deleteMany({}),
     Review.deleteMany({}),
     Forum.deleteMany({}),
+    ForumComment.deleteMany({}),
     RoommateProfile.deleteMany({}),
   ]);
   console.log("Cleared seeded collections");
@@ -270,16 +272,54 @@ async function seed() {
             ]),
             isAnonymous: Math.random() < 0.5,
             resolved: Math.random() < 0.4,
-            upvotes: randInt(0, 25),
-            downvotes: randInt(0, 4),
-            comments: randInt(0, 12),
+            // Stats are backed by real voter/comment records below.
+            voters: sample(students, randInt(0, 10)).map((s) => ({
+              user: s._id,
+              value: Math.random() < 0.85 ? 1 : -1,
+            })),
+            comments: 0,
           },
         ],
       });
     }
   }
+  // Derive vote counts from the seeded voters so displayed stats are genuine.
+  for (const doc of forumDocs) {
+    for (const entry of doc.post) {
+      entry.upvotes = entry.voters.filter((v) => v.value === 1).length;
+      entry.downvotes = entry.voters.filter((v) => v.value === -1).length;
+    }
+  }
   const forums = await Forum.create(forumDocs);
-  console.log(`Forum threads: ${forums.length}`);
+
+  // Seed real comments and set each entry's comment count to match.
+  const commentBodies = [
+    "Same here, been a week now.",
+    "Caretaker said it's fixed tomorrow.",
+    "Is it still available?",
+    "Thanks for the heads up.",
+    "Agreed, quiet hours would help a lot.",
+    "DM sent.",
+  ];
+  let commentCount = 0;
+  for (const doc of forums) {
+    for (const entry of doc.post) {
+      const commenters = sample(students, randInt(0, 6));
+      for (const commenter of commenters) {
+        await ForumComment.create({
+          forum: doc._id,
+          entry: entry._id,
+          user: commenter._id,
+          content: rand(commentBodies),
+          isAnonymous: Math.random() < 0.5,
+        });
+        commentCount++;
+      }
+      entry.comments = commenters.length;
+    }
+    await doc.save();
+  }
+  console.log(`Forum threads: ${forums.length} (comments: ${commentCount})`);
 
   // ── Roommate profiles (cycle campuses so several share one → matches exist) ──
   const roommateStudents = students.slice(0, 12);

@@ -33,7 +33,11 @@ const ForumPostSchema=new mongoose.Schema({
     comments:{
       type:Number,
       default:0
-    }
+    },
+    voters:[{
+      user:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
+      value:{type:Number,enum:[1,-1]}
+    }]
   }],
   building:{
     type:mongoose.Schema.Types.ObjectId,

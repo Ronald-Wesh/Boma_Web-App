@@ -113,6 +113,13 @@ export const forumAPI = {
   getBuildingForums: (id) => API.get(`buildings/${id}/forums`),
   getAllForums: () => API.get("/forums"),
   deleteForum: (id) => API.delete(`/forums/${id}`),
+  voteForumPost: (entryId, direction) =>
+    API.patch(`/forums/posts/${entryId}/vote`, { direction }),
+  getForumComments: (entryId) => API.get(`/forums/posts/${entryId}/comments`),
+  addForumComment: (entryId, data) =>
+    API.post(`/forums/posts/${entryId}/comments`, data),
+  deleteForumComment: (commentId) =>
+    API.delete(`/forums/comments/${commentId}`),
 };
 
 //Roommate matching API endpoints
