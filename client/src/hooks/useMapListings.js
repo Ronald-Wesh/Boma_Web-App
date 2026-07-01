@@ -23,7 +23,7 @@ export default function useMapListings({ debounceMs = 350 } = {}) {
     setError(null);
     try {
       const params = { ...box, ...filters };
-      const { data } = await listingAPI.getListingsWithin({ params });
+      const { data } = await listingAPI.getListingsWithin(params);
       if (id !== requestId.current) return; // a newer request superseded this one
       setListings(data.listings || []);
     } catch (err) {
