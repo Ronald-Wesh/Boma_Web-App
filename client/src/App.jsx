@@ -60,7 +60,7 @@ export default function App() {
         <Route path="/register" element={<AuthPage />} />
       </Routes>
 
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="top-right" closeButton />
     </>
   );
 }
