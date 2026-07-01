@@ -78,7 +78,7 @@ export default function FeaturedListings() {
           {loading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index}>
-                  <div className="aspect-[4/5] rounded-full bg-surface-container animate-pulse mb-6" />
+                  <div className="aspect-[4/5] rounded-xl bg-surface-container animate-pulse mb-6" />
                   <div className="h-3 w-24 bg-surface-container animate-pulse mb-3" />
                   <div className="h-5 w-40 bg-surface-container animate-pulse" />
                 </div>

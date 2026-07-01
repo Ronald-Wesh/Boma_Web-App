@@ -22,7 +22,7 @@ export default function EditorialListingCard({ listing, to = "/listings" }) {
 
   return (
     <Link to={to} className="group block">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-full mb-6">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-6">
         <img
           src={listing.image}
           alt={listing.alt}
