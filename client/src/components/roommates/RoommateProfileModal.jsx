@@ -40,7 +40,7 @@ export default function RoommateProfileModal({ entry, onClose, onConnect }) {
         {/* Header */}
         <div className="flex items-start justify-between p-stack-lg border-b border-hairline">
           <div className="flex items-center gap-stack-md min-w-0">
-            <div className="w-16 h-16 rounded-full overflow-hidden border border-hairline bg-surface-container flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 rounded-circle overflow-hidden border border-hairline bg-surface-container flex items-center justify-center shrink-0">
               {user?.avatar ? (
                 <img
                   src={user.avatar}

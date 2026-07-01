@@ -69,7 +69,7 @@ export default function BrowseCard({ listing }) {
           type="button"
           onClick={toggleFavorite}
           aria-label={isFavorited ? "Remove from favorites" : "Save listing"}
-          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-rose-danger hover:scale-110 transition-transform"
+          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-circle flex items-center justify-center text-rose-danger hover:scale-110 transition-transform"
         >
           <span
             className="material-symbols-outlined"

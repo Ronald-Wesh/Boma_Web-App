@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 const LoadingScreen = ({ message }) => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="flex flex-col items-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="animate-spin rounded-circle h-12 w-12 border-b-2 border-primary"></div>
       <p className="mt-4 text-gray-600">{message}</p>
     </div>
   </div>
@@ -32,7 +32,7 @@ export const RoleProtectedRoute=({children,allowedRoles=[],redirectTo="/listings
     return(
       <div className='min-h-screen flex items-center justify-center'>
         <div className='flex flex-col items-center'>
-          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary'></div>
+          <div className='animate-spin rounded-circle h-12 w-12 border-b-2 border-primary'></div>
           <p className='mt-4 text-gray-600'>Checking permissions...</p>
         </div>
       </div>

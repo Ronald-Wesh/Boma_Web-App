@@ -20,7 +20,7 @@ export default function SiteFooter() {
             {["share", "public"].map((icon) => (
               <span
                 key={icon}
-                className="w-8 h-8 rounded-full border border-hairline flex items-center justify-center opacity-60"
+                className="w-8 h-8 rounded-circle border border-hairline flex items-center justify-center opacity-60"
               >
                 <span className="material-symbols-outlined text-lg">
                   {icon}

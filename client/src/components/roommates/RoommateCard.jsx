@@ -27,7 +27,7 @@ function Meter({ label, value }) {
 function Avatar({ user, size = "w-14 h-14" }) {
   return (
     <div
-      className={`${size} rounded-full overflow-hidden border border-hairline bg-surface-container flex items-center justify-center shrink-0`}
+      className={`${size} rounded-circle overflow-hidden border border-hairline bg-surface-container flex items-center justify-center shrink-0`}
     >
       {user?.avatar ? (
         <img

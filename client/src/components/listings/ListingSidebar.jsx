@@ -112,7 +112,7 @@ export default function ListingSidebar({ listing }) {
         {landlord && (
           <div className="bg-surface-bone p-6 rounded-xl border border-hairline">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-section text-xl">
+              <div className="w-12 h-12 rounded-circle bg-primary-container flex items-center justify-center text-on-primary-container font-headline-section text-xl">
                 {initials(landlord.name) || "BO"}
               </div>
               <div>

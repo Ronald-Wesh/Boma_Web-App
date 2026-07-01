@@ -115,7 +115,7 @@ function FeedSkeleton() {
       {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
         <div key={index} className="bg-surface p-stack-lg">
           <div className="flex items-center gap-stack-md mb-stack-md">
-            <div className="w-14 h-14 rounded-full bg-surface-container animate-pulse" />
+            <div className="w-14 h-14 rounded-circle bg-surface-container animate-pulse" />
             <div className="flex-1 space-y-2">
               <div className="h-4 w-24 bg-surface-container animate-pulse" />
               <div className="h-3 w-16 bg-surface-container animate-pulse" />
@@ -271,7 +271,7 @@ export default function Roommates() {
           {/* Left: who's matching */}
           {mode === "matches" && myProfile ? (
             <div className="flex items-center gap-stack-md w-full md:w-auto">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-surface-container border border-hairline flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-circle overflow-hidden bg-surface-container border border-hairline flex items-center justify-center shrink-0">
                 {user?.avatar ? (
                   <img
                     src={user.avatar}

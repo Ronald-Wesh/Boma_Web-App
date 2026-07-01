@@ -21,7 +21,7 @@
 
   --color-secondary: #855300;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #fea619; /* honey — primary accent / CTA */
+  --color-secondary-container: #f59e0b; /* honey — primary accent / CTA */
   --color-on-secondary-container: #684000;
   --color-secondary-fixed: #ffddb8;
   --color-secondary-fixed-dim: #ffb95f;
@@ -37,9 +37,9 @@
   --color-on-tertiary-fixed: #1c1c18;
   --color-on-tertiary-fixed-variant: #484743;
 
-  --color-background: #f6faf6;
+  --color-background: #faf6f0;
   --color-on-background: #181d1a;
-  --color-surface: #f6faf6;
+  --color-surface: #faf6f0;
   --color-on-surface: #181d1a;
   --color-surface-bone: #f3efe7; /* warm cream surface */
   --color-surface-bright: #f6faf6;
@@ -123,15 +123,22 @@
   --spacing-stack-md: 1rem;
   --spacing-stack-lg: 1.5rem;
 
-  /* ── Radius ── (Stitch "softened square" scale) */
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
+  /* ── Radius ── (Stitch "softened square" scale, per BOMA_EDITORIAL_DESIGN.md) */
+  --radius-lg: 0.75rem; /* 12px — --r-md in the design doc */
+  --radius-xl: 1rem; /* 16px — --r-lg in the design doc */
 }
 
-/* Stitch overrides `rounded-full` to 0.75rem (soft rect, not a pill/circle).
+/* Stitch overrides `rounded-full` to 0.75rem (soft rect, not a pill/circle) —
+   brand surfaces (buttons, badges, toggles) never use a true pill.
    Tailwind v4's rounded-full is a static 9999px utility, so we redefine it. */
 @utility rounded-full {
   border-radius: 0.75rem;
+}
+
+/* True circles (avatars, spinners, map markers) opt out of the rounded-full
+   override above via this dedicated utility. */
+@utility rounded-circle {
+  border-radius: 9999px;
 }
 
 @layer base {

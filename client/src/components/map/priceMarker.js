@@ -12,8 +12,8 @@ export function buildPriceIcon({ price, active = false, hovered = false }) {
 
   const inner = active
     ? `<div class="relative flex items-center justify-center">
-         <div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center text-honey-ink font-price-tabular text-sm shadow-2xl border-4 border-white">${label}</div>
-         <div class="absolute w-24 h-24 bg-secondary-container/20 rounded-full animate-ping pointer-events-none"></div>
+         <div class="w-12 h-12 bg-secondary-container rounded-circle flex items-center justify-center text-honey-ink font-price-tabular text-sm shadow-2xl border-4 border-white">${label}</div>
+         <div class="absolute w-24 h-24 bg-secondary-container/20 rounded-circle animate-ping pointer-events-none"></div>
        </div>`
     : `<div class="bg-surface-container-lowest border ${
         hovered ? "border-secondary-container ring-2 ring-secondary-container/40" : "border-hairline"
