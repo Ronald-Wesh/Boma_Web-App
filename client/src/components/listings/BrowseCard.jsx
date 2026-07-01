@@ -115,13 +115,13 @@ export default function BrowseCard({ listing }) {
           </div>
           <div className="pt-4 border-t border-hairline flex items-center">
             <span
-              className={`px-2 py-0.5 rounded text-[10px] font-label-eyebrow tracking-widest ${
+              className={`px-2 py-0.5 rounded text-[10px] font-label-eyebrow tracking-widest uppercase ${
                 isVerified
                   ? "bg-emerald-verified/10 text-emerald-verified"
                   : "bg-amber-pending/10 text-amber-pending"
               }`}
             >
-              {isVerified ? "VERIFIED" : "PENDING"}
+              {isVerified ? "verified" : "pending"}
             </span>
           </div>
         </div>

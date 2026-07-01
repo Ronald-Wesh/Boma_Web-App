@@ -3,9 +3,9 @@ import { toast } from "sonner";
 import { initials } from "../../Utils/listingHelpers";
 
 const STATUS_LABEL = {
-  available: "AVAILABLE NOW",
-  pending: "AVAILABILITY PENDING",
-  unavailable: "CURRENTLY UNAVAILABLE",
+  available: "available now",
+  pending: "availability pending",
+  unavailable: "currently unavailable",
 };
 
 export default function ListingSidebar({ listing }) {
@@ -61,7 +61,7 @@ export default function ListingSidebar({ listing }) {
               <span className="material-symbols-outlined text-sm">
                 calendar_today
               </span>
-              {STATUS_LABEL[listing?.status] || "AVAILABLE NOW"}
+              {STATUS_LABEL[listing?.status] || "available now"}
             </p>
           </div>
 
@@ -138,8 +138,8 @@ export default function ListingSidebar({ listing }) {
             </div>
             <div className="flex gap-2">
               {memberSince && (
-                <span className="text-[10px] bg-surface-container-lowest border border-hairline px-2 py-1 rounded font-label-eyebrow text-primary">
-                  MEMBER SINCE {memberSince}
+                <span className="text-[10px] bg-surface-container-lowest border border-hairline px-2 py-1 rounded font-label-eyebrow text-primary uppercase">
+                  member since {memberSince}
                 </span>
               )}
             </div>

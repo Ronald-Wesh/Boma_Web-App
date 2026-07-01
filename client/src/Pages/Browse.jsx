@@ -187,7 +187,7 @@ export default function Browse() {
               aria-pressed={verifiedOnly}
             >
               <span className="text-xs font-label-eyebrow uppercase text-on-surface-variant">
-                Verified Only
+                verified only
               </span>
               <span
                 className={`w-10 h-5 rounded-full relative transition-colors ${
@@ -213,7 +213,7 @@ export default function Browse() {
         <aside
           className={`${
             mobileFiltersOpen ? "block" : "hidden"
-          } md:block w-full md:w-[260px] border-r border-hairline p-grid-margin md:sticky md:top-16 h-fit`}
+          } md:block w-full md:w-[260px] border-r border-hairline p-grid-margin md:sticky md:top-16 md:h-[calc(100vh-4rem)] overflow-y-auto`}
         >
           {filters}
         </aside>
