@@ -5,6 +5,7 @@ import useMapListings from "../hooks/useMapListings";
 import ListingMap from "../components/map/ListingMap";
 import MapListingCard from "../components/map/MapListingCard";
 import MapToggle from "../components/map/MapToggle";
+import { hasRealCoords } from "../components/map/mapHelpers";
 
 const ROOM_TYPES = [
   { value: "", label: "Any type" },
@@ -51,7 +52,11 @@ export default function MapView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams.toString()]);
 
-  const { listings, loading, error, fetchWithin } = useMapListings();
+  const { listings: rawListings, loading, error, fetchWithin } = useMapListings();
+  // ListingMap silently drops listings without real coordinates — filter here
+  // too so the clickable left list, the "N HOMES" count, and the map pins
+  // always refer to the exact same set.
+  const listings = useMemo(() => rawListings.filter(hasRealCoords), [rawListings]);
   const [hoveredId, setHoveredId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [moved, setMoved] = useState(false);

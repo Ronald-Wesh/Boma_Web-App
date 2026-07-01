@@ -101,6 +101,18 @@ exports.createListing = async (req, res) => {
       return res.status(400).json({ message: "buildingName is required" });
     }
 
+    const hasValidCoordinates =
+      location &&
+      Array.isArray(location.coordinates) &&
+      location.coordinates.length === 2 &&
+      (location.coordinates[0] !== 0 || location.coordinates[1] !== 0);
+
+    if (!hasValidCoordinates) {
+      return res.status(400).json({
+        message: "A valid location (coordinates) is required to create a listing",
+      });
+    }
+
     // Find existing building or create a new one automatically
     // First try to find by exact name (case insensitive)
     let building = await Building.findOne({
