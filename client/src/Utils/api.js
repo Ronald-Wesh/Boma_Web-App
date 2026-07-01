@@ -132,6 +132,9 @@ export const roommateAPI = {
   upsertMyProfile: (data) => API.post("/roommates/me", data),
   deleteMyProfile: () => API.delete("/roommates/me"),
   getMatches: () => API.get("/roommates/matches"),
+  connect: (recipientId) => API.post("/connections", { recipientId }),
+  getIncomingConnections: () => API.get("/connections/incoming"),
+  respondToConnection: (id, action) => API.patch(`/connections/${id}`, { action }),
 };
 
 export const adminAPI = {

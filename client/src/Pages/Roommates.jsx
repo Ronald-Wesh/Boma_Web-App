@@ -77,15 +77,75 @@ function SectionLabel({ children }) {
 function CardGrid({ entries, onConnect, onView }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-hairline border border-hairline">
-      {entries.map(({ profile, compatibility, breakdown }) => (
+      {entries.map(({ profile, compatibility, breakdown, connectionStatus }) => (
         <RoommateCard
           key={profile._id}
           profile={profile}
           compatibility={compatibility}
           breakdown={breakdown}
+          connectionStatus={connectionStatus}
           onConnect={onConnect}
           onView={onView}
         />
+      ))}
+    </div>
+  );
+}
+
+// Incoming connect requests, with accept/decline actions.
+function RequestsPanel({ requests, onRespond }) {
+  if (requests.length === 0) {
+    return (
+      <EmptyState
+        icon="mail"
+        title="no pending requests"
+        body="when someone wants to connect, you'll see their request here."
+        compact
+      />
+    );
+  }
+  return (
+    <div className="divide-y divide-hairline border border-hairline bg-surface">
+      {requests.map((request) => (
+        <div
+          key={request._id}
+          className="p-stack-lg flex items-center justify-between gap-stack-md"
+        >
+          <div className="flex items-center gap-stack-md min-w-0">
+            <div className="w-12 h-12 rounded-circle overflow-hidden border border-hairline bg-surface-container flex items-center justify-center shrink-0">
+              {request.requester?.avatar ? (
+                <img
+                  src={request.requester.avatar}
+                  alt={request.requester.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="font-body-strong text-slate-muted">
+                  {initials(request.requester?.name)}
+                </span>
+              )}
+            </div>
+            <p className="font-body-strong text-primary lowercase truncate">
+              {request.requester?.name || "a student"} wants to connect
+            </p>
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => onRespond(request._id, "decline")}
+              className="px-4 py-2 border border-hairline text-slate-muted font-body-strong text-sm rounded-full lowercase hover:bg-surface-container transition-all"
+            >
+              decline
+            </button>
+            <button
+              type="button"
+              onClick={() => onRespond(request._id, "accept")}
+              className="px-4 py-2 bg-secondary-container text-honey-ink font-body-strong text-sm rounded-full lowercase hover:brightness-110 active:scale-95 transition-all"
+            >
+              accept
+            </button>
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -149,6 +209,8 @@ export default function Roommates() {
   const [mode, setMode] = useState("browse");
   const [loading, setLoading] = useState(true);
   const [viewEntry, setViewEntry] = useState(null);
+  const [showRequests, setShowRequests] = useState(false);
+  const [incomingRequests, setIncomingRequests] = useState([]);
 
   // Campus list for the browse filter.
   useEffect(() => {
@@ -202,10 +264,11 @@ export default function Roommates() {
       const { data } = await roommateAPI.getMatches();
       setMode("matches");
       setMatchEntries(
-        (data.matches || []).map(({ profile, compatibility }) => ({
+        (data.matches || []).map(({ profile, compatibility, connectionStatus }) => ({
           profile,
           compatibility,
           breakdown: buildBreakdown(me, profile),
+          connectionStatus,
         })),
       );
       // Also populate the broader "explore more" pool below the ranked section.
@@ -226,15 +289,67 @@ export default function Roommates() {
     load();
   }, [load]);
 
-  const handleConnect = (profile) => {
+  // Incoming connect requests (only relevant once the user has a profile).
+  const loadIncoming = useCallback(async () => {
+    if (!myProfile) {
+      setIncomingRequests([]);
+      return;
+    }
+    try {
+      const { data } = await roommateAPI.getIncomingConnections();
+      setIncomingRequests(data || []);
+    } catch (error) {
+      console.error("Failed to load connect requests", error);
+    }
+  }, [myProfile]);
+
+  useEffect(() => {
+    loadIncoming();
+  }, [loadIncoming]);
+
+  // Mark a profile's connectionStatus as "pending_sent" in whichever local
+  // list currently holds it, without a full refetch.
+  const markPendingSent = (userId) => {
+    const patch = (entries) =>
+      entries.map((entry) =>
+        entry.profile?.user?._id === userId
+          ? { ...entry, connectionStatus: "pending_sent" }
+          : entry,
+      );
+    setMatchEntries(patch);
+    setMoreEntries(patch);
+  };
+
+  const handleConnect = async (profile) => {
     if (!isAuthenticated) {
       toast.error("Sign in to connect with roommates");
       navigate("/login");
       return;
     }
-    toast.success(
-      `We've let ${profile?.user?.name?.split(" ")[0] || "them"} know you're interested`,
-    );
+    try {
+      await roommateAPI.connect(profile.user._id);
+      markPendingSent(profile.user._id);
+      toast.success(
+        `We've let ${profile?.user?.name?.split(" ")[0] || "them"} know you're interested`,
+      );
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Couldn't send that connect request",
+      );
+    }
+  };
+
+  const handleRespond = async (requestId, action) => {
+    try {
+      await roommateAPI.respondToConnection(requestId, action);
+      setIncomingRequests((current) => current.filter((r) => r._id !== requestId));
+      toast.success(action === "accept" ? "Request accepted" : "Request declined");
+      // Refresh so this requester's connectionStatus is correct if they show
+      // up in the matches/browse feed too.
+      load();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Couldn't respond to that request");
+    }
   };
 
   const headingCampus =
@@ -311,6 +426,22 @@ export default function Roommates() {
               >
                 edit profile
               </Link>
+              <button
+                type="button"
+                onClick={() => setShowRequests((v) => !v)}
+                className={`font-label-eyebrow text-[10px] transition-colors lowercase border px-3 py-1 rounded-full flex items-center gap-1.5 ${
+                  showRequests
+                    ? "bg-secondary-container text-honey-ink border-secondary-container"
+                    : "text-slate-muted border-hairline hover:text-primary"
+                }`}
+              >
+                requests
+                {incomingRequests.length > 0 && (
+                  <span className="bg-rose-danger text-white rounded-circle w-4 h-4 flex items-center justify-center text-[9px]">
+                    {incomingRequests.length}
+                  </span>
+                )}
+              </button>
             </div>
           ) : (
             <div className="flex items-center gap-stack-md w-full md:w-auto">
@@ -357,7 +488,12 @@ export default function Roommates() {
       {/* Feed */}
       <main className="w-full py-section-gap">
         <div className="max-w-screen-2xl mx-auto px-grid-margin">
-          {loading ? (
+          {showRequests && mode === "matches" && myProfile ? (
+            <div>
+              <SectionLabel>connect requests</SectionLabel>
+              <RequestsPanel requests={incomingRequests} onRespond={handleRespond} />
+            </div>
+          ) : loading ? (
             <FeedSkeleton />
           ) : mode === "matches" ? (
             matchEntries.length === 0 && moreEntries.length === 0 ? (
@@ -375,7 +511,7 @@ export default function Roommates() {
                       entries={matchEntries}
                       onConnect={handleConnect}
                       onView={(p, meta) =>
-                        setViewEntry({ profile: p, compatibility: meta.compatibility })
+                        setViewEntry({ profile: p, compatibility: meta.compatibility, connectionStatus: meta.connectionStatus })
                       }
                     />
                   </div>
@@ -387,7 +523,7 @@ export default function Roommates() {
                       entries={moreEntries}
                       onConnect={handleConnect}
                       onView={(p, meta) =>
-                        setViewEntry({ profile: p, compatibility: meta.compatibility })
+                        setViewEntry({ profile: p, compatibility: meta.compatibility, connectionStatus: meta.connectionStatus })
                       }
                     />
                   </div>
@@ -412,7 +548,7 @@ export default function Roommates() {
                   entries={moreEntries}
                   onConnect={handleConnect}
                   onView={(p, meta) =>
-                    setViewEntry({ profile: p, compatibility: meta.compatibility })
+                    setViewEntry({ profile: p, compatibility: meta.compatibility, connectionStatus: meta.connectionStatus })
                   }
                 />
               )}

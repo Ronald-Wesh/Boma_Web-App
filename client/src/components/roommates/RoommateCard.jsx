@@ -44,6 +44,15 @@ function Avatar({ user, size = "w-14 h-14" }) {
   );
 }
 
+// connectionStatus -> [button label, disabled?]
+const CONNECT_BUTTON = {
+  none: ["connect", false],
+  pending_sent: ["request sent", true],
+  pending_received: ["respond below", true],
+  accepted: ["connected ✓", true],
+  declined: ["declined", true],
+};
+
 // Editorial roommate card backed by a live RoommateProfile.
 // `compatibility` (0-100) + `breakdown` are present in matches mode and absent
 // in the public browse feed, where we show a status chip instead.
@@ -51,6 +60,7 @@ export default function RoommateCard({
   profile,
   compatibility = null,
   breakdown = null,
+  connectionStatus = "none",
   onConnect,
   onView,
 }) {
@@ -138,14 +148,15 @@ export default function RoommateCard({
       <div className="flex gap-2 mt-auto pt-1">
         <button
           type="button"
+          disabled={CONNECT_BUTTON[connectionStatus][1]}
           onClick={() => onConnect?.(profile)}
-          className="flex-1 bg-secondary-container text-honey-ink font-body-strong py-2.5 rounded-full lowercase hover:brightness-110 active:scale-95 transition-all"
+          className="flex-1 bg-secondary-container text-honey-ink font-body-strong py-2.5 rounded-full lowercase hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100"
         >
-          connect
+          {CONNECT_BUTTON[connectionStatus][0]}
         </button>
         <button
           type="button"
-          onClick={() => onView?.(profile, { compatibility, breakdown })}
+          onClick={() => onView?.(profile, { compatibility, breakdown, connectionStatus })}
           className="px-4 border border-hairline text-slate-muted font-body-strong rounded-full lowercase hover:bg-surface-container transition-all"
         >
           view

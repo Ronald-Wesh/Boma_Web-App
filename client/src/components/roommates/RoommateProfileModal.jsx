@@ -6,6 +6,15 @@ import {
   initials,
 } from "./roommateFormat";
 
+// connectionStatus -> [button label, disabled?]
+const CONNECT_BUTTON = {
+  none: (name) => [`connect with ${name}`, false],
+  pending_sent: () => ["request sent", true],
+  pending_received: () => ["respond from the requests tab", true],
+  accepted: () => ["connected ✓", true],
+  declined: () => ["declined", true],
+};
+
 // Full-profile overlay opened from a card's "view" button. Read-only — surfaces
 // the complete bio + every lifestyle signal, plus the same connect action.
 export default function RoommateProfileModal({ entry, onClose, onConnect }) {
@@ -22,11 +31,14 @@ export default function RoommateProfileModal({ entry, onClose, onConnect }) {
 
   if (!entry) return null;
 
-  const { profile, compatibility } = entry;
+  const { profile, compatibility, connectionStatus = "none" } = entry;
   const user = profile?.user || {};
   const campus = profile?.campus?.name || profile?.campus?.shortName || "campus —";
   const isVerified = user?.verificationStatus === "verified";
   const tags = lifestyleTags(profile);
+  const [connectLabel, connectDisabled] = CONNECT_BUTTON[connectionStatus](
+    user?.name?.split(" ")[0]?.toLowerCase() || "them",
+  );
 
   return (
     <div
@@ -136,10 +148,11 @@ export default function RoommateProfileModal({ entry, onClose, onConnect }) {
         <div className="p-stack-lg border-t border-hairline">
           <button
             type="button"
+            disabled={connectDisabled}
             onClick={() => onConnect?.(profile)}
-            className="w-full bg-secondary-container text-honey-ink font-body-strong py-3 rounded-full lowercase hover:brightness-110 active:scale-95 transition-all"
+            className="w-full bg-secondary-container text-honey-ink font-body-strong py-3 rounded-full lowercase hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100"
           >
-            connect with {user?.name?.split(" ")[0]?.toLowerCase() || "them"}
+            {connectLabel}
           </button>
         </div>
       </div>

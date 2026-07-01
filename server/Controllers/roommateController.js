@@ -1,4 +1,33 @@
 const RoommateProfile = require("../Models/RoommateProfile");
+const ConnectionRequest = require("../Models/ConnectionRequest");
+
+// Look up any connect-request between `me` and each of `otherUserIds`,
+// returning a map of otherUserId -> "none" | "pending_sent" | "pending_received"
+// | "accepted" | "declined", relative to `me`.
+const buildConnectionStatusMap = async (meId, otherUserIds) => {
+  const requests = await ConnectionRequest.find({
+    $or: [
+      { requester: meId, recipient: { $in: otherUserIds } },
+      { requester: { $in: otherUserIds }, recipient: meId },
+    ],
+  });
+
+  const map = {};
+  for (const reqDoc of requests) {
+    const otherId =
+      String(reqDoc.requester) === String(meId)
+        ? String(reqDoc.recipient)
+        : String(reqDoc.requester);
+    if (reqDoc.status === "accepted") map[otherId] = "accepted";
+    else if (reqDoc.status === "declined") map[otherId] = "declined";
+    else
+      map[otherId] =
+        String(reqDoc.requester) === String(meId)
+          ? "pending_sent"
+          : "pending_received";
+  }
+  return map;
+};
 
 // ─── Compatibility scoring ───────────────────────────────────────────────
 // Given two roommate profiles, return a 0-100 compatibility score. Higher = better fit.
@@ -158,15 +187,22 @@ exports.getMatches = async (req, res) => {
       .populate("user", "name avatar verificationStatus")
       .populate("campus", "name shortName");
 
-    const matches = candidates
-      .filter(
-        (c) =>
-          genderCompatible(me, c) &&
-          rangesOverlap(me.budgetMin, me.budgetMax, c.budgetMin, c.budgetMax),
-      )
+    const filtered = candidates.filter(
+      (c) =>
+        genderCompatible(me, c) &&
+        rangesOverlap(me.budgetMin, me.budgetMax, c.budgetMin, c.budgetMax),
+    );
+
+    const statusMap = await buildConnectionStatusMap(
+      req.user._id,
+      filtered.map((c) => c.user._id),
+    );
+
+    const matches = filtered
       .map((c) => ({
         profile: c,
         compatibility: compatibilityScore(me, c),
+        connectionStatus: statusMap[String(c.user._id)] || "none",
       }))
       .sort((a, b) => b.compatibility - a.compatibility);
 
