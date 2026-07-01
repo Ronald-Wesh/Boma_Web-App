@@ -88,6 +88,77 @@ const ROOM_LABEL = {
   two_bedroom: "Two Bedroom",
 };
 
+// Combinatorial description generator: ties the text to *this* listing's own
+// randomly-assigned features/amenities so it reads as written-for-this-unit
+// rather than one canned paragraph reused everywhere.
+const LISTING_OPENERS = [
+  (label, name) => `${label} in ${name}, a short walk from campus.`,
+  (label, name) => `Comfortable ${label.toLowerCase()} tucked inside ${name}.`,
+  (label, name) => `Bright, well-kept ${label.toLowerCase()} at ${name}.`,
+  (label, name) => `Newly refreshed ${label.toLowerCase()} inside ${name}.`,
+  (label, name) => `Quiet ${label.toLowerCase()} at ${name}, popular with students.`,
+  (label, name) => `Spacious ${label.toLowerCase()} option in ${name}, close to the main gate.`,
+  (label, name) => `Cozy ${label.toLowerCase()} in ${name} — ideal for a student budget.`,
+];
+const LISTING_CLOSERS = [
+  "Viewing available on request.",
+  "Serious inquiries only — message to schedule a visit.",
+  "Available immediately for the right tenant.",
+  "Ask about our current move-in offer.",
+  "Ideal for students who value a quiet, secure environment.",
+  "Flexible on move-in date for the right applicant.",
+  "Landlord lives nearby and responds fast to maintenance requests.",
+];
+function buildListingDescription(roomType, buildingName, features, amenities) {
+  const opener = rand(LISTING_OPENERS)(ROOM_LABEL[roomType], buildingName);
+  const featureLine = features.length
+    ? `Comes with ${features.slice(0, 2).join(" and ").toLowerCase()}.`
+    : "";
+  const amenityLine = amenities.length
+    ? `Building amenities include ${amenities.slice(0, 2).join(" and ").toLowerCase()}.`
+    : "";
+  const closer = rand(LISTING_CLOSERS);
+  return [opener, featureLine, amenityLine, closer].filter(Boolean).join(" ");
+}
+
+// Roommate bios are generated *from* the profile's own lifestyle fields so the
+// prose always agrees with the structured data shown alongside it.
+const SLEEP_PHRASE = {
+  early_bird: "an early riser",
+  night_owl: "more of a night owl",
+  flexible: "flexible with sleep schedule",
+};
+const CLEAN_PHRASE = {
+  relaxed: "fairly relaxed about tidiness",
+  tidy: "keeps shared space tidy",
+  very_tidy: "very particular about cleanliness",
+};
+const STUDY_PHRASE = {
+  quiet: "needs a quiet space to study",
+  social: "enjoys studying with others around",
+  flexible: "adapts to whatever the room needs",
+};
+const GUEST_PHRASE = {
+  rarely: "rarely has guests over",
+  sometimes: "has guests over occasionally",
+  often: "often has friends around",
+};
+const BIO_INTROS = [
+  "Engineering student looking for a chill roommate.",
+  "Final-year student, loves cooking and study groups.",
+  "Business student splitting a place close to campus.",
+  "Second-year, easy-going and respectful of shared space.",
+  "Med student with a busy schedule but a friendly roommate.",
+  "Arts student, low-key and looking for someone reliable.",
+];
+function buildRoommateBio(lifestyle) {
+  return [
+    rand(BIO_INTROS),
+    `${SLEEP_PHRASE[lifestyle.sleepSchedule]}, ${CLEAN_PHRASE[lifestyle.cleanliness]}.`,
+    `${STUDY_PHRASE[lifestyle.studyHabits]}; ${GUEST_PHRASE[lifestyle.guests]}.`,
+  ].join(" ");
+}
+
 async function seed() {
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI missing");
   await mongoose.connect(process.env.MONGO_URI);
@@ -197,10 +268,11 @@ async function seed() {
     for (let i = 0; i < count; i++) {
       const roomType = rand(ROOM_TYPES);
       const creator = Math.random() < 0.85 ? rand(landlords) : rand(students); // mostly landlords, some student sublets
+      const features = sample(FEATURES, randInt(2, 4));
+      const amenities = sample(AMENITIES, randInt(2, 4));
       listingDocs.push({
         title: `${ROOM_LABEL[roomType]} near ${building.name.split(",")[0]}`,
-        description:
-          "Walking distance to campus, ideal for students. Reliable water and security, close to shops and matatu stage. Viewing available on request.",
+        description: buildListingDescription(roomType, building.name, features, amenities),
         price: randInt(6, 35) * 1000,
         building: building._id,
         address: building.address,
@@ -208,8 +280,8 @@ async function seed() {
         roomType,
         bedrooms: ["studio", "bedsitter", "single_room", "shared_room"].includes(roomType) ? 0 : randInt(1, 2),
         bathrooms: randInt(1, 2),
-        features: sample(FEATURES, randInt(2, 4)),
-        amenities: sample(AMENITIES, randInt(2, 4)),
+        features,
+        amenities,
         images: sample(IMAGES, randInt(2, 4)),
         status: rand(["available", "available", "available", "unavailable", "pending"]),
         isVerified: Math.random() < 0.5,
@@ -226,12 +298,27 @@ async function seed() {
     const reviewers = sample(students, randInt(1, 4));
     for (const reviewer of reviewers) {
       await Review.create({
-        title: rand(["Solid place to stay", "Great for students", "Decent but noisy", "Would recommend", "Mixed feelings"]),
+        title: rand([
+          "Solid place to stay", "Great for students", "Decent but noisy",
+          "Would recommend", "Mixed feelings", "Better than expected",
+          "Good value overall", "Some issues but manageable", "Would live here again",
+          "Not bad for the price", "Great location, so-so upkeep",
+        ]),
         comment: rand([
           "Water is reliable and security is tight. Landlord responds quickly.",
           "Close to campus and affordable. WiFi could be better.",
           "Quiet during exams, friendly neighbours.",
           "Good value for money, but parking is limited.",
+          "Caretaker is responsive, hallway lighting could be better though.",
+          "Been here two semesters, no major complaints.",
+          "Walking distance to lectures which is the main selling point.",
+          "Backup generator actually works during outages, unlike my last place.",
+          "A bit noisy on weekends but otherwise a solid stay.",
+          "Landlord was flexible with rent timing when I needed it.",
+          "Rooms are smaller than the photos suggest, but clean.",
+          "Great community feel, most tenants are students from the same campus.",
+          "Water pressure drops in the evenings, worth knowing before moving in.",
+          "Security guard on site at night, felt safe walking in late.",
         ]),
         reviewer: reviewer._id,
         building: building._id,
@@ -254,22 +341,32 @@ async function seed() {
   console.log(`Reviews: ${reviewCount} (building ratings recomputed)`);
 
   // ── Forum posts (model stores a `post` array per document) ──
+  // Title/content are paired topics (not independently randomized) so a post
+  // titled "Water shortage" never ends up with unrelated "lost keys" content.
+  const FORUM_TOPICS = [
+    { title: "Water shortage this week?", content: "Has anyone else had water issues since Monday? Caretaker not picking up." },
+    { title: "Anyone subletting next semester?", content: "Moving out end of semester, room available for transfer. DM me." },
+    { title: "Lost keys - found?", content: "Found a set of keys near the gate, drop by C-block if yours." },
+    { title: "Noise after 10pm", content: "Can we agree on quiet hours? Exams coming up." },
+    { title: "Best matatu route to campus", content: "What's the fastest route from here to the main gate during rush hour?" },
+    { title: "WiFi router keeps dropping", content: "Anyone else's router restarting randomly in the evenings? Worth reporting to the caretaker?" },
+    { title: "Splitting a cleaner for common areas?", content: "A few of us were thinking of pooling to hire a cleaner for the shared hallway. Interested?" },
+    { title: "Power outage compensation?", content: "Third outage this month — does the landlord usually adjust rent for repeated outages?" },
+    { title: "Anyone selling a mattress/desk?", content: "Moving in next week and need a desk and mattress, preferably second-hand." },
+    { title: "Gate security at night", content: "Noticed the gate's been unmanned after 11pm a few times this week. Anyone else notice this?" },
+  ];
   const forumDocs = [];
   for (const building of buildings) {
     const n = randInt(1, 2);
     for (let i = 0; i < n; i++) {
+      const topic = rand(FORUM_TOPICS);
       forumDocs.push({
         user: rand(students)._id,
         building: building._id,
         post: [
           {
-            title: rand(["Water shortage this week?", "Anyone subletting next semester?", "Lost keys - found?", "Noise after 10pm", "Best matatu route to campus"]),
-            content: rand([
-              "Has anyone else had water issues since Monday? Caretaker not picking up.",
-              "Moving out end of semester, room available for transfer. DM me.",
-              "Found a set of keys near the gate, drop by C-block if yours.",
-              "Can we agree on quiet hours? Exams coming up.",
-            ]),
+            title: topic.title,
+            content: topic.content,
             isAnonymous: Math.random() < 0.5,
             resolved: Math.random() < 0.4,
             // Stats are backed by real voter/comment records below.
@@ -300,6 +397,12 @@ async function seed() {
     "Thanks for the heads up.",
     "Agreed, quiet hours would help a lot.",
     "DM sent.",
+    "Following this, having the same issue.",
+    "Reported it too, let's see if it gets fixed faster with more of us flagging it.",
+    "Happened to me last semester as well.",
+    "Good idea, count me in.",
+    "Appreciate the update.",
+    "Still waiting to hear back myself.",
   ];
   let commentCount = 0;
   for (const doc of forums) {
@@ -326,6 +429,14 @@ async function seed() {
   const profileDocs = roommateStudents.map((s, i) => {
     // Wide, overlapping budget bands so seekers on a campus genuinely overlap.
     const budgetMin = randInt(4, 8) * 1000;
+    const lifestyle = {
+      sleepSchedule: rand(SLEEP),
+      cleanliness: rand(CLEAN),
+      smoking: Math.random() < 0.2,
+      pets: Math.random() < 0.2,
+      guests: rand(GUESTS),
+      studyHabits: rand(STUDY),
+    };
     return {
       user: s._id,
       // Concentrate seekers into 3 campuses so each has ~4 → denser, more useful matches.
@@ -336,20 +447,11 @@ async function seed() {
       gender: rand(["male", "female"]),
       // Mostly "any" so gender preference rarely blocks a match (realistic for shared student housing).
       genderPreference: rand(["any", "any", "any", "any", "male", "female"]),
-      lifestyle: {
-        sleepSchedule: rand(SLEEP),
-        cleanliness: rand(CLEAN),
-        smoking: Math.random() < 0.2,
-        pets: Math.random() < 0.2,
-        guests: rand(GUESTS),
-        studyHabits: rand(STUDY),
-      },
-      bio: rand([
-        "Engineering student, tidy and quiet during the week. Looking for a chill roommate.",
-        "Final year, love cooking and study groups. Easy-going.",
-        "Early riser, gym in the mornings, respectful of shared space.",
-        "Looking to split a 2-bedroom close to campus. Clean and friendly.",
-      ]),
+      lifestyle,
+      // Generated from this profile's own lifestyle fields, so the prose always
+      // agrees with the structured data shown alongside it (no mismatches like
+      // a bio saying "early riser" while sleepSchedule says "night_owl").
+      bio: buildRoommateBio(lifestyle),
       status: "looking",
     };
   });
