@@ -14,6 +14,11 @@ const isConfiguredGoogleClientId = (clientId) =>
   Boolean(clientId) &&
   !clientId.includes("your-google-web-client-id.apps.googleusercontent.com");
 
+// Landlords manage listings, tenants browse them — send each to a different
+// landing page post-auth instead of dumping everyone on the same Home page.
+const landingPathForRole = (role) =>
+  role === "landlord" ? "/landlord/dashboard" : "/";
+
 const ROLE_OPTIONS = [
   {
     value: "tenant",
@@ -116,7 +121,7 @@ export default function AuthPage() {
   const handleGoogleCredential = useCallback(
     async ({ credential }) => {
       const result = await loginWithGoogle({ credential });
-      if (result.success) navigate("/", { replace: true });
+      if (result.success) navigate(landingPathForRole(result.user?.role), { replace: true });
     },
     [loginWithGoogle, navigate],
   );
@@ -180,7 +185,7 @@ export default function AuthPage() {
       : await login(form.email.trim(), form.password);
     setSubmitting(false);
 
-    if (result.success) navigate("/", { replace: true });
+    if (result.success) navigate(landingPathForRole(result.user?.role), { replace: true });
   };
 
   const handleGoogleClick = () => {
@@ -194,7 +199,20 @@ export default function AuthPage() {
       toast.error("Google sign-in is still loading — try again in a moment.");
       return;
     }
-    window.google.accounts.id.prompt();
+    // TEMP DIAGNOSTIC: One Tap's prompt() fails silently (no error, no callback)
+    // when Google suppresses it (cooldown, third-party cookies, FedCM). Logging
+    // the moment notification surfaces the real reason. Remove once resolved.
+    window.google.accounts.id.prompt((notification) => {
+      console.log("[Google Sign-In] moment notification", {
+        isDisplayed: notification.isDisplayed(),
+        isNotDisplayed: notification.isNotDisplayed(),
+        notDisplayedReason: notification.getNotDisplayedReason?.(),
+        isSkippedMoment: notification.isSkippedMoment(),
+        skippedReason: notification.getSkippedReason?.(),
+        isDismissedMoment: notification.isDismissedMoment(),
+        dismissedReason: notification.getDismissedReason?.(),
+      });
+    });
   };
 
   const comingSoon = (feature) => () =>
