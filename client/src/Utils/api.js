@@ -73,6 +73,9 @@ export const listingAPI = {
   getListingById: (id) => API.get(`/listings/${id}`),
   updateListing: (id, listingData) => API.put(`/listings/${id}`, listingData),
   deleteListing: (id) => API.delete(`/listings/${id}`),
+  // Map View: listings within the current viewport box, and near a point.
+  getListingsWithin: (params) => API.get("/listings/within", { params }),
+  getListingsNear: (params) => API.get("/listings/near", { params }),
 };
 
 // //Export Image API endpoints

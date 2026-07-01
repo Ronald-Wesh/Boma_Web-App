@@ -162,6 +162,52 @@
   color: var(--color-secondary-container);
 }
 
+/* ── Leaflet / Map View ──────────────────────────────────────────
+   Map text picks up the app's body font; cluster bubbles are restyled
+   to the editorial honey/forest palette (the markercluster package ships
+   no CSS we rely on, so the bubbles are defined here). */
+.leaflet-container {
+  font-family: var(--font-body-main);
+}
+
+/* Editorial popup: cream card, hairline border, soft corners. */
+.leaflet-popup-content-wrapper {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-hairline);
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px rgba(19, 49, 39, 0.16);
+}
+.leaflet-popup-content {
+  margin: 0.75rem;
+}
+.leaflet-popup-tip {
+  background: var(--color-surface-container-lowest);
+}
+
+/* Marker cluster bubbles (honey, ringed). */
+.marker-cluster {
+  background: rgba(254, 166, 25, 0.25);
+  border-radius: 0.75rem;
+}
+.marker-cluster div {
+  background: var(--color-secondary-container);
+  color: var(--color-honey-ink);
+  border-radius: 0.75rem;
+  width: 34px;
+  height: 34px;
+  margin-left: 3px;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(19, 49, 39, 0.25);
+}
+.marker-cluster span {
+  font-family: var(--font-price-tabular);
+  line-height: 1;
+}
+
 /* Ruled-grid hairline scaffolding used by editorial sections */
 .ruled-grid {
   display: grid;

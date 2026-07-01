@@ -7,6 +7,7 @@ import featuredHive from "../assets/images/featured-hive.jpg";
 
 export const primaryNav = [
   { label: "listings", to: "/listings" },
+  { label: "map", to: "/map" },
   { label: "roommates", to: "/roommates" },
   { label: "reviews", to: "/reviews" },
   { label: "forums", to: "/forums" },

@@ -1,6 +1,76 @@
 const Listing = require("../Models/Listing");
 const Building = require("../Models/Building");
 
+// Shared filter parsing for the List view and the geo endpoints, so all three
+// interpret search/status/verified/roomType/price/amenities/campus identically.
+// Async because the campus filter resolves campuses → their buildings first.
+async function buildListingFilter(query) {
+  const { search, status, verified, roomType, minPrice, maxPrice, amenities, campus } =
+    query;
+  const filter = {};
+
+  // Text search across title, description, address
+  if (search) {
+    const regex = new RegExp(search, "i");
+    filter.$or = [{ title: regex }, { description: regex }, { address: regex }];
+  }
+
+  // Filter by listing status (available/unavailable/pending)
+  if (status) filter.status = status;
+
+  // Verified listings only
+  if (verified === "true") filter.isVerified = true;
+
+  // Room type(s) — comma-separated list → match any
+  if (roomType) {
+    const types = roomType.split(",").map((t) => t.trim()).filter(Boolean);
+    if (types.length) filter.roomType = { $in: types };
+  }
+
+  // Price range (KES / month)
+  if (minPrice || maxPrice) {
+    filter.price = {};
+    if (minPrice) filter.price.$gte = Number(minPrice);
+    if (maxPrice) filter.price.$lte = Number(maxPrice);
+  }
+
+  // Amenities — listing must include ALL selected amenities
+  if (amenities) {
+    const list = amenities.split(",").map((a) => a.trim()).filter(Boolean);
+    if (list.length) filter.amenities = { $all: list };
+  }
+
+  // Campus — resolve to buildings anchored to those campuses.
+  if (campus) {
+    const campusIds = campus.split(",").map((c) => c.trim()).filter(Boolean);
+    if (campusIds.length) {
+      const buildings = await Building.find({
+        campus: { $in: campusIds },
+      }).select("_id");
+      filter.building = { $in: buildings.map((b) => b._id) };
+    }
+  }
+
+  return filter;
+}
+
+// Lightweight marker projection + populate shared by both geo endpoints — enough
+// to draw a pin and its preview card, not the full document.
+const MARKER_SELECT = "title price roomType isVerified images location address";
+const MARKER_POPULATE = {
+  path: "building",
+  select: "name address campus",
+  populate: { path: "campus", select: "shortName name" },
+};
+const MARKER_LIMIT = 300;
+
+// Parse a query param to a finite number, or null if absent/invalid.
+const toFinite = (value) => {
+  if (value === undefined || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+};
+
 //Create a new listing
 exports.createListing = async (req, res) => {
   try {
@@ -88,82 +158,10 @@ exports.createListing = async (req, res) => {
 // each only narrows results when its query param is present).
 exports.getAllListings = async (req, res) => {
   try {
-    const {
-      search,
-      status,
-      verified,
-      sort,
-      page = 1,
-      limit = 12,
-      roomType,
-      minPrice,
-      maxPrice,
-      amenities,
-      campus,
-    } = req.query;
+    const { sort, page = 1, limit = 12 } = req.query;
 
-    // Build dynamic filter object
-    const filter = {};
-
-    // Text search across title, description, address
-    if (search) {
-      const regex = new RegExp(search, "i");
-      filter.$or = [
-        { title: regex },
-        { description: regex },
-        { address: regex },
-      ];
-    }
-
-    // Filter by listing status (available/unavailable/pending)
-    if (status) {
-      filter.status = status;
-    }
-
-    // Filter verified listings only
-    if (verified === "true") {
-      filter.isVerified = true;
-    }
-
-    // Room type(s) — comma-separated list → match any
-    if (roomType) {
-      const types = roomType
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
-      if (types.length) filter.roomType = { $in: types };
-    }
-
-    // Price range (KES / month)
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
-    }
-
-    // Amenities — listing must include ALL selected amenities
-    if (amenities) {
-      const list = amenities
-        .split(",")
-        .map((a) => a.trim())
-        .filter(Boolean);
-      if (list.length) filter.amenities = { $all: list };
-    }
-
-    // Campus — resolve to the buildings anchored to those campuses,
-    // then restrict listings to those buildings.
-    if (campus) {
-      const campusIds = campus
-        .split(",")
-        .map((c) => c.trim())
-        .filter(Boolean);
-      if (campusIds.length) {
-        const buildings = await Building.find({
-          campus: { $in: campusIds },
-        }).select("_id");
-        filter.building = { $in: buildings.map((b) => b._id) };
-      }
-    }
+    // Shared filter parsing (search/status/verified/roomType/price/amenities/campus).
+    const filter = await buildListingFilter(req.query);
 
     // Build sort object
     let sortObj = { createdAt: -1 }; // default: newest first
@@ -212,6 +210,77 @@ exports.getListingById = async (req, res) => {
       });
     if (!listing) return res.status(404).json({ message: "Listing Not Found" });
     res.status(200).json(listing);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// Listings within the current map viewport (primary map fetch).
+// GET /api/listings/within?swLng&swLat&neLng&neLat + the shared filters.
+exports.getListingsWithin = async (req, res) => {
+  try {
+    const swLng = toFinite(req.query.swLng);
+    const swLat = toFinite(req.query.swLat);
+    const neLng = toFinite(req.query.neLng);
+    const neLat = toFinite(req.query.neLat);
+
+    if ([swLng, swLat, neLng, neLat].some((n) => n === null)) {
+      return res.status(400).json({
+        message: "swLng, swLat, neLng, neLat are required numeric bounds",
+      });
+    }
+
+    const filter = await buildListingFilter(req.query);
+
+    const listings = await Listing.find({
+      ...filter,
+      location: {
+        $geoWithin: { $box: [[swLng, swLat], [neLng, neLat]] },
+      },
+      // Exclude ungeocoded listings that default to the null island.
+      "location.coordinates": { $ne: [0, 0] },
+    })
+      .select(MARKER_SELECT)
+      .populate(MARKER_POPULATE)
+      .limit(MARKER_LIMIT);
+
+    res.status(200).json({ listings, count: listings.length });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// Listings near a point (campus-centric default / "homes near X University").
+// GET /api/listings/near?lng&lat&radius=2000 (metres) + the shared filters.
+exports.getListingsNear = async (req, res) => {
+  try {
+    const lng = toFinite(req.query.lng);
+    const lat = toFinite(req.query.lat);
+    const radius = toFinite(req.query.radius) ?? 2000;
+
+    if (lng === null || lat === null) {
+      return res
+        .status(400)
+        .json({ message: "lng and lat are required numeric coordinates" });
+    }
+
+    const filter = await buildListingFilter(req.query);
+
+    const listings = await Listing.find({
+      ...filter,
+      location: {
+        $near: {
+          $geometry: { type: "Point", coordinates: [lng, lat] },
+          $maxDistance: radius,
+        },
+      },
+      "location.coordinates": { $ne: [0, 0] },
+    })
+      .select(MARKER_SELECT)
+      .populate(MARKER_POPULATE)
+      .limit(MARKER_LIMIT);
+
+    res.status(200).json({ listings, count: listings.length });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

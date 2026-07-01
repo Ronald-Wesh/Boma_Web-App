@@ -5,6 +5,7 @@ import { listingAPI, campusAPI } from "../Utils/api";
 import { BUDGET, SORT_OPTIONS } from "../data/browseFilters";
 import ListingFilters from "../components/listings/ListingFilters";
 import BrowseCard from "../components/listings/BrowseCard";
+import MapToggle from "../components/map/MapToggle";
 
 const PAGE_SIZE = 9;
 
@@ -178,6 +179,7 @@ export default function Browse() {
           </div>
 
           <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+            <MapToggle active="list" />
             <button
               type="button"
               onClick={() => setVerifiedOnly((v) => !v)}
