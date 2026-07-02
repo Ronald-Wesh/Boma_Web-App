@@ -29,6 +29,7 @@ import Forum from "./Pages/Forum";
 import AuthPage from "./Pages/Auth";
 import ComingSoon from "./Pages/ComingSoon";
 import LandlordListingForm from "./Pages/LandlordListingForm";
+import LandlordDashboard from "./Pages/LandlordDashboard";
 import { LandlordRoute } from "./Utils/protectedRoute";
 
 export default function App() {
@@ -53,6 +54,14 @@ export default function App() {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviews/:buildingId" element={<BuildingReviews />} />
           <Route path="/forums" element={<Forum />} />
+          <Route
+            path="/landlord/dashboard"
+            element={
+              <LandlordRoute>
+                <LandlordDashboard />
+              </LandlordRoute>
+            }
+          />
           <Route
             path="/landlord/listings/new"
             element={
