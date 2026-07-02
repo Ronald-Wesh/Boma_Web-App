@@ -5,9 +5,21 @@ const Building = require("../Models/Building");
 // interpret search/status/verified/roomType/price/amenities/campus identically.
 // Async because the campus filter resolves campuses → their buildings first.
 async function buildListingFilter(query) {
-  const { search, status, verified, roomType, minPrice, maxPrice, amenities, campus } =
-    query;
+  const {
+    search,
+    status,
+    verified,
+    roomType,
+    minPrice,
+    maxPrice,
+    amenities,
+    campus,
+    createdBy,
+  } = query;
   const filter = {};
+
+  // Scope to one landlord's own listings (used by the Landlord Dashboard).
+  if (createdBy) filter.createdBy = createdBy;
 
   // Text search across title, description, address
   if (search) {
