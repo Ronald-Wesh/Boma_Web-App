@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { listingAPI, enquiryAPI } from "../Utils/api";
+import { listingAPI, enquiryAPI, forumAPI } from "../Utils/api";
 import { useAuth } from "../hooks/useAuth";
 import LandlordListingCard from "../components/landlord/LandlordListingCard";
+import LandlordBuildingCard from "../components/landlord/LandlordBuildingCard";
 
 const TABS = [
   { key: "listings", label: "my listings" },
+  { key: "buildings", label: "my buildings" },
   { key: "enquiries", label: "enquiries" },
 ];
 
@@ -30,6 +32,7 @@ export default function LandlordDashboard() {
   const [listings, setListings] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [buildingForums, setBuildingForums] = useState({});
 
   const load = useCallback(async () => {
     if (!user?._id) return;
@@ -51,6 +54,40 @@ export default function LandlordDashboard() {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Buildings behind this landlord's own listings — there's no stored
+  // landlord->building relationship, so it's derived from `listings` here.
+  const buildings = useMemo(() => {
+    const seen = new Map();
+    for (const { building } of listings) {
+      if (building?._id && !seen.has(building._id)) seen.set(building._id, building);
+    }
+    return [...seen.values()];
+  }, [listings]);
+
+  // Lazy-fetch forum activity per building, only once the tab is opened.
+  useEffect(() => {
+    if (tab !== "buildings") return;
+    const missing = buildings.filter((b) => !(b._id in buildingForums));
+    if (missing.length === 0) return;
+    let active = true;
+    (async () => {
+      const entries = await Promise.all(
+        missing.map(async (b) => {
+          try {
+            const { data } = await forumAPI.getBuildingForums(b._id);
+            return [b._id, Array.isArray(data) ? data : []];
+          } catch {
+            return [b._id, []];
+          }
+        }),
+      );
+      if (active) setBuildingForums((prev) => ({ ...prev, ...Object.fromEntries(entries) }));
+    })();
+    return () => {
+      active = false;
+    };
+  }, [tab, buildings, buildingForums]);
 
   const handleDeleted = (listingId) => {
     setListings((prev) => prev.filter((l) => l._id !== listingId));
@@ -102,6 +139,9 @@ export default function LandlordDashboard() {
               }`}
             >
               {t.label}
+              {t.key === "buildings" && buildings.length > 0 && (
+                <span className="ml-2 text-xs text-slate-muted">({buildings.length})</span>
+              )}
               {t.key === "enquiries" &&
                 enquiries.some((e) => e.status === "new") && (
                   <span className="ml-2 inline-block w-2 h-2 rounded-full bg-secondary-container align-middle" />
@@ -132,6 +172,24 @@ export default function LandlordDashboard() {
                   key={listing._id}
                   listing={listing}
                   onDeleted={handleDeleted}
+                />
+              ))}
+            </div>
+          )
+        ) : tab === "buildings" ? (
+          buildings.length === 0 ? (
+            <EmptyState
+              icon="apartment"
+              title="no buildings yet"
+              body="buildings behind your listings show up here, with their reviews and forum activity."
+            />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {buildings.map((building) => (
+                <LandlordBuildingCard
+                  key={building._id}
+                  building={building}
+                  forumPosts={buildingForums[building._id] ?? null}
                 />
               ))}
             </div>
