@@ -52,7 +52,23 @@ exports.isAdmin = (req, res, next) => {
   return next();
 };
 
+// Attaches req.user if a valid Bearer token is present; never rejects.
+// Used by routes that must work both logged-in and anonymous (e.g. enquiries).
+exports.optionalAuth = async (req, res, next) => {
+  try {
+    const authorization = req.headers.authorization || "";
+    if (!authorization.startsWith("Bearer ")) return next();
 
+    const token = authorization.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded?.userId) {
+      req.user = await User.findById(decoded.userId);
+    }
+  } catch (err) {
+    // Invalid/expired token on an optional-auth route — proceed as anonymous.
+  }
+  return next();
+};
 
 // const jwt = require("jsonwebtoken");
 // const User = require("../Models/Users");
