@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { initials } from "../../Utils/listingHelpers";
+import { enquiryAPI } from "../../Utils/api";
 
 const STATUS_LABEL = {
   available: "available now",
@@ -12,11 +13,10 @@ export default function ListingSidebar({ listing }) {
   const landlord = listing?.createdBy;
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
 
-  // NOTE: there is no enquiries endpoint yet — this is a front-end stub that
-  // validates input and confirms. Wiring it to a real backend is a follow-up.
-  const handleEnquire = (event) => {
+  const handleEnquire = async (event) => {
     event.preventDefault();
     if (name.trim().length < 2) {
       toast.error("Please enter your name.");
@@ -26,15 +26,29 @@ export default function ListingSidebar({ listing }) {
       toast.error("Please enter a valid phone number.");
       return;
     }
+    if (message.trim().length < 5) {
+      toast.error("Please enter a short message.");
+      return;
+    }
+
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    try {
+      await enquiryAPI.create(listing._id, {
+        name: name.trim(),
+        phone: phone.trim(),
+        message: message.trim(),
+      });
       setName("");
       setPhone("");
+      setMessage("");
       toast.success(
         `Enquiry sent! ${landlord?.name || "The landlord"} will reach out shortly.`,
       );
-    }, 500);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Couldn't send your enquiry");
+    } finally {
+      setSending(false);
+    }
   };
 
   const memberSince = landlord?.createdAt
@@ -88,6 +102,18 @@ export default function ListingSidebar({ listing }) {
                 onChange={(event) => setPhone(event.target.value)}
                 placeholder="+254..."
                 className="w-full border border-hairline focus:ring-1 focus:ring-secondary-container focus:border-secondary-container bg-surface-bright p-3 rounded-lg text-sm outline-none"
+              />
+            </div>
+            <div>
+              <label className="font-label-eyebrow text-label-eyebrow text-slate-muted block mb-1 uppercase">
+                Message
+              </label>
+              <textarea
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                rows={3}
+                placeholder="what would you like to ask?"
+                className="w-full border border-hairline focus:ring-1 focus:ring-secondary-container focus:border-secondary-container bg-surface-bright p-3 rounded-lg text-sm outline-none resize-none"
               />
             </div>
             <button

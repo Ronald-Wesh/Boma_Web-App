@@ -142,6 +142,14 @@ export const adminAPI = {
   verifyListing: (id) => API.patch(`/admin/verify-listing/${id}`),
 };
 
+export const enquiryAPI = {
+  create: (listingId, data) =>
+    API.post(`/listings/${listingId}/enquiries`, data),
+  getMine: () => API.get("/landlord/enquiries"),
+  updateStatus: (id, status) =>
+    API.patch(`/landlord/enquiries/${id}/status`, { status }),
+};
+
 // // USED FOT http requests
 // //MESSENGER BTW FRONTEND AND BACKEND
 // import axios from "axios";

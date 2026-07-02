@@ -39,6 +39,7 @@ const buildingRoutes = require("./Routes/buildingRoutes");
 const campusRoutes = require("./Routes/campusRoutes");
 const roommateRoutes = require("./Routes/roommateRoutes");
 const connectionRoutes = require("./Routes/connectionRoutes");
+const enquiryRoutes = require("./Routes/enquiryRoutes");
 
 //Use Routes
 app.use("/api/auth", authRoutes);
@@ -49,6 +50,7 @@ app.use("/api/roommates", roommateRoutes);
 app.use("/api/connections", connectionRoutes);
 app.use("/api", reviewRoutes);
 app.use("/api", forumRoutes);
+app.use("/api", enquiryRoutes);
 app.use("/api/admin", adminRoutes);
 
 //health Route=sHOW SERVER IS RUNNING
