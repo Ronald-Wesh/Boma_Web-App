@@ -28,6 +28,8 @@ import BuildingReviews from "./Pages/BuildingReviews";
 import Forum from "./Pages/Forum";
 import AuthPage from "./Pages/Auth";
 import ComingSoon from "./Pages/ComingSoon";
+import LandlordListingForm from "./Pages/LandlordListingForm";
+import { LandlordRoute } from "./Utils/protectedRoute";
 
 export default function App() {
   return (
@@ -51,6 +53,22 @@ export default function App() {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviews/:buildingId" element={<BuildingReviews />} />
           <Route path="/forums" element={<Forum />} />
+          <Route
+            path="/landlord/listings/new"
+            element={
+              <LandlordRoute>
+                <LandlordListingForm />
+              </LandlordRoute>
+            }
+          />
+          <Route
+            path="/landlord/listings/:id/edit"
+            element={
+              <LandlordRoute>
+                <LandlordListingForm />
+              </LandlordRoute>
+            }
+          />
           {/* Unbuilt editorial pages land here until they're built */}
           <Route path="*" element={<ComingSoon />} />
         </Route>
